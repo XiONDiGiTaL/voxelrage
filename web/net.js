@@ -61,6 +61,7 @@
    * failures can be read off the page itself (no console needed). */
   var DEBUG = /[?&]debug=1(&|$)/.test(global.location ? global.location.search : '');
   var debugEl = null;
+  var debugStaticEl = null;
   function dbg(line) {
     if (!DEBUG) return;
     try {
@@ -70,10 +71,17 @@
         debugEl.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:99;max-width:92vw;max-height:44vh;overflow:auto;background:rgba(0,0,0,.88);color:#8fe8ff;font:11px/1.5 monospace;padding:8px 10px;border:1px solid #6be0ff;white-space:pre-wrap;pointer-events:none';
         document.body.appendChild(debugEl);
       }
+      if (!debugStaticEl) {
+        debugStaticEl = document.createElement('div');
+        debugStaticEl.id = 'netDebugLog';
+        debugStaticEl.style.cssText = 'background:#000;color:#8fe8ff;font:12px/1.6 monospace;padding:10px;white-space:pre-wrap;border-top:2px solid #6be0ff';
+        document.body.appendChild(debugStaticEl);
+      }
       var t = new Date();
       var stamp = ('0' + t.getMinutes()).slice(-2) + ':' + ('0' + t.getSeconds()).slice(-2) + '.' + ('00' + t.getMilliseconds()).slice(-3);
       debugEl.textContent += stamp + ' ' + line + '\n';
       debugEl.scrollTop = debugEl.scrollHeight;
+      debugStaticEl.textContent += stamp + ' ' + line + '\n';
     } catch (e) { /* debug must never break the game */ }
   }
   if (DEBUG && global.addEventListener) {
@@ -299,6 +307,7 @@
   function GameWebSocket(address, protocols) {
     if (!new.target) throw new TypeError("Failed to construct 'WebSocket': Please use the 'new' operator");
     var url = new URL(address, global.location.href);
+    dbg('WebSocket ctor: ' + url.host + url.pathname);
     if (url.host === global.location.host && url.pathname === '/ws') return new RoomSocket(address);
     return protocols === undefined ? new NativeWebSocket(address) : new NativeWebSocket(address, protocols);
   }
@@ -309,4 +318,5 @@
   GameWebSocket.prototype = RoomSocket.prototype;
 
   global.WebSocket = GameWebSocket;
+  dbg('net.js v3.1 loaded; supabase libReady=' + libReady());
 })(typeof window !== 'undefined' ? window : globalThis);
