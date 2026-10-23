@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>voxelrage transport debug log</title></head>
+<body>
+<h1>voxelrage transport debug log</h1>
+<pre id="log">(no log stored yet)</pre>
+<script>
+  var el = document.getElementById('log');
+  function render() {
+    var v = null;
+    try { v = localStorage.getItem('voxelrage-debug-log'); } catch (e) {}
+    el.textContent = v || '(no log stored yet)';
+  }
+  render();
+  setInterval(render, 1000);
+</script>
+</body>
+</html>

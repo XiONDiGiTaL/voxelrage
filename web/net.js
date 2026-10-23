@@ -82,6 +82,7 @@
       debugEl.textContent += stamp + ' ' + line + '\n';
       debugEl.scrollTop = debugEl.scrollHeight;
       debugStaticEl.textContent += stamp + ' ' + line + '\n';
+      try { global.localStorage.setItem('voxelrage-debug-log', debugStaticEl.textContent); } catch (e2) {}
     } catch (e) { /* debug must never break the game */ }
   }
   if (DEBUG && global.addEventListener) {

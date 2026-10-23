@@ -43,6 +43,7 @@ for (const file of ['content.js', 'vendor']) {
   await cp(path.join(src, file), path.join(out, file), { recursive: true });
 }
 await cp(path.join(webDir, 'net.js'), path.join(out, 'net.js'));
+await cp(path.join(webDir, 'debug.html'), path.join(out, 'debug.html'));
 
 /* ------------------------------ index.html ------------------------------ */
 let index = await readFile(path.join(src, 'index.html'), 'utf8');
