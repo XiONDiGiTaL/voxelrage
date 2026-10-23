@@ -38,36 +38,31 @@ anon key only, auth-session persistence disabled, `eventsPerSecond`
 broadcast event `msg` tagged with the sender side, and 12 s / 20 s
 watchdogs instead of latching transient channel errors.
 
-The adaptation is only at the edges, because this game speaks
-WebSocket to its own Node relay (`server.js`): `net.js` installs a
-stand-in for exactly the game's same-host `/ws` endpoint (every other
-socket stays native — Supabase resolves the global constructor
-itself, exactly as it does on Leap Buddies' page, and the stand-in
-passes its socket straight through) and synthesizes the relay's
-messages from presence:
+The adaptation is only at the edges, because this game's net code
+was written against its own Node relay (`server.js`). `net.js`
+keeps Leap's `Net.host(code, cbs)` / `Net.join(code, cbs)` API
+untouched, and the build patches the game's `net` object to call it,
+mapping the callbacks onto the same `handleNet` messages the relay
+used to send:
 
 - The **host generates the 4-letter code itself** (same alphabet as
-  `server.js`), opens on channel-subscribed, and receives
-  `{t:'peer'}` when a guest presence key appears.
-- The **guest opens when the host's presence is seen**, receiving
-  `{t:'welcome'}` and `{t:'peer'}`; 12 s without a host means the
-  room doesn't exist.
-- Game JSON is relayed verbatim as the broadcast payload's `d`
-  field. The host locks onto the first guest that sends data
-  (`__gid`), so a third browser cannot take the guest's seat.
-- Losing the peer's presence produces `{t:'left'}`; relay failures
-  produce `{t:'error', msg}` with a readable reason in the menu.
+  `server.js`) via `Net.makeCode()`; `onOpen` delivers the game's
+  `welcome` message, `onGuest` delivers `peer`.
+- The **guest's** `onOpen` (host presence or data seen) delivers
+  `welcome` + `peer`; 12 s without a host reports `room-not-found`.
+- Game messages ride as broadcast payload objects end to end (no
+  JSON string layer). The host locks onto the first guest that
+  sends data (`__gid`), so a third browser cannot take the seat.
+- Losing the peer reports `left`; relay failures report `error`
+  with a key the game maps to a readable German menu text.
 
-Channels are named `voxelrage-v1-<CODE>` — an isolated namespace on
-the shared project, so Leap Buddies / KankaKombat rooms can never
-collide with these. Nothing is stored in any database; broadcast
-traffic counts toward the project's quotas. Rooms are casual and
-public: not authenticated, not cheat-resistant — never send private
-data through a game room. The host's tab must stay open (it runs the
-simulation).
+An earlier build instead emulated the relay behind a WebSocket
+stand-in; room creation never survived contact with a real browser,
+so the direct adaptation replaced it — the page never touches the
+global WebSocket constructor, exactly like Leap Buddies' page.
 
-From a local checkout, `node server.js` remains the original way to
-play online on your own network, untouched by any of this.
+With `?debug=1` in the page URL, the transport logs its state
+transitions on-page, into `localStorage`, and on `debug.html`.
 
 ## Verified before calling production playable
 
