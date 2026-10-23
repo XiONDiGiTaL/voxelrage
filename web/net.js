@@ -56,17 +56,49 @@
     return !!(global.supabase && typeof global.supabase.createClient === 'function' && SB_ANON.indexOf('__') !== 0);
   }
 
+  /* Debug overlay, only with ?debug=1 in the page URL: mirrors the
+   * transport's state transitions into a visible box so connection
+   * failures can be read off the page itself (no console needed). */
+  var DEBUG = /[?&]debug=1(&|$)/.test(global.location ? global.location.search : '');
+  var debugEl = null;
+  function dbg(line) {
+    if (!DEBUG) return;
+    try {
+      if (!debugEl) {
+        debugEl = document.createElement('pre');
+        debugEl.id = 'netDebug';
+        debugEl.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:99;max-width:92vw;max-height:44vh;overflow:auto;background:rgba(0,0,0,.88);color:#8fe8ff;font:11px/1.5 monospace;padding:8px 10px;border:1px solid #6be0ff;white-space:pre-wrap;pointer-events:none';
+        document.body.appendChild(debugEl);
+      }
+      var t = new Date();
+      var stamp = ('0' + t.getMinutes()).slice(-2) + ':' + ('0' + t.getSeconds()).slice(-2) + '.' + ('00' + t.getMilliseconds()).slice(-3);
+      debugEl.textContent += stamp + ' ' + line + '\n';
+      debugEl.scrollTop = debugEl.scrollHeight;
+    } catch (e) { /* debug must never break the game */ }
+  }
+  if (DEBUG && global.addEventListener) {
+    global.addEventListener('error', function (e) { dbg('window error: ' + (e.message || e.type)); });
+    global.addEventListener('unhandledrejection', function (e) {
+      var r = e && e.reason;
+      dbg('unhandled rejection: ' + (r && (r.message || String(r))));
+    });
+  }
+
   function newClient() {
+    /* Options object identical to Leap Buddies' net.js — no transport
+     * override. (An earlier build pinned the native constructor via
+     * the transport option; the current supabase-js treats an
+     * explicitly supplied transport differently in its health-check /
+     * fallback logic, and room creation never survived it. With no
+     * override the library resolves the global constructor itself,
+     * which this file's stand-in passes straight through to native
+     * for every non-game socket.) */
     return global.supabase.createClient(SB_URL, SB_ANON, {
       /* No auth session is needed for room relaying. Disabling session
        * persistence also disables supabase-js's cross-tab lock, which
-       * can otherwise stall a second tab's realtime join indefinitely.
-       * (Comment and settings carried over from Leap Buddies' net.js.)
-       * transport pins the native constructor because this file
-       * replaces global WebSocket below; Supabase's own relay socket
-       * must never route through the game shim. */
+       * can otherwise stall a second tab's realtime join indefinitely. */
       auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
-      realtime: { transport: NativeWebSocket, params: { eventsPerSecond: 40 } }
+      realtime: { params: { eventsPerSecond: 40 } }
     });
   }
 
@@ -121,6 +153,7 @@
     if (this._opened || this._closed) return;
     this._opened = true;
     this.readyState = 1; // OPEN
+    dbg('socket open role=' + this.role + ' room=' + this.room);
     if (this._notFoundTimer) { clearTimeout(this._notFoundTimer); this._notFoundTimer = null; }
     this._emit('open', {});
     this._deliver({ t: 'welcome', role: this.role, room: this.room });
@@ -136,6 +169,7 @@
   };
 
   RoomSocket.prototype._fail = function (reason) {
+    dbg('fail: ' + reason);
     if (this._closed || this._failing) return;
     this._failing = true;
     /* Error event first, specific message second — and hold the
@@ -152,11 +186,13 @@
 
   RoomSocket.prototype._connect = function () {
     if (this._closed) return;
+    dbg('connect role=' + this.role + ' room=' + this.room + ' libReady=' + libReady());
     if (!libReady()) { this._fail('relay-unavailable'); return; }
     if (!/^[A-Z2-9]{4}$/.test(this.room)) { this._fail('room-not-found'); return; }
 
     var self = this;
     var client = newClient();
+    dbg('client created');
     var channel = client.channel(PREFIX + this.room, {
       config: {
         broadcast: { self: false },
@@ -220,7 +256,8 @@
       }
     });
 
-    channel.subscribe(function (status) {
+    channel.subscribe(function (status, err) {
+      dbg('subscribe status=' + status + (err ? ' err=' + (err.message || String(err)) : ''));
       if (self._closed) return;
       if (status === 'SUBSCRIBED') {
         self._subscribed = true;

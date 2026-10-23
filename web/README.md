@@ -41,9 +41,10 @@ watchdogs instead of latching transient channel errors.
 The adaptation is only at the edges, because this game speaks
 WebSocket to its own Node relay (`server.js`): `net.js` installs a
 stand-in for exactly the game's same-host `/ws` endpoint (every other
-socket stays native, and Supabase's own socket is pinned to the
-native constructor) and synthesizes the relay's messages from
-presence:
+socket stays native — Supabase resolves the global constructor
+itself, exactly as it does on Leap Buddies' page, and the stand-in
+passes its socket straight through) and synthesizes the relay's
+messages from presence:
 
 - The **host generates the 4-letter code itself** (same alphabet as
   `server.js`), opens on channel-subscribed, and receives
