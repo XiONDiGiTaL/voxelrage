@@ -124,11 +124,25 @@
       if (guestPresent && !guestKey) { guestKey = 'seen'; dbg('host: guest present (presence)'); cbs.onGuest && cbs.onGuest(); }
       if (!guestPresent && guestKey) { guestKey = null; guestGid = null; dbg('host: guest left'); cbs.onClose && cbs.onClose(); }
     });
+    var lockSentAt = 0;
+    function sendLock() {
+      /* Tell the channel which guest holds the seat. The seated
+       * guest confirms itself; any other guest that sees a lock
+       * naming someone else knows the room is full (the one
+       * behavior the old Node relay had that raw broadcast lacks:
+       * it rejected extra joiners outright). Re-sent, throttled,
+       * whenever a non-seated guest speaks, so late joiners learn
+       * it too. */
+      var now = Date.now();
+      if (!guestGid || now - lockSentAt < 1000) return;
+      lockSentAt = now;
+      try { channel.send({ type: 'broadcast', event: 'msg', payload: { __from: 'host', t: 'lock', gid: guestGid } }); } catch (e) {}
+    }
     channel.on('broadcast', { event: 'msg' }, function (m) {
       var d = m && m.payload;
       if (!d || d.__from !== 'guest') return;
-      if (guestGid && d.__gid !== guestGid) return;      // room locked to first guest
-      if (!guestGid) guestGid = d.__gid || null;          // lock on first guest message (see header)
+      if (guestGid && d.__gid !== guestGid) { sendLock(); return; }   // room locked to first guest
+      if (!guestGid) { guestGid = d.__gid || null; sendLock(); }      // lock on first guest message (see header)
       if (!guestKey) { guestKey = 'seen'; dbg('host: guest present (data)'); cbs.onGuest && cbs.onGuest(); }
       cbs.onData && cbs.onData(d);
     });
@@ -185,6 +199,15 @@
     channel.on('broadcast', { event: 'msg' }, function (m) {
       var d = m && m.payload;
       if (!d || d.__from !== 'host') return;
+      if (d.t === 'lock') {
+        if (d.gid === gid) { dbg('join: seat confirmed'); }
+        else {
+          dbg('join: room full (seat held by another guest)');
+          cbs.onError && cbs.onError('room-full');
+          try { handle.close(); } catch (e) {}
+        }
+        return;   // lock notes are transport-level, not game data
+      }
       if (!hostSeen) {
         hostSeen = true;
         clearTimeout(notFoundTimer);

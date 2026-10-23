@@ -19,7 +19,8 @@
 //     handleNet messages (welcome/peer/left) the relay used to send.
 //     If upstream wording changes, the build fails loudly instead of
 //     publishing a stale patch.
-//   - dist/net.js is a straight copy of web/net.js; dist/debug.html
+//   - dist/net.js is a straight copy of web/net.js, dist/i18n.js of
+//     web/i18n.js (the DE/EN language toggle); dist/debug.html
 //     renders the transport's ?debug=1 log from localStorage.
 //
 // The upstream game itself is never modified; server.js stays the way
@@ -49,6 +50,7 @@ for (const file of ['content.js', 'vendor']) {
   await cp(path.join(src, file), path.join(out, file), { recursive: true });
 }
 await cp(path.join(webDir, 'net.js'), path.join(out, 'net.js'));
+await cp(path.join(webDir, 'i18n.js'), path.join(out, 'i18n.js'));
 await cp(path.join(webDir, 'debug.html'), path.join(out, 'debug.html'));
 
 /* ------------------------------ index.html ------------------------------ */
@@ -60,6 +62,7 @@ if (!index.includes(MODULE_TAG)) {
 index = index.replace(MODULE_TAG, [
   '<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>',
   '<script src="./net.js?v=4"></script>',
+  '<script src="./i18n.js?v=1"></script>',
   /* The game module is versioned too: unlike net.js it is patched on
    * every build, and an unversioned URL let a test browser pair a
    * fresh index/net.js with a stale game.js from an earlier deploy

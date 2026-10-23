@@ -61,6 +61,17 @@ stand-in; room creation never survived contact with a real browser,
 so the direct adaptation replaced it — the page never touches the
 global WebSocket constructor, exactly like Leap Buddies' page.
 
+## Language toggle (DE | EN)
+
+`web/i18n.js` adds the DE | EN switcher in the top-right corner,
+modeled on Leap Buddies' language buttons: the game's strings are
+German, so the module translates the DOM (dictionary + pattern
+rules for strings with values baked in) and keeps translating at
+runtime via a MutationObserver — HUD and status writes arrive in
+German and are swapped in place while English is active, and
+switching back restores the exact German. The choice persists in
+`localStorage` (`voxelrage-lang`); German stays the default.
+
 With `?debug=1` in the page URL, the transport logs its state
 transitions on-page, into `localStorage`, and on `debug.html`.
 
