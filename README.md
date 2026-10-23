@@ -1,304 +1,324 @@
-# VOXEL RAGE — Janitscharen
+# VOXEL RAGE — Janissaries
 
-**▶ Play in the browser: [xiondigital.net/voxelrage](https://xiondigital.net/voxelrage/)**
+[Play in your browser: xiondigital.net/voxelrage](https://xiondigital.net/voxelrage/)
 
-This is the web-hosting fork of [player529/Jannitschar](https://github.com/player529/Jannitschar).
+A voxel beat-'em-up set in Ottoman Istanbul. Everything is made of cubes: characters, streets, buildings, and particles. The original local version needs no build step or npm dependencies; Three.js r160 is included locally in `vendor/`. The hosted web edition uses the separate build described below.
 
----
+## About this fork and the web edition
 
-# VOXEL RAGE — Janitscharen
+This is the web-hosting fork of [player529/Jannitschar](https://github.com/player529/Jannitschar). Pushing to `main` builds the static web edition and deploys it to GitHub Pages through `.github/workflows/pages.yml`, so the live page follows the tip of `main`—the same setup as Leap Buddies and KankaKombat. Sync this fork with upstream to receive new game versions.
 
-Voxel-Beat-'em-up im osmanischen Istanbul. Alles besteht aus Würfeln: Figuren, Straßen,
-Häuser, Partikel. Kein Build, kein npm — Three.js r160 liegt lokal in `vendor/`.
+GitHub Pages cannot run the original Node WebSocket relay. For online play in the web edition, `web/` replaces the `/ws` socket with a Supabase Realtime broadcast transport: a public anonymous browser key, isolated `voxelrage-v1-` rooms, and no stored game data. Rooms use four-character codes and support two players. The host's browser runs the authoritative simulation and must stay open. Solo and local co-op require no network connection once the game assets have loaded.
 
-## Starten
+From a local checkout, `node server.js` remains the original way to play online on your own network. See [the web deployment documentation](web/README.md) for details.
+
+This translation changes the documentation, not the in-game interface. Quoted HUD messages and menu labels below are translated into English for explanation. The numerical values and upstream testing limitations are retained.
+
+## Screenshots
+
+These are existing game captures included in this repository, not newly generated images.
+
+### Street combat
+
+![Voxel Rage street combat](screenshots/voxel-rage-fight.png)
+
+### Boss encounter
+
+![Voxel Rage boss encounter](screenshots/voxel-rage-boss.png)
+
+### Ottoman Slap special attack
+
+![The Ottoman Slap special attack](screenshots/voxel-rage-special.png)
+
+### Online co-op
+
+![Voxel Rage online co-op](screenshots/online-koop.png)
+
+### Riding a donkey
+
+![Donkey riding in Voxel Rage](screenshots/donkey-final2.png)
+
+### Start menu
+
+![Voxel Rage start menu](screenshots/voxel-rage-menu-final.png)
+
+More captures are available in [screenshots/](screenshots/).
+
+## Getting started locally
 
 ```bash
-node server.js                # http://127.0.0.1:8123 (nur dieser Rechner)
-node server.js 9000           # anderer Port
-node server.js 8123 0.0.0.0   # im WLAN erreichbar (siehe unten)
+node server.js                # http://127.0.0.1:8123 (this computer only)
+node server.js 9000           # use a different port
+node server.js 8123 0.0.0.0   # accessible over your local network; see below
 ```
 
-`node` muss installiert sein (getestet mit Node 26). Der Server liefert die Dateien aus und
-spricht WebSocket für den Online-Koop. Ein reiner Statik-Server (z. B. `python -m http.server`)
-reicht für Solo/Koop lokal, aber **nicht** für Online.
+Node.js must be installed; the original server was tested with Node 26. The server serves the files and provides the WebSocket relay for online co-op. For the original, unmodified local edition, a static server such as `python -m http.server` is sufficient for solo and local co-op, but not online play. The hosted web edition instead uses the Supabase transport described above.
 
-## Mit Freunden spielen
+## Playing with friends
 
-Für Online-Koop brauchen **beide** dieselbe Server-Adresse im Browser — es reicht nicht,
-`index.html` zu verschicken, denn der Server vermittelt die Verbindung.
+With the original Node relay, both players must open the same server address in their browsers. Sending someone `index.html` is not enough: the server relays the connection.
 
-**Im selben WLAN**
+### On the same local Wi-Fi network
 
-1. Auf dem Host-Rechner `node server.js 8123 0.0.0.0` starten (oder `HOST=0.0.0.0 node server.js`).
-   Der Start zeigt die WLAN-Adresse an, z. B. `http://192.168.1.183:8123`.
-2. Die Firewall fragt beim ersten Start: **Node.js** für **private Netzwerke** zulassen.
-3. Freunde öffnen diese Adresse, wählen **Online**, tragen den 4-stelligen Code ein und klicken
-   **Beitreten**. Der Host klickt **Raum erstellen (Host)**, gibt den Code weiter und startet
-   mit **Schlacht beginnen**.
-4. Server und Host müssen während der ganzen Runde laufen: Der Host rechnet die Simulation,
-   der Gast sendet nur Eingaben.
+1. On the host computer, run `node server.js 8123 0.0.0.0`, or `HOST=0.0.0.0 node server.js`. The startup output shows a local network address, for example `http://192.168.1.183:8123`.
+2. If prompted by your firewall on the first run, allow Node.js on private networks.
+3. The host opens that address, selects Online, clicks Create Room (Host), and shares the four-character code. Friends open the same address, select Online, enter the code, and click Join. The host clicks Begin Battle to start.
+4. Keep both the server and the host's browser running throughout the session. The host calculates the simulation; the guest sends inputs.
 
-**Über das Internet** (ohne Portfreigabe)
+### Over the internet, without port forwarding
 
-1. `winget install Cloudflare.cloudflared` (einmalig).
-2. `cloudflared tunnel --url http://localhost:8123` starten und die ausgegebene
-   `https://…trycloudflare.com`-Adresse plus Raumcode an die Freunde schicken.
-3. Tunnel und `node server.js` laufen lassen, solange gespielt wird; die Adresse ändert sich
-   bei jedem Tunnel-Neustart. Alternativ `server.js` auf einen Node-Server mit WebSocket legen.
+For the original Node server:
 
-Online-Koop ist für **zwei** Spieler ausgelegt (Host + Gast) und host-authoritativ.
+1. Install Cloudflare Tunnel once: `winget install Cloudflare.cloudflared`.
+2. Start the game server, then run `cloudflared tunnel --url http://localhost:8123`. Share the displayed `https://…trycloudflare.com` address and room code with your friends.
+3. Keep the tunnel and `node server.js` running while playing. The tunnel address changes whenever the tunnel restarts. Alternatively, deploy `server.js` to a Node server that supports WebSockets.
 
-## Modi
+Online co-op is designed for two players—host and guest—and is host-authoritative.
 
-Beim Start: Namen eintragen (frei, max. 14 Zeichen), Modus wählen.
+For this fork's hosted web edition, players use the browser link at the top of this README and the Online room controls; the separate Node server and tunnel are not used.
 
-* **Solo** — ein Janitschar; K.O. bedeutet Game Over, `R` startet neu.
-* **Koop lokal** — zwei Spieler an einer Tastatur, gemeinsame Kamera.
-* **Online** — Host erstellt einen Raum und bekommt einen 4-stelligen Code; der Gast trägt den
-  Code ein und tritt bei. Der Host startet die Schlacht, beide spielen denselben Run.
-  Host rechnet die Simulation, der Gast sendet nur Eingaben und rendert die Snapshots.
+## Game modes
 
-## Schwierigkeit
+At startup, enter player names of your choice, up to 14 characters, and select a mode.
 
-Vor dem Start wählbar; im Online-Koop gilt die Wahl des Hosts.
+- Solo: one Janissary; a knockout means Game Over, and `R` restarts. See also the lives system described under Features.
+- Local co-op: two players share one keyboard and a camera.
+- Online: the host creates a room and receives a four-character code. The guest enters it to join. The host starts the battle, and both players take part in the same run. The host calculates the simulation; the guest sends inputs and renders snapshots.
 
-| | Leicht | Normal | Hart | Albtraum |
+## Difficulty
+
+Choose a difficulty before starting. In online co-op, the host's selection applies.
+
+| Setting | Easy | Normal | Hard | Nightmare |
 |---|---|---|---|---|
-| Gegner pro Abschnitt | 14–18 | 18–24 | 24–32 | 28–32 |
-| Beute pro Abschnitt | 7 | 5 | 4 | 3 |
-| Gegner-HP | 85 % | 100 % | 120 % | 135 % |
-| Gegner-Schaden | 75 % | 100 % | 125 % | 145 % |
-| Nachschub ab | 4 Gegnern | 5 Gegnern | 6 Gegnern | 8 Gegnern |
-| Drop-Chance (Gegner / Requisiten) | 22 % / 35 % | 14 % / 22 % | 9 % / 12 % | 6 % / 7 % |
+| Enemies per section | 14–18 | 18–24 | 24–32 | 28–32 |
+| Loot per section | 7 | 5 | 4 | 3 |
+| Enemy HP | 85% | 100% | 120% | 135% |
+| Enemy damage | 75% | 100% | 125% | 145% |
+| Reinforcements arrive at | 4 enemies remaining | 5 enemies remaining | 6 enemies remaining | 8 enemies remaining |
+| Drop chance: enemies / props | 22% / 35% | 14% / 22% | 9% / 12% | 6% / 7% |
 
-Die gewählte Stufe steht im HUD unter der Wellenanzeige. Mehr Gegner bedeuten auch mehr
-Nachschub: Trupps von 3–6 Gegnern rücken nach, sobald der Abschnitt fast geräumt ist.
+The selected difficulty appears in the HUD below the wave indicator. More enemies also means more reinforcements: groups of 3–6 arrive when the section is almost cleared.
 
-**Albtraum** markiert jeden dritten Spawn als **Elite**: goldene Bodenaura, Schulterplatten
-und Krone, 70 % mehr Leben, 30 % mehr Schaden, 8 % mehr Tempo, doppelte Punkte und eine
-höhere Beutechance. In jeder Bosswelle stehen zusätzlich **drei Elite-Wachen** – Garde,
-Schildträger und Janitschar – um den Boss; das Ziel lautet dann **BOSS + WACHE BESIEGEN**.
-Der Boss selbst bleibt ein Boss und wird nicht zur Elite.
+Nightmare marks every third spawn as an elite: a golden ground aura, shoulder plates, and a crown, with 70% more health, 30% more damage, 8% more speed, double points, and a higher loot chance. Every boss wave also places three elite bodyguards around the boss—a Guard, Shield Bearer, and Janissary. The objective becomes Defeat the Boss + Guards. The boss remains a boss and does not become an elite.
 
-## Steuerung
+## Controls
 
-| | Spieler 1 | Spieler 2 |
+| Action | Player 1 | Player 2 |
 |---|---|---|
-| Laufen / Tiefe | `A`/`D`, `W`/`S` | `←`/`→`, `↑`/`↓` |
-| Schlag / Waffe / **Item aufnehmen** | `J` | `,` |
+| Move horizontally / move into depth | `A`/`D`, `W`/`S` | `←`/`→`, `↑`/`↓` |
+| Punch / use weapon / pick up item | `J` | `,` |
 | Kick | `K` | `.` |
-| Spezial (Osmanische Schelle) | `L` | `/` |
-| Sprung / Esel-Hüpfen | `Space` | `Enter` |
-| Rennen (halten) | `Shift` | `Rechts-Shift` |
-| Greifen / Kette (Wurf) | `G` | `;` |
-| Esel auf-/absteigen | `E` | `'` |
+| Special: Ottoman Slap | `L` | `/` |
+| Jump / donkey hop | `Space` | `Enter` |
+| Run: hold | `Shift` | `Right Shift` |
+| Grab / chain / throw setup | `G` | `;` |
+| Mount / dismount donkey | `E` | `'` |
 
-**Tasten frei belegen:** Im Startmenü unter **Steuerung → Tasten belegen** lässt sich jede
-Aktion beider Spieler neu zuweisen. Ein Klick auf die Taste, dann die gewünschte Taste
-drücken; eine bereits belegte Taste wird **getauscht**, nicht doppelt vergeben. `ESC` bricht
-ab, **Standard wiederherstellen** setzt alles zurück. Die Belegung wird lokal im Browser
-gespeichert (`voxel-rage-bindings-v1`) und im Online-Koop mit dem Host synchronisiert –
-der Gast schickt seine Belegung beim Beitreten und bei jeder Änderung. `P`, `M`, `R`, `ESC`
-und Funktionstasten bleiben für Pause, Musik, Neustart und Browser reserviert. Die Tabelle
-oben zeigt die Standardbelegung; alle Hinweise im Spiel (Fußzeile, Greif-Schilder,
-Beute-Prompts, Esel-Schild, HUD) übernehmen die geänderten Tasten.
+### Custom key bindings
 
-`M` Musik an/aus · `R` Neustart. Rennen geht auch automatisch nach 0,85 s Laufen.
-**Pause:** `ESC` oder `P` friert Simulation, Snapshots und Musik ein und blendet
-das Pause-Overlay ein; erneut `ESC`/`P` oder ein Klick setzt fort. `R` startet aus der
-Pause heraus neu. Während `SIEG`/`GAME OVER` und im Startmenü ist Pause gesperrt.
-Im Online-Koop pausiert der Host für beide; ein Pausieren des Gasts wird an den Host
-weitergereicht. Ist `ESC` im Browser belegt (z. B. Vollbild), funktioniert `P` genauso.
-Der **Bordstein ist begehbar**: Mit `W`/`S` (P2 `↑`/`↓`) steigt man auf den Gehweg, die
-Figuren stehen dort 0,3 Einheiten höher und die Kamera folgt in die Tiefe. Parkende Autos
-blockieren die Kante; zwischen den Autos kommt man weiter.
-In der Luft + Schlag = **Sprungangriff** (Divekick mit Schockwelle bei der Landung).
-**Kombos:** Mit freien Händen baut die Schlag-Taste eine **5er-Schlagkette** auf, die
-Tritt-Taste eine **3er-Trittkette**. Jede Stufe ist eine eigene Technik mit eigener
-Silhouette, Reichweite und Wucht – nicht nur ein weiterer Winkel:
+In the start menu, open Controls → Rebind Keys to reassign every action for either player. Click a binding, then press the desired key. If the key is already assigned, the bindings are swapped rather than duplicated. `Esc` cancels rebinding; Restore Defaults resets everything.
 
-| Stufe | Schlag | Schaden | Reichweite | Bewegung |
+Bindings are stored locally in the browser under `voxel-rage-bindings-v1` and synchronized with the host in online co-op. The guest sends their bindings when joining and whenever they change. `P`, `M`, `R`, `Esc`, and function keys remain reserved for pause, music, restart, and browser functions.
+
+The table above lists the defaults. In-game hints—including the footer, grab markers, loot prompts, donkey sign, and HUD—follow the updated bindings.
+
+### Music, running, and pause
+
+- `M`: toggle music.
+- `R`: restart.
+- Running also starts automatically after 0.85 seconds of walking.
+- `Esc` or `P`: freeze the simulation, snapshots, and music, and show the pause overlay. Press either again, or click, to resume. `R` also restarts from pause.
+- Pausing is disabled in the start menu and during Victory or Game Over.
+- In online co-op, the host pauses for both players. A guest's pause request is forwarded to the host. If the browser captures `Esc`, such as in fullscreen, use `P` instead.
+
+### Sidewalks and aerial attacks
+
+The curb is walkable. Use `W`/`S`, or Player 2's `↑`/`↓`, to step onto the sidewalk. Characters stand 0.3 units higher there, and the camera follows their depth movement. Parked cars block the edge; move between cars to get through.
+
+Punch while airborne to perform a jumping attack: a divekick with a shockwave on landing.
+
+### Combos
+
+While unarmed, the punch button builds a five-hit punch chain, and the kick button builds a three-hit kick chain. Each stage is a distinct technique with its own silhouette, range, and impact—not simply a different angle.
+
+| Stage | Punch | Damage | Range | Movement |
 |---|---|---|---|---|
-| 1 | **Links-Jab** | 8 | 1,95 | kurze Kammer, schnurgerade aus der Schulter, Deckung oben |
-| 2 | **Rechts-Cross** | 9 | 2,05 | Hüfte und Ferse drehen mit, kurzer Schritt nach vorn |
-| 3 | **Uppercut** | 11 | 1,90 | erst in die Knie, dann Faust von unten vors Kinn |
-| 4 | **Kopfnuss** | 12 | 1,75 | Fäuste zur Deckung, Kopf und Körper stoßen nach vorn |
-| 5 | **Kleine Schelle** | 25 | 2,20 | Handkante holt auf der Fernseite aus und fegt kameranah durch |
+| 1 | Left Jab | 8 | 1.95 | Brief chamber, straight from the shoulder, guard held high |
+| 2 | Right Cross | 9 | 2.05 | Hip and heel rotate, with a short step forward |
+| 3 | Uppercut | 11 | 1.90 | Bend the knees, then drive the fist upward toward the chin |
+| 4 | Headbutt | 12 | 1.75 | Fists stay in guard while the head and body thrust forward |
+| 5 | Small Slap | 25 | 2.20 | The hand winds up on the far side and sweeps through toward the camera |
 
-| Stufe | Tritt | Schaden | Reichweite | Bewegung |
+| Stage | Kick | Damage | Range | Movement |
 |---|---|---|---|---|
-| 1 | **Lowkick** | 13 | 2,25 | flacher Hüftschwung, Fuß bleibt knapp über dem Boden |
-| 2 | **Highkick** | 17 | 2,65 | Standbein streckt durch, Fuß steigt bis Kopfhöhe |
-| 3 | **Roundhouse** | 30 | 3,00 | Hüfte holt weit aus, gestreckter Fuß fegt im Bogen durch |
+| 1 | Low Kick | 13 | 2.25 | Shallow hip swing, with the foot just above the ground |
+| 2 | High Kick | 17 | 2.65 | The supporting leg straightens as the foot rises to head height |
+| 3 | Roundhouse | 30 | 3.00 | The hip winds up and the extended foot sweeps in an arc |
 
-Jab, Cross, Uppercut und Schelle haben eigene Armkurven und Faustspuren;
-die Kopfnuss setzt einen kurzen Schritt in den Gegner. Der Finisher (5. Schlag bzw.
-3. Tritt) hat eigenen Ring, Bildschirmblitz und Kamera-Schub; die Schelle bekommt dazu
-einen Klatsch-Sound. Die Kette bleibt 0,55 s nach dem Angriff offen, bricht bei einem
-Treffer am Spieler und wird von Waffen unterbrochen.
-**Greifen & Werfen:** `G` packt einen Gegner in Reichweite direkt am Kragen – weiter
-entfernte Ziele zieht die **Kette** heran. Im Griff bleibt der Gegner vorn, der Spieler
-kann langsam mit ihm laufen und sich mit `A`/`D` drehen; `J` wirft ihn nach vorn. Bosse
-lassen sich nicht halten, nehmen aber Kettenschaden.
-Die **Osmanische Schelle** (`L`) ist der Spezialangriff: eine riesige offene Hand fährt aus
-dem Ärmel, holt aus und zieht im breiten Halbkreis durch. Jeder Getroffene bekommt einen
-roten **Handabdruck**, über dem Treffer steht **„ŞAK!“**, dazu gibt es Handspur, Schockwellen,
-Zeitlupe und einen satten Klatsch-Sound. Sie trifft mehrere Gegner gleichzeitig, schleudert
-sie weg, zerbricht Requisiten und lässt die Kamera erzittern. Die Leiste unter der
-Lebensanzeige füllt sich durch Treffer; ist sie voll, zeigt das HUD **„L — SCHELLE BEREIT“**.
+The Jab, Cross, Uppercut, and Slap have their own arm curves and fist trails. The Headbutt includes a short step into the enemy. The finisher—the fifth punch or third kick—has its own ring, screen flash, and camera push; the Slap also gets a slapping sound.
 
-## Inhalt
+The chain remains open for 0.55 seconds after an attack. Taking a hit breaks it, and weapons interrupt it.
 
-* **10 Map-Runden** (Distrikte) mit je **3 Abschnitten = 30 Wellen**. Eine Runde ist eine
-  durchgehende Straße von ~340 Einheiten: erst laufen, dann kämpfen, Zwischentor, weiterlaufen.
-  Jeder Abschnitt hat 18–24 Gegner (Leicht 14–18, Hart 24–32, Albtraum 28–32; erste Gruppe + Nachschub),
-  der Abschnitt endet erst, wenn alle Gegner liegen und das Tor aufgeht. Am Ende von Abschnitt 3 wartet der Boss; nach ihm
-  öffnet sich das Exit-Tor am Straßenende und die nächste Map-Runde startet.
-* **Bodenzustand im Koop:** Bei 0 HP ist man nicht sofort K.O., sondern liegt **12 s** am
-  Boden. Der Partner muss nur in Reichweite (2,1) bleiben: Der goldene Rettungsbalken im HUD
-  füllt sich in 1,7 s, danach steht man mit 60 HP und 2 s Unverwundbarkeit wieder auf —
-  **ohne ein Leben zu verlieren**. Läuft die Zeit ab (oder ist der Partner selbst draußen),
-  wird wie gewohnt ein Leben verbraucht. Liegende sind für Gegner kein Ziel, können nicht
-  angreifen und nicht laufen; der HUD-Text zählt die Restzeit („HILFE 8s“), dann den
-  Fortschritt („RETTEN 64%“). Solo gibt es keinen Bodenzustand — dort kostet 0 HP sofort ein Leben.
-* **Gemeinsame Kamera im Koop:** Die Kamera folgt dem Mittelpunkt beider Spieler und zieht
-  über die echte Projektion so weit zurück, bis Füße und Kopf beider Figuren mit Rand im
-  Bild liegen — auch im Hochformat. Damit niemand hinauslaufen kann, hält eine Leine die
-  beiden auf höchstens **16 Einheiten** zusammen: Wer vorausläuft, wird an dieser Grenze
-  gestoppt, der Hinweis „ZU WEIT WEG · BLEIB BEIM PARTNER“ erscheint (höchstens alle 3,5 s).
-  Gebremst wird der Spieler, der sich in diesem Frame bewegt hat; der andere bleibt stehen.
-  Wer reitet, zieht seinen Esel mit. Solo bleibt die Kamera wie gehabt.
-* **3 Leben pro Spieler:** Ein K.O. kostet ein Leben; nach 6 s steigt man wieder ein — im
-  Koop neben dem Partner, allein an der Todesstelle (2,4 s Unverwundbarkeit). Bei 0 Leben
-  scheidet der Spieler aus und bleibt draußen; im Koop spielt der andere weiter, erst wenn
-  beide ausgeschieden sind, kommt **GAME OVER**.
-* **Getrennte Punkte:** Jeder Spieler sammelt seine **eigenen Punkte** – Kills zählen für den,
-  der den Treffer gesetzt hat, Gold für den, der es aufnimmt. Im Koop stehen im HUD zwei
-  Zeilen untereinander: **P1** in Gold, **P2** in Blau, jeweils mit eigenem Fortschritt bis
-  zum nächsten Extraleben. Alle **2000 eigenen Punkte** gibt es ein Extraleben (bis 9) für
-  genau diesen Spieler; ausgeschiedene Spieler werden dadurch nicht zurückgeholt. Die Leben
-  stehen als **♥ n** unter dem Spielernamen. Solo zeigt das HUD nur die P1-Zeile.
-  Der Distrikt-Bonus (+500) geht an beide Spieler, da beide die Straße geräumt haben.
-* **10 Gegnertypen** mit eigenen Werten und Requisiten: Punk, Runner (Dash), Brute, Garde (blockt),
-  Messer, Schütze (Fernkampf), Bomber (explodiert beim K.O.), Schildträger, Ninja, Janitschar.
-  Alle Gegner **holen sichtbar aus und schlagen durch**: Der Schlagarm zieht nach hinten, der
-  Oberkörper dreht weg, die Waffe glimmt in der Typfarbe auf, der Durchzug zieht eine leuchtende
-  Spur, und am Trefferpunkt sitzen Blitz, Ring und Staub. Waffen und Schilde hängen an beiden
-  Armen — sichtbar ist immer die kameranahe Kopie, damit der Schlag in jeder Laufrichtung lesbar
-  bleibt. Fernkämpfer haben statt des Schwungs einen kurzen Rückstoß.
-* **Eigene Angriffsstile:** Jeder Gegnertyp hat seine eigene Schlagkurve statt einer
-  gemeinsamen. Punk/Bomber schwingen weit aus (0,52 s Ausholen), Messer/Ninja stechen schmal
-  mit Ausfallschritt zu (0,34 s, enges Trefferfeld), Garde/Schildträger rammen den Schild vor
-  (0,46 s, hoher Rückstoß), Brute/Janitschar holen mit beiden Fäusten über den Kopf aus
-  (0,66 s), der Runner springt auf die Spielerposition und trifft im Umkreis von 1,45
-  (0,5 s), und der Schütze feuert auch auf Tuchfühlung statt zu prügeln. Trefferfenster,
-  Reichweite und Rückstoß hängen am Stil; Bosse nutzen den Stil ihres Typs mit 20 % kürzerem
-  Ausholen.
-* **Lebensbalken:** Nach dem ersten Treffer erscheint über dem Gegnerkopf ein kleiner Balken
-  (drei Viertel-Kerben, goldener Rahmen). Er füllt sich proportional zu den Rest-HP und
-  wechselt die Farbe: grün über 60 %, gelb über 30 %, darunter rot; jeder Treffer blitzt weiß
-  auf. Ungeschädigte Gegner zeigen keinen Balken, Bosse nutzen weiterhin die große HUD-Leiste
-  am oberen Rand.
-* **Schadenszahlen:** Jeder Treffer zeigt die exakte Zahl über dem Gegnerkopf. Sie steigt
-  auf, ploppt kurz auf und blendet aus; die Farbe sagt, wie schwer der Treffer war —
-  creme (unter 15), gold (ab 15), orange (ab 30), rot (ab 50, also Finisher, Schelle,
-  Bazooka). Die Textur wird pro Zahl zwischengespeichert, maximal 48 Zahlen gleichzeitig;
-  im Online-Koop schickt der Host die Treffer im Snapshot mit, damit der Gast dieselben
-  Zahlen sieht.
-* **10 Bosse**, einer pro Distrikt, immer am Ende der dritten Welle. Eigene Namen, Werte,
-  Farben und ein Schockwellen-Slam: Der Boss reißt beide Fäuste hoch, ein Warnring auf dem
-  Boden wächst bis zur Trefferreichweite, dann kracht der Einschlag mit Schockwellen, Staub
-  und Bildschirmwackeln herunter — wer aus dem Ring läuft, entkommt.
-* **Items:** Döner (+40 Leben), Ayran (+15), Gold (+50 Punkte). Pro Abschnitt liegen je nach
-  Schwierigkeit nur 4–7 Objekte in der Laufgasse (mindestens eine Waffe, ein Döner, ein Ayran
-  und Gold); die Objekte sind kompakt (halbe Modell- und Textgröße), haben einen Leuchtring,
-  eine Lichtsäule und ein Namensschild (z. B. „DÖNER“). In Reichweite erscheint zusätzlich
-  **„J / , · NEHMEN“** – aber nur am nächstgelegenen Item, damit sich bei einem Beute-Cluster
-  keine Schilder überlappen; aufgenommen wird zu Fuß mit der Schlag-Taste (`J`, P2 `,`), nicht
-  mehr durch bloßes Darüberlaufen. Gegner und zerbrechliche Fässer/Kisten lassen nur noch selten Beute
-  fallen (siehe Schwierigkeit).
-* **Zerstörbare Straße:** Autos, Straßenlaternen, Bänke, Mülltonnen, Hydranten, Pylonen,
-  Fässer und Kisten nehmen Schaden. Kleine Requisiten fallen mit einem Treffer, Laternen und
-  Bänke brauchen zwei, Autos vier Treffer (schwere Schläge zählen doppelt, die Osmanische
-  Schelle zerstört sofort). Autos explodieren, verletzen Gegner im Umkreis und lassen ein
-  ausgebranntes Wrack mit glimmender Motorhaube zurück; die Kollision verschwindet mit dem
-  Auto. Danach heult für 3,6 s die **Autoalarmanlage**: rot/blaue Warnlichter mit
-  Lichtsäulen am Wrack, Zweiklang und Bodenwellen alle 0,6 s. Gegner im Umkreis von
-  13 Einheiten lassen den Spieler stehen und laufen zum Wrack (1,45× Tempo) – auch Bosse.
-  Der Alarm ist eine taktische Ablenkung, bevor die Meute zurückkehrt. Zusätzlich ruft er
-  eine **kleine Verstärkungswelle** herbei: drei Gegner (auf Bosswellen zwei) erscheinen
-  links und rechts vom Wrack auf der Fahrbahn, mit rot/blauen Ringen und dem Banner
-  „ALARM · VERSTÄRKUNG“. Sie zählen zum Abschnitt und müssen ebenfalls besiegt werden.
-  Pro Abschnitt gibt es höchstens zwei solche Trupps im Abstand von 14 s; nach dem Räumen
-  oder zwischen zwei Abschnitten kommt keine Verstärkung. Laternen erlöschen
-  mit Funken und Glas und hinterlassen einen abgeknickten Mast,
-  Bänke zerbrechen zu Brettern auf dem Gehweg. Requisiten in Reichweite lassen gelegentlich
-  Beute fallen (Chance je Schwierigkeitsstufe).
-* **Schadensstufen:** Autos zeigen nach jedem der drei nicht tödlichen Treffer mehr Risse,
-  Ruß und Rauch; ab dem zweiten hängt die Stoßstange, beim letzten steht die Haube offen
-  und die Kabine sitzt schief. Laternen bekommen Glasrisse, verlieren Helligkeit und
-  flackern, Bänke splittern, kippen leicht und stauben. Die Stufen bleiben bis zum
-  Zerbrechen sichtbar und verschwinden mit dem Requisit.
-* **Waffen** mit Munition bzw. Haltbarkeit, mit der Schlag-Taste (`J` / P2 `,`) aufgenommen:
-  Pistole, Gewehr (durchschlagend), Bazooka (Flächenschaden), Baseballschläger, Schlagring,
-  Kusarigama. Die Waffe liegt als eigenes Modell mit Namen in der Straße und wird nach dem
-  Aufsammeln **sichtbar in der Hand getragen**. Schusswaffen feuern bei gehaltener `J`-Taste
-  Dauerfeuer mit Mündungsfeuer, Leuchtspur und Kamera-Rückstoß; die Mündung sitzt am Lauf.
-* **Greifen & Werfen:** `G` (P2 `;`) packt den nächsten Gegner. Steht er näher als 2,4
-  Einheiten, greifen beide Hände direkt am Kragen; weiter weg (bis 12,5) zieht die sichtbare
-  Kette ihn heran. Ein Zielring und ein „G · GRIFF“-Schild markieren das Ziel. Im Griff hängt
-  der Gegner vorn am Spieler, kann nicht zuschlagen und wird im Schritttempo mitgezogen;
-  `A`/`D` dreht den Griff, der Gegner wandert mit. Nach 2,6 s reißt er sich los.
-  `J` (P2 `,`) wirft ihn: 34 Schaden beim Abwurf, danach fliegt er im Bogen, trifft unterwegs
-  andere Gegner (22) und Requisiten und schlägt mit einer kleinen Druckwelle auf (12).
-* **Esel pro Map:** Am Anfang jeder Map-Runde steht ein Esel mit Schild **„E / ' · REITEN“**.
-  Mit `E` (P2 `'`) steigt man auf und reitet deutlich schneller (`Shift` = Galopp). Im Sattel
-  löst `Space` (P2 `Enter`) einen **Hüpfer** aus: Der Esel zieht die Beine an, springt hoch
-  und lässt sich in der Luft weiter lenken; wer vorher läuft, springt ein Stück nach vorn.
-  Die Landung wirft Staub auf und schüttelt kurz die Kamera. Im Sattel kämpft der Esel
-  eigenständig: `J` (P2 `,`) ist ein **Fronttritt** mit beiden Vorderbeinen (18 Schaden,
-  kurze Reichweite, schneller Tritt), `K` (P2 `.`) ein **Drehtritt**, bei dem die
-  Hinterhand herumfährt und auch Gegner hinter dem Reiter trifft (24 Schaden, 2,9
-  Einheiten rundum). Beide Tritte bauen Energie auf (6 bzw. 9), laden also den Balken.
-  Bei **vollem Balken** löst `L` (P2 `/`) den **Superkick** aus: Hinterhand zum Ziel,
-  beide Hinterbeine geschlossen – 46 Schaden, breite Trefferzone, starkes Wegschleudern,
-  Treffer an Requisiten, zwei Huff-Einschläge und ein „SUPERKICK“-Banner; der Balken
-  wird dabei geleert. Ist er noch nicht voll, passiert bei `L` nichts. Waffen, Osmanische
-  Schelle und Kette ruhen im Sattel. Jeder Treffer am Reiter wirft ihn herunter; der Esel
-  galoppiert dann in die Gegenrichtung davon und ist für diese Map weg.
-  Freiwillig absteigen (`E`) lässt den Esel stehen, sodass man wieder aufsteigen kann.
-* **Musik:** pro Distrikt ein eigener synthetischer Track (Skala, Tempo, Basslinie), für
-  Bosskämpfe ein schnellerer Moll-Track. Wird im Browser live erzeugt, keine Audiodateien.
+### Grabbing and throwing
 
-## Architektur
+`G` grabs an enemy within reach directly by the collar; the chain pulls in more distant targets. While holding an enemy, the player can walk slowly and turn with `A`/`D`. Press `J` to throw the enemy forward. Bosses cannot be held, but they take chain damage. See Features for detailed distances and damage values.
 
-| Datei | Inhalt |
+### Ottoman Slap
+
+The Ottoman Slap, activated with `L`, is the special attack. A huge open hand emerges from the sleeve, winds up, and sweeps through a wide semicircle. Every enemy hit receives a red handprint, with “ŞAK!” above the impact, plus a hand trail, shockwaves, slow motion, and a solid slapping sound.
+
+It can hit multiple enemies, launch them away, break props, and shake the camera. Hits fill the meter below the health bar. When full, the HUD shows “L — SLAP READY.”
+
+## Features
+
+### Districts, sections, and waves
+
+There are 10 map rounds, or districts, with three sections each: 30 waves in total. A round is one continuous street roughly 340 units long: walk, fight, pass an intermediate gate, and keep moving.
+
+Each section has 18–24 enemies on Normal, 14–18 on Easy, 24–32 on Hard, or 28–32 on Nightmare, including the initial group and reinforcements. A section ends only when every enemy is defeated and the gate opens. The boss waits at the end of section three. Defeating the boss opens the exit gate at the far end of the street and starts the next map round.
+
+### Downed state and revival in co-op
+
+At 0 HP, a co-op player is not immediately knocked out: they lie down for 12 seconds. Their partner only needs to remain within 2.1 units. The golden rescue bar fills in 1.7 seconds, after which the player stands up with 60 HP and two seconds of invulnerability, without losing a life.
+
+If the timer expires, or the partner is already out, a life is consumed as usual. Downed players are not targeted by enemies and cannot attack or move. The HUD counts down the remaining time, for example “HELP 8s,” then shows rescue progress, such as “REVIVING 64%.” Solo has no downed state: reaching 0 HP immediately costs a life.
+
+### Shared co-op camera
+
+The camera follows the midpoint between the players and pulls back, using the actual projection, until both characters' heads and feet fit within the frame with a margin—even in portrait orientation.
+
+A tether keeps players at most 16 units apart so neither can leave the screen. The leading player stops at that limit, and “TOO FAR AWAY · STAY WITH YOUR PARTNER” appears at most once every 3.5 seconds. The player who moved during that frame is stopped; the other stays where they are. Mounted players bring their donkey with them. The solo camera is unchanged.
+
+### Three lives per player
+
+A knockout costs one life. After six seconds, the player respawns next to their partner in co-op, or at the death location when alone, with 2.4 seconds of invulnerability. At zero lives, that player is eliminated and stays out. In co-op, the other player can continue; Game Over occurs only when both are eliminated.
+
+### Separate scores and extra lives
+
+Each player earns their own points: kills count for the player who lands the hit, and gold counts for the player who collects it. The co-op HUD displays two score rows, P1 in gold and P2 in blue, each with its own progress toward an extra life.
+
+Every 2,000 personal points grants that player an extra life, up to nine. This does not bring eliminated players back. Lives appear as `♥ n` below the player name. Solo shows only the P1 row. The district bonus of +500 goes to both players because both helped clear the street.
+
+### Ten enemy types
+
+Each has its own stats and props: Punk, Runner with a dash, Brute, blocking Guard, Knife Fighter, ranged Gunner, Bomber that explodes when knocked out, Shield Bearer, Ninja, and Janissary.
+
+All enemies visibly wind up and follow through. The striking arm pulls back, the torso twists away, and the weapon glows in the enemy type's color. The follow-through leaves a bright trail, while the impact produces a flash, ring, and dust. Weapons and shields are attached to both arms, with only the camera-facing copy visible so attacks remain readable in either direction. Ranged enemies have a brief recoil instead of a swing.
+
+### Distinct attack styles
+
+Each enemy type has its own attack curve rather than one shared curve:
+
+- Punk and Bomber: wide swing with a 0.52-second windup.
+- Knife Fighter and Ninja: narrow lunging stab with a 0.34-second windup and a tight hit area.
+- Guard and Shield Bearer: forward shield bash with a 0.46-second windup and strong knockback.
+- Brute and Janissary: both fists raised overhead, with a 0.66-second windup.
+- Runner: jumps toward the player's position and hits within a 1.45-unit radius after 0.5 seconds.
+- Gunner: fires even at point-blank range instead of switching to melee.
+
+Hit windows, range, and knockback depend on the style. Bosses use their enemy type's style with a 20% shorter windup.
+
+### Enemy health bars
+
+After the first hit, a small bar appears above an enemy's head, with three quarter-division marks and a gold frame. It fills in proportion to remaining HP and changes color: green above 60%, yellow above 30%, and red below that. Each hit flashes white. Uninjured enemies have no bar. Bosses retain the large HUD bar at the top.
+
+### Damage numbers
+
+Every hit displays its exact damage above the enemy's head. The number rises, pops into view, then fades. Color indicates damage: cream below 15, gold from 15, orange from 30, and red from 50—for example, finishers, the Slap, and the Bazooka.
+
+Textures are cached per number, with at most 48 numbers visible at once. In online co-op, the host includes hits in the snapshot so the guest sees the same numbers.
+
+### Ten bosses
+
+One boss appears per district, always at the end of its third wave. Each has its own name, stats, colors, and a shockwave slam. The boss raises both fists; a warning ring expands on the ground to show the attack's reach; then the impact lands with shockwaves, dust, and screen shake. Move outside the ring to escape.
+
+### Items and pickups
+
+Döner restores 40 HP, Ayran restores 15 HP, and Gold grants 50 points. Depending on difficulty, only 4–7 objects lie in the fighting lane per section, including at least one weapon, a Döner, an Ayran, and Gold.
+
+Items are compact, with models and text at half size, a glowing ring, a light column, and a name label such as “DÖNER.” When within reach, “J / , · PICK UP” appears above only the nearest item so clustered loot does not produce overlapping prompts.
+
+Pick up items on foot using the punch button, `J` or Player 2's `,`, rather than simply walking over them. Enemies and breakable barrels or crates drop loot only occasionally; see Difficulty.
+
+### Destructible streets and car alarms
+
+Cars, streetlamps, benches, trash cans, hydrants, traffic cones, barrels, and crates take damage. Small props break in one hit, lamps and benches need two, and cars need four. Heavy attacks count double; the Ottoman Slap destroys props immediately.
+
+Cars explode, damage nearby enemies, and leave a burned-out wreck with a glowing hood. The car's collision disappears. Its alarm then sounds for 3.6 seconds: red and blue warning lights with columns above the wreck, a two-tone sound, and ground waves every 0.6 seconds. Enemies within 13 units—including bosses—leave the player and run to the wreck at 1.45× speed. The alarm provides a tactical distraction before they return.
+
+The alarm also summons a small reinforcement wave: three enemies, or two during boss waves, appear to the left and right of the wreck in the road, with red and blue rings and an “ALARM · REINFORCEMENTS” banner. They count toward the section and must be defeated.
+
+At most two such squads can arrive per section, separated by 14 seconds. No reinforcements arrive after the section is cleared or between sections. Lamps go out with sparks and glass, leaving a bent pole. Benches splinter into boards on the sidewalk. Props within reach occasionally drop loot, with the chance depending on difficulty.
+
+### Visible damage stages
+
+After each of their three nonfatal hits, cars show more cracks, soot, and smoke. After the second hit, the bumper hangs loose; at the final stage, the hood opens and the cabin sits crooked. Streetlamp glass cracks, the light dims and flickers, and benches splinter, tilt slightly, and release dust. Damage stages remain visible until the prop breaks.
+
+### Weapons
+
+Weapons use ammunition or durability and are picked up with the punch button, `J` or Player 2's `,`:
+
+- Pistol.
+- Rifle with penetrating shots.
+- Bazooka with area damage.
+- Baseball Bat.
+- Brass Knuckles.
+- Kusarigama.
+
+Each weapon lies in the street as its own model with a name label. Once collected, it is visibly held in the player's hand. Hold `J` to fire automatic repeated shots from firearms, complete with muzzle flashes, tracers, and camera recoil. The muzzle flash originates at the barrel.
+
+### Grabbing and throwing: detailed mechanics
+
+`G`, or Player 2's `;`, grabs the nearest enemy. Within 2.4 units, both hands grab the enemy directly by the collar. Farther away, up to 12.5 units, the visible chain pulls the enemy in. A target ring and a “G · GRAB” label mark the target.
+
+While held, the enemy hangs in front of the player, cannot attack, and is dragged along at walking speed. Turning with `A`/`D` moves the enemy with the grip. After 2.6 seconds, the enemy breaks free.
+
+`J`, or Player 2's `,`, throws the enemy: 34 damage on release, an arcing flight that hits other enemies for 22 damage and also hits props, and a small shockwave on landing for 12 damage.
+
+### One donkey per map
+
+A donkey waits at the beginning of every map round, with an “E / ' · RIDE” sign. Press `E`, or Player 2's `'`, to mount and move much faster. Hold `Shift` to gallop.
+
+While mounted, `Space`, or Player 2's `Enter`, triggers a hop. The donkey tucks its legs, jumps, and remains steerable in midair. If already moving, it jumps forward a little. Landing throws up dust and briefly shakes the camera.
+
+Mounted combat uses the donkey's own attacks:
+
+| Action | Default keys | Effect |
+|---|---|---|
+| Front Kick | P1 `J`, P2 `,` | Both front legs strike: 18 damage, short range, fast attack; gains 6 energy |
+| Spinning Kick | P1 `K`, P2 `.` | The hindquarters swing around, hitting enemies behind the rider too: 24 damage in a 2.9-unit radius; gains 9 energy |
+| Superkick | P1 `L`, P2 `/`, with a full meter | Both hind legs strike together toward the target: 46 damage, a wide hit area, strong launch, damage to props, two hoof impacts, and a “SUPERKICK” banner; empties the meter |
+
+If the meter is not full, the special button does nothing. Weapons, the Ottoman Slap, and the chain are inactive while mounted. Any hit on the rider knocks them off, and the donkey gallops away in the opposite direction for the rest of that map.
+
+Dismount voluntarily with `E` to leave the donkey standing so it can be mounted again.
+
+### Music and sound
+
+Each district has its own synthesized track, including its scale, tempo, and bass line. Boss fights use a faster minor-key track. Music is generated live in the browser; there are no audio files.
+
+## Architecture
+
+| File | Contents |
 |---|---|
-| `index.html` | HUD, Startmenü, Online-Panel, komplettes CSS |
-| `game.js` | Three.js-Szene, Figuren-Fabrik, Kampf, Wellen, Items, Netcode, Menü |
-| `content.js` | Daten: Distrikte, Gegner, Bosse, Waffen, Items, 30 Wellen, Musik-Sequencer |
-| `server.js` | statischer Server + WebSocket-Relay (ohne Abhängigkeiten) |
-| `vendor/three.module.js` | Three.js r160 (MIT) |
+| `index.html` | HUD, start menu, online panel, and all CSS |
+| `game.js` | Three.js scene, character factory, combat, waves, items, networking, and menu |
+| `content.js` | District, enemy, boss, weapon, and item data; 30 waves; music sequencer |
+| `server.js` | Dependency-free static server and WebSocket relay |
+| `vendor/three.module.js` | Three.js r160, MIT license |
+| `web/` | This fork's static web build and Supabase multiplayer transport |
+| `.github/workflows/pages.yml` | This fork's GitHub Pages build and deployment workflow |
 
-`window.__voxel` ist ein Entwicklungs-Handle (Spieler, Gegner, `step()`, `startWave()`,
-`give()`, Net-Status), das beim Debuggen hilft.
+`window.__voxel` is a development handle exposing players, enemies, `step()`, `startWave()`, `give()`, and network status to help with debugging.
 
-## Grenzen
+## Limitations
 
-* Online-Koop ist Host-authoritativ und für zwei Spieler gedacht; der Gast interpoliert die
-  Host-Positionen (~10 Snapshots/s), es gibt keine Vorhersage und keine Lobby-Liste.
-  Der Esel wird als einzelner Snapshot mit Position, Zustand, Trittzeiten (Superkick,
-  Front-, Drehtritt) und Hüpfhöhe
-  übertragen; die Drehung von Superkick und Drehtritt leiten beide Seiten aus der
-  jeweiligen Trittzeit ab.
-  Auf- und Absteigen läuft über die normale Aktionsnachricht des Gasts.
-* Die Schlagposen der Gegner sind eine gemeinsame prozedurale Kurve (Ausholen/Durchziehen);
-  die Typen unterscheiden sich über Waffe, Farbe und Tempo, nicht über eigene Animationen.
-  Bosse teilen Schaden nur über den Slam und den normalen Schlag aus.
-* Kein Gamepad, keine Persistenz, keine Continues — nur Respawn nach 6 s im Koop.
-* Die Distrikte sind prozedural gebaute Varianten derselben Straße (eigenes Wahrzeichen,
-  Farben, Requisiten) — keine 10 handmodellierten Level.
-* Der Esel ist pro Map auf einen Versuch ausgelegt: nach einem Sturz ist er weg. Das
-  Reiten wurde solo und im lokalen Koop getestet, nicht mit zwei echten Online-Clients.
-* Musik und Sounds sind synthetisch; es gibt keinen Soundtrack als Datei.
+- Online co-op is host-authoritative and designed for two players. The guest interpolates host positions at roughly 10 snapshots per second. There is no prediction or lobby list. The donkey is transmitted as a single snapshot containing position, state, kick timing for the Superkick, Front Kick, and Spinning Kick, and hop height. Both clients derive Superkick and Spinning Kick rotation from the corresponding attack time. Mounting and dismounting use the guest's normal action message.
+- The upstream limitations section describes enemy attack poses as a shared procedural windup/follow-through curve, with types distinguished by weapon, color, and speed rather than separate animations. It also states that bosses deal damage only through their slam and normal attack. This older description is retained here, although the Distinct Attack Styles section above describes type-specific attack curves.
+- No gamepad support, persistence, or continues; the upstream summary describes only the six-second co-op respawn. See the detailed lives and revival systems above.
+- Districts are procedurally built variations of the same street, with their own landmarks, colors, and props—not 10 individually modeled levels.
+- The donkey is designed for one attempt per map: after being knocked off, it is gone. Upstream reports that riding was tested in solo and local co-op, but not with two real online clients.
+- Music and sound effects are synthesized; no soundtrack file is included.
+
+Documentation consistency note: the upstream Solo summary says a knockout means Game Over, while its detailed lives section describes losing a life and respawning. Both descriptions are retained rather than treating this translation as a gameplay change or a new verification of behavior.
