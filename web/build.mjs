@@ -52,7 +52,7 @@ if (!index.includes(MODULE_TAG)) {
 }
 index = index.replace(MODULE_TAG, [
   '<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>',
-  '<script src="./net.js"></script>',
+  '<script src="./net.js?v=3"></script>',
   MODULE_TAG,
 ].join('\n'));
 await writeFile(path.join(out, 'index.html'), index);
