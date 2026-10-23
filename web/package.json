@@ -1,7 +1,0 @@
-{
-  "name": "voxelrage-web",
-  "private": true,
-  "type": "module",
-  "scripts": { "build": "node build.mjs" },
-  "dependencies": { "@supabase/supabase-js": "2.49.8", "esbuild": "0.25.0" }
-}

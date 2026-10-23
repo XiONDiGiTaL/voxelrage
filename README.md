@@ -3,6 +3,18 @@
 **▶ Play in the browser: [xiondigital.net/voxelrage](https://xiondigital.net/voxelrage/)**
 
 This is the web-hosting fork of [player529/Jannitschar](https://github.com/player529/Jannitschar).
+Pushing to `main` builds the static web edition and deploys it to GitHub Pages
+(`.github/workflows/pages.yml`), so the live page is always the build from the
+tip of `main` — same setup as Leap Buddies and KankaKombat. Sync this fork with
+upstream to pick up new game versions.
+
+**Online on the web build:** GitHub Pages can't run the game's Node WebSocket
+relay, so `web/net.js` swaps the `/ws` socket for a Supabase Realtime broadcast
+transport built exactly like Leap Buddies' (public anon key only, isolated
+`voxelrage-v1-` rooms, nothing stored): 4-letter room codes, host-authoritative, two players — the host tab
+stays open and runs the simulation. Solo and local co-op need no network at
+all. From a local checkout, `node server.js` remains the original way to play
+online on your own network. Details in `web/README.md`.
 
 ---
 
