@@ -120,7 +120,19 @@
     channel.on('presence', { event: 'sync' }, function () {
       var st = channel.presenceState();
       var guestPresent = false;
-      Object.keys(st).forEach(function (k) { if (k.indexOf('guest-') === 0) guestPresent = true; });
+      var extraGuest = false;
+      Object.keys(st).forEach(function (k) {
+        if (k.indexOf('guest-') === 0) {
+          guestPresent = true;
+          if (guestGid && k.slice(6) !== guestGid) extraGuest = true;
+        }
+      });
+      /* An unseated guest is in the room: re-announce the lock.
+       * Presence is state, not a one-shot message, so this reaches
+       * late joiners even if the original lock broadcast was missed
+       * (broadcasts are ephemeral — e.g. while this tab was in the
+       * background). sendLock is hoisted; it is defined below. */
+      if (extraGuest) sendLock();
       if (guestPresent && !guestKey) { guestKey = 'seen'; dbg('host: guest present (presence)'); cbs.onGuest && cbs.onGuest(); }
       if (!guestPresent && guestKey) { guestKey = null; guestGid = null; dbg('host: guest left'); cbs.onClose && cbs.onClose(); }
     });

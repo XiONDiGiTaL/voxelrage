@@ -61,7 +61,7 @@ if (!index.includes(MODULE_TAG)) {
 }
 index = index.replace(MODULE_TAG, [
   '<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>',
-  '<script src="./net.js?v=4"></script>',
+  '<script src="./net.js?v=5"></script>',
   '<script src="./i18n.js?v=1"></script>',
   /* The game module is versioned too: unlike net.js it is patched on
    * every build, and an unversioned URL let a test browser pair a
