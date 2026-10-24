@@ -111,13 +111,13 @@ index = index.replace(MODULE_TAG, [
   '<script src="./net.js?v=6"></script>',
   '<script src="./i18n.js?v=2"></script>',
   '<script src="./gamepad.js?v=1"></script>',
-  '<script src="./ui.js?v=1"></script>',
+  '<script src="./ui.js?v=2"></script>',
   /* The game module is versioned too: unlike net.js it is patched on
    * every build, and an unversioned URL let a test browser pair a
    * fresh index/net.js with a stale game.js from an earlier deploy
    * (the mix presented exactly like a transport failure). Leap
    * Buddies versions every script for the same reason. */
-  '<script type="module" src="./game.js?v=5"></script>',
+  '<script type="module" src="./game.js?v=6"></script>',
 ].join('\n'));
 await writeFile(path.join(out, 'index.html'), index);
 
