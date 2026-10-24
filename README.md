@@ -22,21 +22,27 @@ The game itself is [player529](https://github.com/player529/Jannitschar)'s work 
 - **Live connection state.** The lobby and pause menu show whether the room is open, who has joined, and whether the relay is reconnecting.
 - **Graceful exits.** If the host leaves mid-run, the guest gets a clear message and a one-click return to the menu instead of a frozen street.
 - **Plug-and-play controllers.** Standard-mapping gamepads work as soon as they are connected, with a beat-'em-up button layout.
-- **3D control configuration.** A compact voxel gamepad with a D-pad, separated ABXY buttons and two sticks, and a 75 % voxel keyboard with a player-two arrow cluster. Both are clickable and show the current bindings; pick an action and press a button or key to remap it.
+- **Control layout diagrams.** A glowing outline gamepad and a full 75 % keyboard, both bound to the live key map: every bound key names its action, player one in gold and player two in cyan. Click a key or button in the controls window to remap it.
+- **A tabbed How to Play popup.** Keyboard, controller and game-rule tabs in one scrollable window, with voxel keycaps, a controller diagram and the food and weapon pickups as voxel sprites.
 - **Language switch in the menus.** DE | EN sits in the main menu and in the pause menu, and the whole interface follows — the same easy switch Leap Buddies uses.
-- **A real pause menu.** Resume, restart, controls, guide, sound, language and leave, drawn in the game's own voxel/noir style.
-- **A How to Play guide.** Keycaps drawn as voxel keys for both players, with the food and weapon pickups shown as voxel sprites next to their values.
+- **A real pause menu.** Resume, restart, controls, guide, display filter, sound, language and leave, in the same gel-and-glass skin as the rest of the interface.
+- **Display filters.** A vignette slider plus CRT, watercolour and cinematic toggles, saved locally and reachable from the main menu and the pause menu.
+- **A 1638 skin.** Cinzel headings, gel buttons with a glass sheen, rounded panels, Ottoman corner ornaments and a thin gold hairline — same colours as before, modernised.
+- **A period street.** Covered ox carts with striped canvas in place of cars, market stalls, clay amphorae, sandstone fountain posts, fig baskets and lantern-lit wooden posts, on cobblestone instead of painted asphalt.
 - **A voxel HUD.** A portrait rendered from the character's own head mesh, a pixel heart and an ECG health trace that colours, slows and flattens as health drops — plus a special meter that glows at full charge.
 - **Sound controls and a menu theme.** A muted/volume pair in the menu and pause menu drives the looped menu track and the in-game soundtrack.
 
 ## Latest revision
 
-This pass rebuilt the parts of the interface that still looked hand-drawn:
+This pass rebuilt the interface around the game's own setting instead of generic dark-mode panels:
 
-- **HUD portraits are exact sprite renders.** The game's own head group — geometry, hat, band, eyes and moustache — is cloned into a small offscreen scene and rendered once per palette, then cached as an image. The card now shows the same face that walks the street.
-- **The 3D controller was rebuilt.** A compact rounded body with a clean D-pad, four separated face buttons (A / B / X / Y), two analog sticks with accent rings, shoulders and triggers. Face buttons are bound to the actions, so picking Punch and pressing the green button still works.
-- **The 3D keyboard was rebuilt.** Chunky keycaps on a two-tone deck, a player-two arrow cluster, a bottom modifier row with both Shift keys, status LEDs and unlit key labels that stay readable from any angle.
-- **The guide, pause menu, HUD and sound row are captured below** so the README shows the current build instead of an older menu.
+- **The guide is a real popup.** A scrollable window with three tabs — keyboard, controller and game rules — replacing the wall of prose that used to sit in the menu's controls card. It opens from the main menu, the pause menu and the controls window.
+- **The keyboard is drawn, not listed.** A complete board with function row, both Shifts, arrows and a player-two cluster; bound keys light gold or cyan and carry the action name on the cap. The controller is a matching outline pad with glowing edges, labelled face buttons, sticks, shoulders and a centre Start/Back pair.
+- **The interface has a 1638 skin.** A custom voxel wordmark — blocky Bungee letters with a hard extruded side, gold VOXEL and ember RAGE over a diamond ornament — plus gel buttons with a glass highlight, rounded glass cards, Ottoman corner ornaments, Cinzel section headings over Manrope, and hairline gold rules. Colours, layout and wording stay the same; only the finish changed.
+- **Display filters are new.** Vignette, CRT, watercolour and cinematic, with a live slider and three toggles, persisted in `localStorage` and available before and during a run.
+- **The street belongs to 1638.** Cars became covered ox carts (still destructible, still triggering the watch alarm and its reinforcement wave), rubbish bins became amphorae, the dumpster became a market stall, the hydrant a sandstone water post, the traffic cone a fig basket, and the street lamps wooden posts with iron lanterns. Lane paint, the zebra crossing and the manhole cover gave way to cobblestone.
+- **The HUD bars now match.** Health keeps its pixel heart; the special meter gained a voxel star in the same 15 px slot, the same 186 px length, the same rounded shell and a live number on the right, so both rows read as one system.
+- **HUD portraits, the pause menu and sound controls** are unchanged in behaviour and captured again below.
 
 ## Screenshots
 
@@ -49,9 +55,11 @@ Captured from the running game, not mock-ups.
 | ![Start menu](screenshots/menu.png) | ![In-game HUD](screenshots/hud.png) |
 | Start menu with language and sound controls | HUD: sprite portrait, heart, ECG health and special meter |
 | ![How to Play](screenshots/how-to-play.png) | ![Pause menu](screenshots/pause-menu.png) |
-| How to Play with voxel keycaps and item sprites | Pause menu with sound, guide and language |
-| ![Controller configuration](screenshots/controls-controller.png) | ![Keyboard configuration](screenshots/controls-keyboard.png) |
-| 3D controller configuration | 3D keyboard configuration |
+| How to Play: game rules, keycaps and item sprites | Pause menu with sound, guide, display and language |
+| ![Keyboard guide](screenshots/controls-keyboard.png) | ![Controller guide](screenshots/controls-controller.png) |
+| Keyboard diagram with both players' keys | Controller diagram with the beat-'em-up layout |
+| ![Display filters](screenshots/display-filters.png) | ![1638 street](screenshots/street-1638.png) |
+| Display filters: vignette, CRT, watercolour, cinematic | Covered carts, market stalls and lanterns on cobblestone |
 
 ### Combat
 
@@ -61,8 +69,8 @@ Captured from the running game, not mock-ups.
 | Street combat | Boss encounter |
 | ![Ottoman Slap](screenshots/voxel-rage-special.png) | ![Online co-op](screenshots/online-koop.png) |
 | The Ottoman Slap special | Online co-op |
-| ![Donkey riding](screenshots/donkey-final2.png) | ![Voxel Rage](screenshots/voxel-rage-menu-final.png) |
-| Riding a donkey | Earlier menu capture |
+| ![Donkey riding](screenshots/donkey-final2.png) | ![The 1638 street](screenshots/street-1638.png) |
+| Riding a donkey | Covered carts and lanterns on the 1638 street |
 
 More images live in [screenshots/](screenshots/).
 
@@ -151,16 +159,26 @@ The pad translates into the game's own key bindings, so remapping a key also rem
 
 ### How to play
 
-The start menu has a **How to play** button — the same idea as Leap Buddies' field guide. It opens a two-column guide: movement, combat, grab and throw, the donkey, food and weapons. Every action shows the live key binding for both players as voxel keycaps (gold P1, cyan P2), and each pickup shows a small voxel sprite next to its effect. The guide follows remaps and the selected language, and it is reachable from the pause menu too.
+The start menu has a **How to play** button — the same idea as Leap Buddies' field guide. It opens a scrollable popup with three tabs:
 
-### Remapping in 3D
+- **Keyboard** — the full board, with every bound key lit gold (P1) or cyan (P2) and carrying its action name, plus a legend for movement and combat.
+- **Controller** — the same layout as an outline pad: face buttons, D-pad, sticks, shoulders and Start/Back, each labelled with its action.
+- **The game** — movement, combos, grab and throw, the donkey, food and weapons, with voxel sprites next to every pickup.
+
+Every binding in the popup is live, so it follows a remap and the selected language. The guide is reachable from the main menu, the pause menu and the controls window.
+
+### Remapping
 
 Open **Set up controls** in the start menu, or **Controls** in the pause menu. The window has two tabs:
 
-- **Controller** — a compact voxel gamepad with a D-pad, two sticks and four face buttons labelled A / B / X / Y. Pick an action on the right, then press a button on your pad, or click the 3D button directly. Drag the model to turn it.
-- **Keyboard** — a voxel keyboard with every key lit in gold (P1) or cyan (P2) when it is bound. Pick a player and an action, then press the key or click the 3D key.
+- **Controller** — a compact outline gamepad with a D-pad, two sticks, four face buttons labelled A / B / X / Y and both shoulders. Pick an action on the right, then press a button on your pad, or click the drawn button directly.
+- **Keyboard** — a full keyboard whose keys light in gold (P1) or cyan (P2) when bound. Pick a player and an action, then press the key or click the keycap.
 
 Bindings swap instead of duplicating, so no key is ever assigned twice. Pad layout is stored under `voxelrage-pad-v1`; keyboard bindings under `voxel-rage-bindings-v1`. Both are local to the browser.
+
+### Display filters
+
+**Display** in the main menu or the pause menu opens a small panel with a vignette slider and three toggles: CRT scanlines, a watercolour grain and a cinematic grade with letterbox bars. Settings apply immediately, also mid-run, and are stored under `voxel-rage-fx-v1`.
 
 ## Pause menu and language
 
@@ -168,8 +186,9 @@ Bindings swap instead of duplicating, so no key is ever assigned twice. Pad layo
 
 - **Resume** — continue.
 - **Restart** — reset the run.
-- **Controls** — open the 3D control configuration.
+- **Controls** — open the control configuration.
 - **How to play** — open the guide.
+- **Display** — vignette slider and the CRT, watercolour and cinematic filters.
 - **Leave** — end the session and return to the menu.
 - **Sound** — a speaker toggle and a volume slider under the buttons.
 - **Language** — the same DE | EN switch as the main menu.
@@ -241,7 +260,7 @@ Node 20+, no dependencies. The build:
 | `web/net.js` | Supabase room transport, invite links, connection status |
 | `web/i18n.js` | DE/EN DOM translation and the menu language switches |
 | `web/gamepad.js` | Controller polling, default beat-'em-up map, rebinding |
-| `web/ui.js` | Pause menu, guide, HUD, 3D control configuration, sound, lobby extras |
+| `web/ui.js` | Pause menu, guide, HUD, control diagrams, display filters, sound, lobby extras |
 | `web/assets/menu-theme.mp3` | Main menu theme |
 | `web/build.mjs` | Build and patch pipeline |
 | `.github/workflows/pages.yml` | GitHub Pages build and deployment |
@@ -254,7 +273,7 @@ Node 20+, no dependencies. The build:
 - A room holds one host and one guest. There is no lobby list or matchmaking beyond sharing a code or link.
 - Districts are procedural variations of one street with distinct palettes, landmarks and props, not ten hand-modelled levels.
 - The donkey is a single attempt per map; once the rider is knocked off it runs away.
-- The 3D control views need WebGL. If it is unavailable the rest of the game still runs; the 2D key lists stay usable.
+- The control diagrams are SVG, so they need no WebGL and stay readable on every device.
 - Music and effects are synthesized in real time, so the mix depends on the browser; the menu theme is a bundled audio file and may need one click before the browser allows playback.
 - The HUD reads the local simulation state, so in online co-op the guest's health card mirrors the host's snapshots.
 

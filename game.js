@@ -174,14 +174,15 @@ function buildStreet() {
     world.add(curb);
   }
 
-  // Fahrbahnmarkierungen
-  for (let x = XMIN - 10; x < XMAX + 20; x += 3.4) {
-    wbox(x, 0.005, 3.5, 1.6, 0.02, 0.16, 0x585273, { cast: false });
-    wbox(x, 0.005, -3.5, 1.6, 0.02, 0.16, 0x585273, { cast: false });
+  // Kopfsteinpflaster: Fugen statt Fahrbahnmarkierungen.
+  for (let x = XMIN - 12; x < XMAX + 20; x += 2.1) {
+    for (let z = -4.4; z <= 4.4; z += 2.1) {
+      wbox(x + rndRange(-0.1, 0.1), 0.006, z + rndRange(-0.1, 0.1),
+        1.85, 0.012, 1.85, 0x4b445e, { cast: false, receive: false });
+    }
   }
-  // Zebrastreifen
-  for (let i = 0; i < 8; i++) {
-    wbox(5.2, 0.008, -3.6 + i * 1.05, 2.6, 0.02, 0.5, 0x6b6588, { cast: false });
+  for (let x = XMIN - 12; x < XMAX + 20; x += 1.4) {
+    wbox(x, 0.008, 0, 0.07, 0.014, 8.8, 0x2f2a3d, { cast: false, receive: false });
   }
 
   // Pfützen, die das Neonlicht spiegeln
@@ -203,8 +204,11 @@ function buildStreet() {
       { cast: false, receive: false });
   }
 
-  // Gullideckel
-  wbox(-2.5, 0.01, 1.2, 1.1, 0.02, 1.1, 0x1b1928, { cast: false });
+  // Ausgetretene Steine und Sandspuren
+  for (let i = 0; i < 26; i++) {
+    wbox(XMIN + rndRange(0, LEN - 4), 0.012, rndRange(-3.9, 3.9),
+      rndRange(0.3, 0.9), 0.012, rndRange(0.3, 0.9), 0x6a6080, { cast: false, receive: false });
+  }
 
   // Häuserzeile (Rückseite)
   const buildings = [];
@@ -415,10 +419,13 @@ function addBenchDamage(d) {
 function lamp(x) {
   const z = -5.4;
   const meshes = [
-    wbox(x, 2.4, z, 0.16, 4.8, 0.16, 0x2f2b42),
-    wbox(x, 4.85, z + 0.55, 0.16, 0.16, 1.2, 0x2f2b42),
-    wbox(x, 4.72, z + 1.15, 0.7, 0.22, 0.34, 0xffd08a, { glow: true }),
-    wbox(x, 0.45, z, 0.5, 0.2, 0.5, 0x3b3654),
+    wbox(x, 2.4, z, 0.18, 4.8, 0.18, 0x4a3524),
+    wbox(x, 4.85, z + 0.55, 0.14, 0.14, 1.2, 0x2b2a33),
+    wbox(x, 4.55, z + 1.15, 0.5, 0.06, 0.5, 0x2b2a33),
+    wbox(x, 4.72, z + 1.15, 0.62, 0.3, 0.62, 0xffcf8a, { glow: true }),
+    wbox(x, 4.92, z + 1.15, 0.7, 0.1, 0.7, 0x2b2a33),
+    wbox(x, 0.95, z, 0.26, 0.1, 0.26, 0x2b2a33),
+    wbox(x, 0.45, z, 0.46, 0.18, 0.46, 0x3b2a1c),
   ];
   const l = new THREE.PointLight(0xffb066, 7, 9, 2);
   l.position.set(x, 4.6, z + 1.1);
@@ -431,11 +438,14 @@ function lamp(x) {
 }
 
 function trashCan(x, z) {
+  // Tongefaess statt Muelleimer: Amphore mit zwei Henkeln.
   registerProp('trash', x, z, [
-    wbox(x, 0.62, z, 0.66, 1.0, 0.66, 0x3f4a5a),
-    wbox(x, 1.18, z, 0.78, 0.14, 0.78, 0x55637a),
-    wbox(x, 0.95, z, 0.72, 0.1, 0.72, 0x2b3340),
-  ], { hp: 1, halfW: 0.4, halfD: 0.4, y: 0.7, colors: [0x3f4a5a, 0x55637a, 0x9fb0c8] });
+    wbox(x, 0.48, z, 0.62, 0.96, 0.62, 0xa9613c),
+    wbox(x, 0.98, z, 0.36, 0.28, 0.36, 0x8e4e2f),
+    wbox(x, 1.14, z, 0.44, 0.08, 0.44, 0xc07850),
+    wbox(x - 0.4, 0.86, z, 0.12, 0.3, 0.16, 0x8e4e2f),
+    wbox(x + 0.4, 0.86, z, 0.12, 0.3, 0.16, 0x8e4e2f),
+  ], { hp: 1, halfW: 0.45, halfD: 0.42, y: 0.65, colors: [0xa9613c, 0xc07850, 0x8e4e2f] });
 }
 
 function barrel(x, z) {
@@ -454,36 +464,46 @@ function crate(x, z, s = 1) {
 }
 
 function dumpster(x, z) {
+  // Marktstand mit gestreiftem Sonnensegel.
   registerProp('dumpster', x, z, [
-    wbox(x, 0.8, z, 2.2, 1.4, 1.1, 0x2f6b4a),
-    wbox(x, 1.55, z, 2.3, 0.16, 1.2, 0x3d8a5f),
-    wbox(x - 0.7, 0.25, z, 0.3, 0.5, 0.3, 0x1d1b28),
-    wbox(x + 0.7, 0.25, z, 0.3, 0.5, 0.3, 0x1d1b28),
-  ], { hp: 2, halfW: 1.15, halfD: 0.65, y: 0.8, colors: [0x2f6b4a, 0x3d8a5f, 0x9fb0c8] });
+    wbox(x, 0.75, z, 2.1, 0.14, 1.0, 0x7a5a35),
+    wbox(x - 0.92, 1.2, z - 0.4, 0.12, 1.7, 0.12, 0x5c4025),
+    wbox(x + 0.92, 1.2, z - 0.4, 0.12, 1.7, 0.12, 0x5c4025),
+    wbox(x, 2.0, z - 0.1, 2.3, 0.08, 1.5, 0xb8443c),
+    wbox(x - 0.7, 2.05, z - 0.1, 0.3, 0.08, 1.5, 0xe0c9a4),
+    wbox(x + 0.7, 2.05, z - 0.1, 0.3, 0.08, 1.5, 0xe0c9a4),
+    wbox(x - 0.55, 0.92, z, 0.5, 0.24, 0.4, 0xc07850),
+    wbox(x + 0.4, 0.92, z, 0.6, 0.18, 0.46, 0x9a6134),
+  ], { hp: 2, halfW: 1.15, halfD: 0.65, y: 0.9, colors: [0x7a5a35, 0xb8443c, 0xe0c9a4] });
 }
 
 function hydrant(x, z) {
+  // Brunnenpfosten aus Sandstein mit Wasserstrahl.
   registerProp('hydrant', x, z, [
-    wbox(x, 0.35, z, 0.34, 0.7, 0.34, 0xc0392b),
-    wbox(x, 0.78, z, 0.44, 0.16, 0.44, 0xe04a37),
-    wbox(x, 0.5, z, 0.6, 0.12, 0.22, 0xa32d20),
-  ], { hp: 1, halfW: 0.4, halfD: 0.35, y: 0.45, colors: [0xc0392b, 0xe04a37, 0x9fe8ff] });
+    wbox(x, 0.4, z, 0.42, 0.8, 0.42, 0xb9a27e),
+    wbox(x, 0.86, z, 0.3, 0.18, 0.3, 0xa68f6c),
+    wbox(x, 0.62, z + 0.3, 0.14, 0.16, 0.3, 0x8fa9a0),
+    wbox(x, 1.0, z, 0.6, 0.1, 0.6, 0xcbb794),
+    wbox(x, 0.08, z, 0.9, 0.14, 0.9, 0x6f6478),
+  ], { hp: 1, halfW: 0.45, halfD: 0.4, y: 0.5, colors: [0xb9a27e, 0xcbb794, 0x8fa9a0] });
 }
 
 function cone(x, z) {
+  // Geflochtener Korb mit Feigen.
   registerProp('cone', x, z, [
-    wbox(x, 0.28, z, 0.4, 0.4, 0.4, 0xff7a1a),
-    wbox(x, 0.6, z, 0.26, 0.34, 0.26, 0xff7a1a),
-    wbox(x, 0.42, z, 0.42, 0.1, 0.42, 0xf2f2f2, { cast: false }),
-  ], { hp: 1, halfW: 0.35, halfD: 0.35, y: 0.35, colors: [0xff7a1a, 0xf2f2f2, 0xd9a04a] });
+    wbox(x, 0.26, z, 0.56, 0.42, 0.56, 0xb08b4f),
+    wbox(x, 0.5, z, 0.62, 0.08, 0.62, 0x8a6a36),
+    wbox(x, 0.6, z, 0.3, 0.16, 0.3, 0x7a3f3a, { cast: false }),
+    wbox(x, 0.05, z, 0.36, 0.1, 0.36, 0x6b5029),
+  ], { hp: 1, halfW: 0.35, halfD: 0.35, y: 0.3, colors: [0xb08b4f, 0x8a6a36, 0x7a3f3a] });
 }
 
 function bench(x, z) {
   const d = registerProp('bench', x, z, [
     wbox(x, 0.55, z, 2.0, 0.14, 0.7, 0x7a5a35),
     wbox(x, 0.9, z - 0.32, 2.0, 0.5, 0.12, 0x7a5a35),
-    wbox(x - 0.8, 0.28, z, 0.16, 0.5, 0.6, 0x3b3654),
-    wbox(x + 0.8, 0.28, z, 0.16, 0.5, 0.6, 0x3b3654),
+    wbox(x - 0.8, 0.28, z, 0.18, 0.5, 0.6, 0x4a3524),
+    wbox(x + 0.8, 0.28, z, 0.18, 0.5, 0.6, 0x4a3524),
   ], { hp: 2, halfW: 1.05, halfD: 0.5, y: 0.65, colors: [0x7a5a35, 0x4f3a22, 0xd9a04a] });
   addBenchDamage(d);
 }
@@ -695,16 +715,28 @@ function car(x, z, col) {
   const block = { x1: x - 2.4, x2: x + 2.4, z1: z - 1.1, z2: z + 1.1 };
   carBlocks.push(block);
   const meshes = [
-    wbox(x, 0.55, z, 4.4, 0.6, 1.9, col),
-    wbox(x - 0.3, 1.15, z, 2.2, 0.6, 1.75, col),
-    wbox(x - 0.3, 1.15, z + 0.9, 2.0, 0.42, 0.06, 0x9fd8ff, { glow: false }),
-    wbox(x - 0.3, 1.15, z - 0.9, 2.0, 0.42, 0.06, 0x9fd8ff),
-    wbox(x + 2.2, 0.55, z + 0.6, 0.2, 0.24, 0.3, 0xffe9b0, { glow: true, cast: false }),
-    wbox(x + 2.2, 0.55, z - 0.6, 0.2, 0.24, 0.3, 0xffe9b0, { glow: true, cast: false }),
+    wbox(x, 0.55, z, 4.4, 0.6, 1.9, 0x6b4a2b),
+    wbox(x, 0.9, z + 0.96, 4.3, 0.16, 0.12, 0x7d5631),
+    wbox(x, 0.9, z - 0.96, 4.3, 0.16, 0.12, 0x7d5631),
+    // Segeltuch: gestreifte Bahnen, gerundetes Dach
+    wbox(x - 0.3, 1.15, z, 2.4, 0.5, 1.8, 0xe0d3b4),
+    wbox(x - 1.0, 1.15, z + 0.93, 0.5, 0.5, 0.04, col),
+    wbox(x - 0.3, 1.15, z + 0.93, 0.5, 0.5, 0.04, col),
+    wbox(x + 0.4, 1.15, z + 0.93, 0.5, 0.5, 0.04, col),
+    wbox(x - 1.0, 1.15, z - 0.93, 0.5, 0.5, 0.04, col),
+    wbox(x - 0.3, 1.15, z - 0.93, 0.5, 0.5, 0.04, col),
+    wbox(x + 0.4, 1.15, z - 0.93, 0.5, 0.5, 0.04, col),
+    wbox(x - 0.3, 1.44, z, 2.5, 0.12, 1.9, 0xe8dcc0),
+    wbox(x - 0.3, 1.53, z, 2.0, 0.1, 1.4, 0xe0d3b4),
+    wbox(x - 0.3, 1.6, z, 1.4, 0.08, 0.9, 0xf0e6cf),
+    wbox(x + 2.6, 0.5, z + 0.55, 1.7, 0.12, 0.12, 0x5a3f24),
+    wbox(x + 2.6, 0.5, z - 0.55, 1.7, 0.12, 0.12, 0x5a3f24),
+    wbox(x + 1.95, 1.02, z + 0.58, 0.16, 0.2, 0.16, 0xffc46a, { glow: true }),
   ];
   for (const dx of [-1.5, 1.4]) {
-    for (const dz of [-0.85, 0.85]) {
-      meshes.push(wbox(x + dx, 0.28, z + dz, 0.7, 0.56, 0.28, 0x14121c));
+    for (const dz of [-0.92, 0.92]) {
+      meshes.push(wbox(x + dx, 0.5, z + dz, 0.86, 0.86, 0.16, 0x3b2a1c));
+      meshes.push(wbox(x + dx, 0.5, z + dz, 0.4, 0.4, 0.18, 0x8a6a3f));
     }
   }
   const d = registerProp('car', x, z, meshes, {
@@ -722,7 +754,7 @@ function blockedByCar(x, z, r = 0.45) {
 
 function buildCars() {
   carBlocks.length = 0;
-  const cols = [0x2f5d8c, 0x7a2f4a, 0x2f7a5a, 0x5a4a2f, 0x4a2f5a];
+  const cols = [0xb8443c, 0x2f5d8c, 0x2f7a5a, 0x9a7a33, 0x6b3f7a];
   let i = 0;
   for (let x = -4.5; x < XMAX - 6; x += 24) {
     car(x + rndRange(-2, 2), -4.0, cols[i % cols.length]);
@@ -759,13 +791,13 @@ function startCarAlarm(x, z) {
     world.add(beam);
     return [lamp, beam];
   };
-  const red = build(0xff2f6d, 0.34);
-  const blue = build(0x6be0ff, -0.34);
+  const red = build(0xffa64a, 0.34);
+  const blue = build(0xff4a3a, -0.34);
   const beams = [red[1], blue[1]];
   carAlarms.push({ x, z, t: CAR_ALARM_TIME, pulse: 0.62, red, blue, beams, lights: red.concat(blue) });
-  ring(x, 0.2, z, 0xff2f6d, 5.4, 0.5);
+  ring(x, 0.2, z, 0xffa64a, 5.4, 0.5);
   sfx.alarm();
-  toast('AUTO-ALARM');
+  toast('KARREN-ALARM');
   // Verstärkung: nur mitten in einem laufenden Abschnitt, nicht nach dem
   // Räumen und nicht während der Sieges-/Distriktsequenz.
   const alive = enemies.filter((e) => !e.dead).length;

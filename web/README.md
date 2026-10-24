@@ -88,7 +88,7 @@ is stored under `voxelrage-pad-v1`; `VoxelPad.beginCapture()` lets the
 config UI grab the next button, and `setActive(false)` suspends gameplay
 input while the controls window is open.
 
-### ui.js — pause menu, 3D control config, lobby
+### ui.js — pause menu, control diagrams, lobby
 
 Added at runtime so the game files stay untouched:
 
@@ -96,18 +96,26 @@ Added at runtime so the game files stay untouched:
   Language, Leave. The original overlay text is hidden; `#pause` still
   drives the game's own pause state, and a wrapper stops our buttons
   from reaching the game's click-to-resume handler.
-- **Controls window** with two 3D scenes rendered through the vendored
-  Three.js. The controller is a compact rounded voxel pad with a D-pad,
-  two sticks, four lettered face buttons (A / B / X / Y), shoulders and
-  triggers. The keyboard is a 75 % board with chunky keycaps, a
-  player-two arrow cluster and a modifier row. Both are raycast-clickable;
-  a click or a real button/key press assigns the action, swapping with any
-  existing binding instead of duplicating it. Key labels use unlit
-  materials so they stay legible at every angle.
-- **How to play** opens from either menu: a two-column guide whose
-  bindings are rendered as voxel keycaps (gold P1, cyan P2) that follow
-  remaps, and whose pickups (döner, ayran, gold, each weapon) are drawn
-  as small voxel sprites beside their values.
+- **Controls window** with two SVG diagrams, no WebGL needed. The
+  controller is a glowing outline pad with a D-pad, two sticks, four
+  lettered face buttons (A / B / X / Y) and both shoulders; the keyboard
+  is a full board with function row, arrows and a modifier row. Bound
+  keys and buttons light gold (P1) or cyan (P2) and carry their action
+  name, and both diagrams are clickable: `data-code` / `data-pad` are
+  read on click, so a click or a real button/key press assigns the action,
+  swapping with any existing binding instead of duplicating it.
+- **How to play** is a scrollable popup with keyboard, controller and
+  game-rule tabs. Bindings follow remaps, and pickups (döner, ayran, gold,
+  each weapon) are drawn as small voxel sprites beside their values. The
+  sheet uses CSS columns so the sections pack without gaps.
+- **Display filters** (`#vrFx`): a vignette slider plus CRT, watercolour
+  and cinematic toggles, stored under `voxel-rage-fx-v1`. The layer sits
+  under the HUD (`#hud` z-index 3) and the game's own `#vignette` is
+  hidden so the shader is not doubled.
+- **1638 skin** appended to the `CSS` array: Cinzel/Manrope, gel buttons,
+  glass cards, Ottoman corner ornaments (`.vr-corners`) and rounded
+  panels. The street props themselves live in `game.js` (covered carts,
+  market stalls, amphorae, fountain posts, lanterns, cobblestone).
 - **HUD upgrade** applied at runtime: the portrait is a one-off render of
   the game's own head group (`fig.head.clone(true)`) into a small
   offscreen WebGL scene, cached per palette, so the card shows the exact
@@ -128,8 +136,8 @@ Added at runtime so the game files stay untouched:
   "host left" dialog with a one-click return to the menu instead of a
   frozen world.
 
-The 3D views need WebGL; if it is unavailable the window reports it and
-the rest of the game is unaffected.
+The diagrams are plain SVG and need no WebGL, so the controls window also
+works on machines where the game canvas falls back.
 
 ## Verifying before calling it done
 
@@ -139,10 +147,12 @@ the rest of the game is unaffected.
 3. Language switch in the menu and the pause menu translates the whole
    interface; the choice survives a reload.
 4. Pause menu opens with Esc/P, resumes, restarts, toggles sound and
-   leaves; the controls and guide windows open from both menus.
+   leaves; the controls, guide and display windows open from both menus.
+   Display filters apply live, survive a reload, and leave the HUD above
+   the vignette layer.
 5. The menu theme plays after a click, stops when a run starts, and the
    volume slider changes it; mute survives a reload.
-6. Both 3D tabs render; a keyboard and a pad binding can be changed and
+6. Both tabs render; a keyboard and a pad binding can be changed and
    survive a reload; a bound key is wiped to defaults again.
 7. A simulated pad punches, moves and pauses the game.
 8. The health bar's trace slows and turns red at low HP; the special

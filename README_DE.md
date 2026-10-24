@@ -22,21 +22,27 @@ Das Spiel selbst stammt von [player529](https://github.com/player529/Jannitschar
 - **Live-Verbindungsstatus.** Lobby und Pause-Menü zeigen, ob der Raum offen ist, wer beigetreten ist und ob der Relay gerade neu verbindet.
 - **Saubere Ausstiege.** Verlässt der Host mitten im Lauf den Raum, bekommt der Gast eine klare Meldung und mit einem Klick den Weg zurück ins Menü statt einer eingefrorenen Straße.
 - **Plug-and-play-Controller.** Gamepads mit Standardbelegung funktionieren sofort nach dem Anschließen, mit einer für Beat-'em-ups passenden Tastenbelegung.
-- **3D-Steuerungskonfiguration.** Ein kompaktes Voxel-Gamepad mit Steuerkreuz, getrennten A/B/X/Y-Tasten und zwei Sticks sowie eine 75-%-Voxel-Tastatur mit Pfeilblock für Spieler 2. Beide sind anklickbar und zeigen die aktuelle Belegung; Aktion wählen und Taste drücken, fertig.
+- **Steuerungsdiagramme.** Ein leuchtendes Controller-Outline und eine vollständige 75-%-Tastatur, beide an die aktuelle Belegung gebunden: Jede belegte Taste trägt ihre Aktion, Spieler 1 in Gold und Spieler 2 in Türkis. Im Steuerungsfenster lassen sich Tasten und Buttons direkt anklicken und neu belegen.
+- **Eine Anleitung mit Reitern.** Tastatur, Controller und Spielprinzip in einem scrollbaren Fenster, mit Voxel-Keycaps, Controller-Diagramm und Döner und Waffen als Voxel-Sprites.
 - **Sprachumschaltung in den Menüs.** DE | EN sitzt im Hauptmenü und im Pause-Menü, und die gesamte Oberfläche folgt — derselbe einfache Wechsel wie in Leap Buddies.
-- **Ein echtes Pause-Menü.** Weiter, Neustart, Steuerung, Anleitung, Sound, Sprache und Verlassen, im Voxel-Noir-Stil des Spiels.
-- **Eine Spielanleitung.** Tasten als Voxel-Keycaps für beide Spieler, dazu Döner und Waffen als Voxel-Sprites neben ihren Werten.
+- **Ein echtes Pause-Menü.** Weiter, Neustart, Steuerung, Anleitung, Bildschirmfilter, Sound, Sprache und Verlassen, im selben Glas-und-Gel-Stil wie der Rest der Oberfläche.
+- **Bildschirmfilter.** Ein Vignette-Regler plus Schalter für CRT, Aquarell und Kinofilm, lokal gespeichert und aus Haupt- und Pause-Menü erreichbar.
+- **Ein 1638-Skin.** Cinzel-Überschriften, Gel-Buttons mit Glasglanz, abgerundete Karten, osmanische Eck-Ornamente und goldene Haarlinien — dieselben Farben, nur modernisiert.
+- **Eine Straße für 1638.** Planwagen mit gestreiftem Segeltuch statt Autos, Marktstände, Tonamphoren, Sandsteinbrunnen, Feigenkörbe und Holzpfosten mit Laternen, auf Kopfsteinpflaster statt bemaltern Asphalt.
 - **Ein Voxel-HUD.** Ein Porträt, gerendert aus dem Kopfmodell der Figur selbst, dazu Pixelherz und EKG-Puls im Lebensbalken, der mit sinkender Gesundheit Farbe und Tempo wechselt und Richtung Flatline abflacht — plus ein Spezialbalken, der bei voller Ladung leuchtet.
 - **Soundregler und ein Menüthema.** Ein Toggle mit Lautstärkeregler in Menü und Pause-Menü steuert den Menü-Track und den Soundtrack im Spiel.
 
 ## Letzte Revision
 
-Diese Runde hat die Teile der Oberfläche neu gebaut, die noch gezeichnet wirkten:
+Diese Runde hat die Oberfläche um die Zeit des Spiels herum neu gebaut, statt um generische Dark-Mode-Flächen:
 
-- **HUD-Porträts sind exakte Sprite-Renderings.** Die Kopfgruppe des Spiels — Geometrie, Hut, Band, Augen und Schnurrbart — wird in eine kleine Offscreen-Szene geklont und einmal pro Palette gerendert, dann als Bild zwischengespeichert. Die Karte zeigt jetzt dasselbe Gesicht, das auf der Straße läuft.
-- **Der 3D-Controller wurde neu gebaut.** Ein kompakter, runder Körper mit sauberem Steuerkreuz, vier getrennten Gesichtstasten (A / B / X / Y), zwei Analogsticks mit Akzentringen, Schultertasten und Triggern. Die Gesichtstasten sind mit den Aktionen verbunden: Aktion wählen und die grüne Taste drücken funktioniert weiterhin.
-- **Die 3D-Tastatur wurde neu gebaut.** Dicke Keycaps auf einem zweifarbigen Deck, ein Pfeilblock für Spieler 2, eine untere Modifier-Reihe mit beiden Shift-Tasten, Status-LEDs und unbeleuchtete Tastenbeschriftungen, die aus jedem Winkel lesbar bleiben.
-- **Anleitung, Pause-Menü, HUD und Soundleiste sind unten abgebildet**, damit das README den aktuellen Stand zeigt statt eines älteren Menüs.
+- **Die Anleitung ist ein echtes Popup.** Ein scrollbares Fenster mit drei Reitern — Tastatur, Controller und Spielprinzip — statt der Textwand in der Steuerungskarte des Menüs. Sie öffnet aus Hauptmenü, Pause-Menü und Steuerungsfenster.
+- **Die Tastatur ist gezeichnet, nicht aufgelistet.** Ein vollständiges Brett mit Funktionsreihe, beiden Shift-Tasten, Pfeilen und Spieler-2-Block; belegte Tasten leuchten gold oder türkis und tragen den Aktionsnamen. Der Controller ist ein passendes Outline-Pad mit leuchtender Kante, beschrifteten Gesichtstasten, Sticks, Schultern und Start/Back in der Mitte.
+- **Die Oberfläche hat ein 1638-Skin.** Ein eigenes Voxel-Wortzeichen — blockige Bungee-Buchstaben mit hart extrudierter Seite, VOXEL in Gold und RAGE in Glutrot über einem Rautenornament — dazu Gel-Buttons mit Glashighlight, abgerundete Glaskarten, osmanische Eck-Ornamente, Cinzel für Abschnittstitel über Manrope und goldene Haarlinien. Farben, Aufbau und Texte bleiben; nur die Ausführung ist neu.
+- **Bildschirmfilter sind neu.** Vignette, CRT, Aquarell und Kinofilm, mit Live-Regler und drei Schaltern, in `localStorage` gespeichert und vor wie während eines Laufs erreichbar.
+- **Die Straße gehört zu 1638.** Autos wurden zu Planwagen (weiterhin zerstörbar, weiterhin mit Wachalarm und Verstärkungswelle), Mülleimer zu Amphoren, der Container zum Marktstand, der Hydrant zum Sandsteinbrunnen, der Verkehrskegel zum Feigenkorb, die Straßenlaternen zu Holzpfosten mit Eisenlaternen. Fahrbahnmarkierungen, Zebrastreifen und Kanaldeckel wichen Kopfsteinpflaster.
+- **Die HUD-Balken passen jetzt zusammen.** Leben behält das Pixelherz; der Spezialbalken bekam einen Voxel-Stern im selben 15-px-Slot, dieselbe Länge von 186 px, dieselbe abgerundete Hülle und eine live mitlaufende Zahl rechts, sodass beide Zeilen als ein System lesen.
+- **HUD-Porträts, Pause-Menü und Soundregler** verhalten sich unverändert und sind unten neu aufgenommen.
 
 ## Screenshots
 
@@ -49,9 +55,11 @@ Aufgenommen aus dem laufenden Spiel, keine Mock-ups.
 | ![Startmenü](screenshots/menu.png) | ![HUD im Spiel](screenshots/hud.png) |
 | Startmenü mit Sprach- und Soundreglern | HUD: Sprite-Porträt, Herz, EKG-Leben und Spezialbalken |
 | ![Spielanleitung](screenshots/how-to-play.png) | ![Pause-Menü](screenshots/pause-menu.png) |
-| Spielanleitung mit Voxel-Keycaps und Item-Sprites | Pause-Menü mit Sound, Anleitung und Sprache |
-| ![Controller-Konfiguration](screenshots/controls-controller.png) | ![Tastatur-Konfiguration](screenshots/controls-keyboard.png) |
-| 3D-Controller-Konfiguration | 3D-Tastatur-Konfiguration |
+| Spielanleitung: Spielprinzip, Keycaps und Item-Sprites | Pause-Menü mit Sound, Anleitung, Bildschirm und Sprache |
+| ![Tastatur-Anleitung](screenshots/controls-keyboard.png) | ![Controller-Anleitung](screenshots/controls-controller.png) |
+| Tastatur-Diagramm mit beiden Spielern | Controller-Diagramm im Beat-'em-up-Layout |
+| ![Bildschirmfilter](screenshots/display-filters.png) | ![Straße 1638](screenshots/street-1638.png) |
+| Bildschirmfilter: Vignette, CRT, Aquarell, Kinofilm | Planwagen, Marktstände und Laternen auf Kopfsteinpflaster |
 
 ### Kampf
 
@@ -151,16 +159,26 @@ Das Pad übersetzt in die Tastenbelegung des Spiels: Eine geänderte Taste ände
 
 ### Spielanleitung
 
-Im Startmenü sitzt eine **Spielanleitung** — dieselbe Idee wie der Feldführer in Leap Buddies. Sie öffnet eine zweispaltige Übersicht: Bewegung, Kampf, Greifen und Werfen, der Esel, Essen und Waffen. Jede Aktion zeigt die aktuelle Belegung beider Spieler als Voxel-Keycaps (Gold P1, Türkis P2), und jedes Pickup zeigt einen kleinen Voxel-Sprite neben seiner Wirkung. Die Anleitung folgt Umbelegungen und der gewählten Sprache und ist auch aus dem Pause-Menü erreichbar.
+Im Startmenü sitzt eine **Spielanleitung** — dieselbe Idee wie der Feldführer in Leap Buddies. Sie öffnet ein scrollbares Popup mit drei Reitern:
 
-### Belegen in 3D
+- **Tastatur** — das komplette Brett, jede belegte Taste gold (P1) oder türkis (P2) mit ihrem Aktionsnamen, dazu eine Legende für Bewegung und Kampf.
+- **Controller** — dasselbe Layout als Outline-Pad: Gesichtstasten, Steuerkreuz, Sticks, Schultern und Start/Back, jeweils mit Aktion beschriftet.
+- **Spielprinzip** — Bewegung, Kombos, Greifen und Werfen, der Esel, Essen und Waffen, mit Voxel-Sprites neben jedem Pickup.
+
+Jede Belegung im Popup ist live: Sie folgt Umbelegungen und der gewählten Sprache. Die Anleitung ist aus Hauptmenü, Pause-Menü und Steuerungsfenster erreichbar.
+
+### Belegen
 
 Öffne **Steuerung einrichten** im Startmenü oder **Steuerung** im Pause-Menü. Das Fenster hat zwei Reiter:
 
-- **Controller** — ein kompaktes Voxel-Gamepad mit Steuerkreuz, zwei Sticks und vier Gesichtstasten (A / B / X / Y). Wähle rechts eine Aktion und drücke dann eine Taste am Pad — oder klicke direkt auf den 3D-Button. Ziehen dreht das Modell.
-- **Tastatur** — eine Voxel-Tastatur, deren Tasten gold (P1) oder türkis (P2) leuchten, wenn sie belegt sind. Wähle Spieler und Aktion und drücke dann die Taste oder klicke auf die 3D-Taste.
+- **Controller** — ein kompaktes Outline-Gamepad mit Steuerkreuz, zwei Sticks, vier Gesichtstasten (A / B / X / Y) und beiden Schultern. Wähle rechts eine Aktion und drücke dann eine Taste am Pad — oder klicke direkt auf den gezeichneten Button.
+- **Tastatur** — eine vollständige Tastatur, deren Tasten gold (P1) oder türkis (P2) leuchten, wenn sie belegt sind. Wähle Spieler und Aktion und drücke dann die Taste oder klicke auf das Keycap.
 
 Belegungen werden getauscht statt doppelt vergeben, damit keine Taste zweimal existiert. Die Pad-Belegung liegt unter `voxelrage-pad-v1`, die Tastaturbelegung unter `voxel-rage-bindings-v1`. Beides gilt nur im jeweiligen Browser.
+
+### Bildschirmfilter
+
+**Bildschirm** im Hauptmenü oder Pause-Menü öffnet ein kleines Fenster mit Vignette-Regler und drei Schaltern: CRT-Zeilen, Aquarell-Korn und ein Kinofilm-Look mit Balken. Die Einstellungen wirken sofort, auch mitten im Lauf, und liegen unter `voxel-rage-fx-v1`.
 
 ## Pause-Menü und Sprache
 
@@ -168,7 +186,8 @@ Belegungen werden getauscht statt doppelt vergeben, damit keine Taste zweimal ex
 
 - **Weiterspielen** — weiter.
 - **Neustart** — Lauf zurücksetzen.
-- **Steuerung** — 3D-Steuerung öffnen.
+- **Steuerung** — Steuerungsfenster öffnen.
+- **Bildschirm** — Vignette sowie CRT-, Aquarell- und Kinofilm-Filter.
 - **Spielanleitung** — Anleitung öffnen.
 - **Verlassen** — Sitzung beenden und zurück ins Menü.
 - **Sound** — Lautsprecher-Toggle und Lautstärkeregler unter den Buttons.
@@ -241,7 +260,7 @@ Node 20+, keine Abhängigkeiten. Der Build:
 | `web/net.js` | Supabase-Raumtransport, Einladungslinks, Verbindungsstatus |
 | `web/i18n.js` | DE/EN-DOM-Übersetzung und die Sprachschalter in den Menüs |
 | `web/gamepad.js` | Controller-Abfrage, Beat-'em-up-Standardbelegung, Umbelegen |
-| `web/ui.js` | Pause-Menü, Anleitung, HUD, 3D-Steuerungskonfiguration, Sound, Lobby-Ergänzungen |
+| `web/ui.js` | Pause-Menü, Anleitung, HUD, Steuerungsdiagramme, Bildschirmfilter, Sound, Lobby-Ergänzungen |
 | `web/assets/menu-theme.mp3` | Menüthema |
 | `web/build.mjs` | Build- und Patch-Pipeline |
 | `.github/workflows/pages.yml` | GitHub-Pages-Build und Deployment |
@@ -254,7 +273,7 @@ Node 20+, keine Abhängigkeiten. Der Build:
 - Ein Raum fasst einen Host und einen Gast. Es gibt keine Lobby-Liste und kein Matchmaking über Code oder Link hinaus.
 - Distrikte sind prozedurale Variationen einer Straße mit eigenen Paletten, Landmarken und Requisiten, keine zehn von Hand modellierten Level.
 - Der Esel ist ein Versuch pro Map; sobald der Reiter heruntergeworfen wird, rennt er weg.
-- Die 3D-Steuerungsansichten brauchen WebGL. Ohne WebGL läuft der Rest des Spiels weiter; die 2D-Tastenlisten bleiben nutzbar.
+- Die Steuerungsdiagramme sind SVG, brauchen also kein WebGL und bleiben auf jedem Gerät lesbar.
 - Musik und Effekte werden in Echtzeit synthetisiert, der Mix hängt also vom Browser ab; das Menüthema ist eine mitgelieferte Audiodatei und braucht eventuell einen Klick, bevor der Browser sie abspielt.
 - Das HUD liest den lokalen Simulationszustand; im Online-Koop spiegelt die Gesundheitskarte des Gasts die Snapshots des Hosts.
 
