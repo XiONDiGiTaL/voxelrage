@@ -53,6 +53,7 @@
   var emitted = Object.create(null);   // key code -> bool (event already down)
   var connectedIndex = -1;
   var connectedId = '';
+  var lastActiveAt = 0;
 
   function loadMap() {
     var out = {};
@@ -174,9 +175,21 @@
   }
 
   /* ------------------------------ polling -------------------------------- */
+  function anyInput(pad) {
+    for (var b = 0; b < 16; b++) if (isDown(pad, b)) return true;
+    var a = axes(pad);
+    return Math.abs(a[0]) > DEADZONE || Math.abs(a[1]) > DEADZONE;
+  }
+  /* Wie lange ist die letzte echte Eingabe am Pad her? Wird beim Start eines
+   * lokalen Koop-Laufs gefragt, damit Spieler 2 die Tastatur übernehmen kann. */
+  function activityAge() {
+    return lastActiveAt ? (global.performance.now() - lastActiveAt) : Infinity;
+  }
+
   function tick() {
     var pad = activePad();
     if (pad) {
+      if (anyInput(pad)) lastActiveAt = global.performance.now();
       if (pad.index !== connectedIndex || pad.id !== connectedId) {
         connectedIndex = pad.index;
         connectedId = pad.id;
@@ -306,6 +319,7 @@
     cancelCapture: cancelCapture,
     onChange: onChange,
     setActive: setActive,
+    activityAge: activityAge,
     padName: padName,
     GAME_ACTIONS: GAME_ACTIONS.slice(),
     DEFAULT_MAP: (function () { var o = {}; for (var k in DEFAULT_MAP) o[k] = DEFAULT_MAP[k]; return o; })(),

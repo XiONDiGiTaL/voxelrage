@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>VOXEL RAGE — Janitscharen</title>
+<title>VOXEL RAGE · Janitscharen</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
@@ -171,7 +171,7 @@
   #stats .sub { font-size: 10px; letter-spacing: .2em; color: #9d92c4; margin-top: 3px; }
   #netStatus { font-size: 9.5px; letter-spacing: .18em; color: #7be3ff; margin-top: 5px; }
 
-  /* Fortschritt bis zum nächsten Extraleben – je Spieler eine eigene Zeile */
+  /* Fortschritt bis zum nächsten Extraleben · je Spieler eine eigene Zeile */
   #lifeNext, #lifeNext2 {
     margin-top: 4px; font-size: 9.5px; letter-spacing: .12em;
     color: #b3a9d6; white-space: nowrap;
@@ -396,7 +396,7 @@
         <div class="revive" id="p1Revive"><i></i></div>
         <div class="bar"><i id="hpFill"></i></div>
         <div class="bar meter" id="meterWrap"><i id="meterFill"></i></div>
-        <div id="specialHint">L — SCHELLE BEREIT</div>
+        <div id="specialHint">L · SCHELLE BEREIT</div>
         <div class="weapon" id="p1Weapon"></div>
       </div>
 
@@ -407,7 +407,7 @@
         <div class="revive" id="p2Revive"><i></i></div>
         <div class="bar"><i id="p2HpFill"></i></div>
         <div class="bar meter" id="p2MeterWrap"><i id="p2MeterFill"></i></div>
-        <div id="p2SpecialHint">/ — SCHELLE BEREIT</div>
+        <div id="p2SpecialHint">/ · SCHELLE BEREIT</div>
         <div class="weapon" id="p2Weapon"></div>
       </div>
     </div>
@@ -428,10 +428,10 @@
   </div>
 
   <div id="centerTop">
-    <div id="districtTag">— KONSTANTINOPEL —</div>
+    <div id="districtTag">KOSTANTINIYE</div>
     <div id="waveTag">RUNDE 1/10 · ABSCHNITT 1/3 · WELLE 1/30</div>
     <div id="diffTag">SCHWIERIGKEIT · NORMAL</div>
-    <div id="grappleHint">G — GRIFF BEREIT</div>
+    <div id="grappleHint">G · GRIFF BEREIT</div>
     <div id="bossWrap">
       <div id="bossName">BOSS</div>
       <div class="bar"><i id="bossFill"></i></div>
@@ -450,7 +450,7 @@
   <div id="msg"><div class="h" id="msgH"></div><div class="s" id="msgS"></div></div>
   <div id="pause">
     <div class="h">PAUSE</div>
-    <div class="s">ESC ODER P · WEITER</div>
+    <div class="s">ESC · WEITER</div>
     <div class="k">R NEU STARTEN · M MUSIK · KLICK ZUM FORTSETZEN</div>
   </div>
 </div>
@@ -463,25 +463,25 @@
     <div class="lede">
       Zehn Distrikte als Map-Runden: drei Abschnitte pro Straße, Tore, Boss am Ende.<br>
       Dreißig Wellen, zehn Bosse. Du bist Janitschar: Schlag, Kick, Sprungangriff, Rennen, Greifen und Werfen.<br>
-      Drei Leben pro Spieler, alle 2000 Punkte gibt es ein Extraleben dazu —<br>
-      der Fortschritt steht unter dem Punktestand.<br>
-      Im Koop gehst du bei 0 HP erst zu Boden: Bleib beim Partner, dann steht er wieder auf —<br>
+      Drei Leben pro Spieler, alle 2000 Punkte gibt es ein Extraleben dazu.<br>
+      Der Fortschritt steht unter dem Punktestand.<br>
+      Im Koop gehst du bei 0 HP erst zu Boden: Bleib beim Partner, dann steht er wieder auf,<br>
       ohne ein Leben zu verlieren. Allein am Boden kostet es nach 12 s ein Leben.<br>
-      In jeder Runde wartet ein Esel: aufsteigen, hüpfen und mit Fronttritt, Drehtritt<br>
-      oder – bei vollem Balken – dem Superkick austeilen —<br>
-      ein Treffer wirft dich vom Sattel, dann rennt der Esel weg.<br>
-      Jede Runde ist eine neue Straße — eigener Look, eigene Musik, eigener Boss.
+      In jeder Runde wartet ein Esel: aufsteigen, hüpfen, mit Fronttritt und Drehtritt zutreten<br>
+      und bei vollem Balken den Superkick austeilen.<br>
+      Ein Treffer wirft dich vom Sattel, dann rennt der Esel weg.<br>
+      Jede Runde ist eine neue Straße · eigener Look, eigene Musik, eigener Boss.
     </div>
 
     <div class="grid">
       <div class="card">
         <div class="h">Mannschaft</div>
         <div class="field">
-          <label>Spieler 1 — Name</label>
+          <label>Spieler 1 · Name</label>
           <input id="name1" type="text" maxlength="14" value="JANITSCHAR" autocomplete="off" spellcheck="false" />
         </div>
         <div class="field" id="name2Field">
-          <label>Spieler 2 — Name</label>
+          <label>Spieler 2 · Name</label>
           <input id="name2" type="text" maxlength="14" value="MURAD" autocomplete="off" spellcheck="false" />
         </div>
 
@@ -531,7 +531,7 @@
         </div>
         <div class="bindbar">
           <button class="btn" id="bindToggle" type="button">Tasten belegen</button>
-          <span class="bindmsg" id="bindMsg">Lokal gespeichert – vor dem Start frei änderbar.</span>
+          <span class="bindmsg" id="bindMsg">Lokal gespeichert · vor dem Start frei änderbar.</span>
         </div>
         <div id="bindPanel">
           <div class="bindcols">
@@ -548,7 +548,7 @@
           <b>Döner</b> +40 Leben · <b>Ayran</b> +15 · <b>Gold</b> +50 Punkte<br>
           <b>Pistole · Gewehr · Bazooka</b> (Munition) · <b>Baseballschläger ·<br>
           Schlagring · Kusarigama</b> (Haltbarkeit).<br>
-          Aufnehmen: zu Fuß mit der Schlag-Taste in Reichweite — nicht beim Laufen.<br>
+          Aufnehmen: zu Fuß mit der Schlag-Taste in Reichweite · nicht beim Laufen.<br>
           Die Waffe wird sichtbar in der Hand getragen; Schlag-Taste halten = Dauerfeuer
           mit Mündungsfeuer und Leuchtspur.
         </div>

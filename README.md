@@ -40,9 +40,10 @@ This pass rebuilt the wordmark, the controls and the meters:
 - **The wordmark is purple and gold again, and RAGE burns.** A blocky voxel slab with a hard stepped extrusion: VOXEL in a lit gold gradient with a wide ember halo, RAGE carrying a living fire gradient inside its own letters. The flame rises on a slow loop, an ember band flickers across the glyphs, and the only ornament is the Ottoman diamond-and-hairline rule underneath.
 - **The meters are one system.** Health and special now share a fixed three-column grid — icon, bar, number — so the heart and the new voxel flame, both 15 px, sit at the same x and both bars run the same 186 px at the same height. The flame replaces the old star and reads at 52 px.
 - **The gamepad is a real silhouette.** A wide shell with shoulders that cradle two slim triggers and two rounded bumpers (LT/LB, RT/RB), a raised bridge with the round home button, an asymmetric stick pair, a plus-shaped D-pad and a four-button diamond labelled with its action — one continuous gold hairline over a purple glass body, symmetric about its centre. Clicking any drawn element still binds it.
-- **Both players share one layout.** WASD *and* the arrow keys move, `Z` punch, `X` kick, `F` throw, `G` grab, `L` Ottoman Slap, `E` mount, `Space` jump, `Shift` run, `Esc` pause. The layout is the same for host, guest and player two, and the keyboard diagram lights the arrow cluster as the second movement axis.
+- **One layout per player, no crossfire.** Online, host and guest each play the full player-one layout on their own keyboard, and the guest's bindings travel to the host so the two never read each other's keys. Local co-op gets its own block for player two (`Numpad 8 4 6 2` or `8 4 6 2`, `O` `P`, `;` `[` `]` `'` `/` `\`) that never collides with player one. When player one picks up a controller, the keyboard passes to player two with the player-one layout. `Esc` pauses both players.
 - **Menus answer to Z and X.** `Z` confirms (start the battle, resume the pause) and `X` cancels out of any window, alongside `Esc`.
 - **Pause is shared, and says who did it.** In online co-op the round stops for both players and the pause panel names the side that paused it in small caps — including the case where you paused and your partner is waiting.
+- **The 1638 roster.** Byzantine line troops with plumed helmets and chainmail, Greek militia in blue coats and short fur caps, and bare-chested marauders in turbans now hold the street; the old janissary guard is gone. A rare treasurer in a black suit and a tall fur hat shows up once per district, loses his hat on the way down and always leaves gold.
 - **The HUD portrait is framed, not cropped.** The offscreen camera now leaves margin around the character's own head mesh, so the turban and the chin are both inside the 52 px frame.
 - **Small fixes.** The on-screen key strip is gone (the guide covers it), the weapon chip is smaller, and the special hint no longer collides with the centre banner.
 
@@ -73,6 +74,8 @@ Captured from the running game, not mock-ups.
 | The Ottoman Slap special | Online co-op |
 | ![Donkey riding](screenshots/donkey-final2.png) | ![The 1638 street](screenshots/street-1638.png) |
 | Riding a donkey | Covered carts and lanterns on the 1638 street |
+| ![Byzantine troops, Greek militia and marauders](screenshots/enemies-1638.png) | ![The rare treasurer](screenshots/enemy-treasurer.png) |
+| Byzantine line troops, Greek militia and turbaned marauders | The rare treasurer; his fur hat comes off and gold drops |
 
 More images live in [screenshots/](screenshots/).
 
@@ -127,7 +130,7 @@ Nightmare marks every third spawn as an elite (golden aura, shoulder plates, cro
 
 ### Keyboard (defaults)
 
-Both players use the same, comfortable layout — each on their own keyboard. In local co-op on a single keyboard, remap player two in the controls window.
+Player one — solo, online host, online guest, and player two in local co-op on two keyboards:
 
 | Action | Key |
 |---|---|
@@ -141,7 +144,23 @@ Both players use the same, comfortable layout — each on their own keyboard. In
 | Grab / chain | `G` |
 | Mount / dismount donkey | `E` |
 
-`Z` confirms and `X` cancels inside the menus; `Esc` or `P` pauses, `M` toggles music, `R` restarts. Bindings are stored locally and shared with the host in online co-op.
+`Z` confirms and `X` cancels inside the menus; `Esc` pauses, `M` toggles music, `R` restarts. Bindings are stored locally under `voxel-rage-bindings-v3`; in online co-op the guest's set is sent to the host when the room connects.
+
+Player two — local co-op on one keyboard — gets a block of its own, so nothing overlaps player one's keys:
+
+| Action | Key |
+|---|---|
+| Move | `Numpad 8` `Numpad 4` `Numpad 6` `Numpad 2`, or `8` `4` `6` `2` on a keyboard without a numpad |
+| Punch / use weapon / pick up | `O` |
+| Kick | `P` |
+| Ottoman Slap | `;` |
+| Throw (while grabbing) | `[` |
+| Grab / chain | `]` |
+| Mount / dismount donkey | `'` |
+| Run (hold) | `/` |
+| Jump / donkey hop | `\` |
+
+Player one can also play with a pad in local co-op: the game notices the controller at the start of the run (or the moment its first button is pressed) and hands the keyboard to player two with the player-one layout, so a shared keyboard still has a full second set. Everything is remappable in the controls window.
 
 ### Controller (defaults)
 
@@ -180,7 +199,7 @@ Open **Set up controls** in the start menu, or **Controls** in the pause menu. T
 - **Controller** — a compact outline gamepad with a D-pad, two sticks, four face buttons labelled A / B / X / Y, both bumpers and both triggers. Pick an action on the right, then press a button on your pad, or click the drawn button directly.
 - **Keyboard** — a full keyboard whose keys light gold when bound. Pick a player and an action, then press the key or click the keycap.
 
-Bindings swap instead of duplicating, so no key is ever assigned twice. Pad layout is stored under `voxelrage-pad-v1`; keyboard bindings under `voxel-rage-bindings-v2`. Both are local to the browser.
+Bindings swap instead of duplicating, so no key is ever assigned twice. Pad layout is stored under `voxelrage-pad-v1`; keyboard bindings under `voxel-rage-bindings-v3`. Both are local to the browser.
 
 ### Display filters
 
@@ -188,7 +207,7 @@ Bindings swap instead of duplicating, so no key is ever assigned twice. Pad layo
 
 ## Pause menu and language
 
-`Esc` or `P` freezes the simulation, the snapshots and the music, and opens the pause menu:
+`Esc` freezes the simulation, the snapshots and the music for both players, and opens the pause menu (the panel notes in small caps when the other side paused):
 
 - **Resume** — continue.
 - **Restart** — reset the run.
@@ -233,7 +252,7 @@ The choice is stored under `voxelrage-audio-v1` and restored on the next visit. 
 
 **Co-op survival.** At 0 HP a co-op player goes down instead of dying; stay close and the rescue bar revives them without losing a life. Solo at 0 HP loses a life immediately. Three lives each, an extra life every 2,000 personal points, separate score rows.
 
-**Enemies.** Ten types with their own windups, reach and behaviour: dash, block, shield, ranged, exploding, elite variants. Health bars appear over wounded enemies, and every hit shows a damage number.
+**Enemies.** The 1638 street is held by Byzantine troops in chainmail, plumed helmets and brass bands; Greek militia in blue coats and short fur caps; and bare-chested Kurdish marauders with turbans and sashes who go down in two hits. A rare treasurer in a black suit and a tall fur hat appears once per district and never as a boss: his hat flies off when he drops, and he always leaves gold behind. Rounding out the ten types are the dash, block, shield, ranged and exploding fighters with elite variants. Health bars appear over wounded enemies, and every hit shows a damage number.
 
 **Loot and destruction.** Döner, Ayran and Gold; pistol, rifle, bazooka, bat, knuckleduster and kusarigama. Cars, lamps, benches and props take staged damage; wrecked cars trigger alarms that distract enemies and call reinforcements.
 

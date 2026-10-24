@@ -1,5 +1,5 @@
 /* =========================================================================
-   CONTENT — Daten und Musik für VOXEL RAGE
+   CONTENT · Daten und Musik für VOXEL RAGE
    Reines Datenmodul (keine Three.js-Abhängigkeit), damit game.js es importieren
    kann, ohne dass sich beide Module gegenseitig brauchen.
    ========================================================================= */
@@ -8,7 +8,7 @@
 // Jeder Distrikt ist ein Map-Thema: Himmel, Nebel, Straßenfarbe, Fassaden, Neon.
 export const DISTRICTS = [
   {
-    key: 'istanbul', name: 'KONSTANTINOPEL', sub: 'STRASSE DER SCHMIEDE',
+    key: 'istanbul', name: 'KOSTANTINIYE', sub: 'STRASSE DER SCHMIEDE',
     sky: ['#160f22', '#4a2a4e', '#c25a3f'], fog: 0x3b2a52, road: 0x36304e,
     walk: 0x453d61, buildings: [0x40365c, 0x513a4a, 0x4d3f2f], neon: [0xff2f6d, 0xffd76e, 0x6be0ff],
     skyline: [0x2a2242, 0x302648], ground: 0x241f33, landmark: 'minarett',
@@ -109,9 +109,30 @@ export const ENEMIES = {
     hp: 46, speed: 3.8, reach: 1.6, dmg: 10, scale: 0.93, bulk: 0.9, score: 300, dash: true, attack: 'stab',
     pal: { skin: 0x8a5a3a, hair: 0x101018, shirt: 0x1a1a24, shirt2: 0x3a3a5a, pants: 0x12121a, shoe: 0x0a0a10 },
   },
-  janissary: {
-    hp: 110, speed: 2.2, reach: 1.9, dmg: 15, scale: 1.1, bulk: 1.15, score: 400, block: 0.4, attack: 'smash',
-    pal: { skin: 0xb98a63, hair: 0x1a1a1a, shirt: 0x2f5a4a, shirt2: 0xd9b45a, pants: 0x243a34, shoe: 0x141814 },
+  // Griechische Miliz: wattierter Rock, Stirnband, kein Helm. Zäher als die
+  // Marodeure, aber klar schwächer als die byzantinische Linie.
+  greek: {
+    hp: 104, speed: 2.4, reach: 1.85, dmg: 14, scale: 1.04, bulk: 1.1, score: 360, block: 0.3, attack: 'swing',
+    pal: { skin: 0xd0a078, hair: 0x2a1a12, shirt: 0x4a6a8a, shirt2: 0xd9c9a0, pants: 0x2a2a32, shoe: 0x14141a, band: 0x8a2b2f, mustache: 0x2a1a12 },
+  },
+  // Byzantinische Truppen sind die Linie der Gegenwehr: Kettenpanzer, Helm
+  // mit Wangenklappen und ein Messingband.
+  byzantin: {
+    hp: 84, speed: 2.3, reach: 1.8, dmg: 13, scale: 1.06, bulk: 1.14, score: 340, block: 0.25, attack: 'swing',
+    pal: { skin: 0xc08a5c, hair: 0x2a1a10, shirt: 0x7b8592, shirt2: 0xc9a24a, pants: 0x3a3d48, shoe: 0x1a1a22, helmet: 0x9aa6b4, band: 0x8a6a2a },
+  },
+  // Marodeure: barhäuptig, ohne Panzer, mit Turban und Schärpe. Sie fallen
+  // mit zwei Treffern und tauchen nur gelegentlich zwischen den Trupps auf.
+  marodeur: {
+    hp: 26, speed: 3.0, reach: 1.45, dmg: 5, scale: 0.9, bulk: 0.88, score: 80, attack: 'swing',
+    pal: { skin: 0xb9814f, hair: 0x2a1a12, shirt: 0xb9814f, shirt2: 0x8a5a34, pants: 0x6a5a44, shoe: 0x2a2018, turban: 0xe9e0c8, mustache: 0x2a1a12, scarf: 0xd9c9a0 },
+  },
+  // Schatzwächter: schwarzer Mantel, hohe Pelzmütze, schwer zu treffen und
+  // selten. Die Mütze fällt beim K.O., und er lässt immer Gold liegen.
+  schatzwaechter: {
+    hp: 130, speed: 2.15, reach: 1.75, dmg: 14, scale: 1.02, bulk: 1.04, score: 520, attack: 'smash',
+    pal: { skin: 0xc99a72, hair: 0x14141a, shirt: 0x1c1c22, shirt2: 0x32323c, pants: 0x16161c, shoe: 0x0a0a10, furhat: 0x211a14, mustache: 0x14141a, scarf: 0x3a3a46 },
+    hatOff: true, goldDrop: true, rare: true,
   },
 };
 
@@ -196,15 +217,15 @@ export const ITEMS = {
 // 30 Wellen, 10 Distrikte à 3 Wellen. Jede dritte Welle ist ein Boss.
 // Jede Welle bekommt einen neuen Seed -> neue Map-Geometrie.
 const WAVE_POOL = [
-  ['punk', 'punk'],
-  ['punk', 'runner', 'punk'],
-  ['punk', 'knife', 'runner'],
-  ['guard', 'punk', 'knife'],
-  ['gunner', 'punk', 'runner'],
-  ['bomber', 'guard', 'punk'],
+  ['byzantin', 'marodeur'],
+  ['byzantin', 'runner', 'marodeur'],
+  ['byzantin', 'knife', 'runner'],
+  ['guard', 'byzantin', 'knife'],
+  ['gunner', 'byzantin', 'runner'],
+  ['bomber', 'guard', 'marodeur'],
   ['shield', 'knife', 'runner'],
-  ['ninja', 'gunner', 'punk'],
-  ['janissary', 'guard', 'brute'],
+  ['ninja', 'gunner', 'byzantin'],
+  ['greek', 'guard', 'brute'],
   ['ninja', 'shield', 'bomber'],
 ];
 

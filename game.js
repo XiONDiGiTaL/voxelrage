@@ -2,7 +2,7 @@ import * as THREE from './vendor/three.module.js';
 import { DISTRICTS, ENEMIES, BOSSES, WEAPONS, ITEMS, WAVES, makeTrack, makeBossTrack, createMusic } from './content.js';
 
 /* =========================================================================
-   VOXEL RAGE — Block 7
+   VOXEL RAGE · Block 7
    Ein Beat-'em-up-Prototyp, bei dem ALLES aus Würfeln besteht:
    Figuren, Straße, Häuser, Requisiten, Partikel.
    Figuren werden prozedural animiert (keine Sprite-Sheets).
@@ -66,7 +66,7 @@ const rim = new THREE.DirectionalLight(0x5ad9ff, 0.8);
 rim.position.set(-12, 7, -10);
 scene.add(rim);
 
-// Himmel als Farbverlauf hinter der Häuserzeile — pro Distrikt neu gebaut
+// Himmel als Farbverlauf hinter der Häuserzeile · pro Distrikt neu gebaut
 function buildSky() {
   const cv = document.createElement('canvas');
   cv.width = 16; cv.height = 256;
@@ -765,7 +765,7 @@ function buildCars() {
 /* ----------------------------- Auto-Alarm -------------------------------- */
 // Ein zerstörtes Auto heult kurz auf: rot/blaue Warnlichter am Wrack, ein
 // Zweiklang alle ~0,6 s und eine Bodenwelle. Gegner in der Nähe lassen für die
-// Dauer ihren Spieler stehen und laufen zum Wrack – Bosse bleiben unbeirrt.
+// Dauer ihren Spieler stehen und laufen zum Wrack · Bosse bleiben unbeirrt.
 const CAR_ALARM_TIME = 3.6;
 const CAR_ALARM_RADIUS = 13;
 const CAR_ALARM_LURE_SPEED = 1.45;
@@ -1106,7 +1106,7 @@ function buildDistrict(districtIndex, waveIndex) {
   builtDistrict = districtIndex;
   wavePending = false;
   if (districtTag) {
-    districtTag.textContent = `${String(districtIndex + 1).padStart(2, '0')} · ${THEME.name} — ${THEME.sub}`;
+    districtTag.textContent = `${String(districtIndex + 1).padStart(2, '0')} · ${THEME.name} · ${THEME.sub}`;
   }
 }
 
@@ -1174,6 +1174,38 @@ function makeFigure(p, bulk = 1) {
     vox(head, 0, 6.2, -0.3, 4.7, 0.7, 4.7, p.hatBand || 0xc9a24a);
     vox(head, 0, 10.5, -0.3, 3.4, 1.2, 3.4, hatCol);
   }
+  // Byzantinischer Helm: Kuppel, Nasenschutz, Wangenklappen, Messingband.
+  if (p.helmet) {
+    vox(head, 0, 5.9, 0, 5.6, 2.6, 5.6, p.helmet);
+    vox(head, 0, 7.3, 0, 4.4, 1.1, 4.4, p.helmet);
+    vox(head, 0, 5.1, 2.55, 1.0, 2.8, 0.7, p.helmet);
+    vox(head, 2.5, 4.5, 0.7, 0.7, 2.2, 3.6, p.helmet);
+    vox(head, -2.5, 4.5, 0.7, 0.7, 2.2, 3.6, p.helmet);
+    if (p.band) vox(head, 0, 5.15, 0, 5.7, 0.5, 5.7, p.band);
+  }
+  // Turban: gewickelter Stoff um den oberen Kopf, nicht als hoher Zylinder.
+  if (p.turban) {
+    vox(head, 0, 3.55, 0, 5.5, 1.1, 5.5, p.turban);
+    vox(head, 0, 4.35, 0, 5.75, 1.5, 5.75, p.turban);
+    vox(head, 0, 5.35, 0, 5.2, 1.1, 5.2, p.turban);
+    vox(head, 0, 6.15, 0, 4.0, 0.75, 4.0, p.turban);
+    vox(head, 0, 4.15, 0, 5.9, 0.42, 5.9, p.turbanBand || 0x8a6a3a);
+    vox(head, 0, 6.5, 0, 1.0, 0.55, 1.0, p.turbanBand || 0x8a6a3a);
+  }
+  // Hohe Pelzmütze als eigener Knoten, damit sie beim K.O. wegfliegen kann.
+  let hat = null;
+  if (p.furhat) {
+    hat = new THREE.Group();
+    hat.position.set(0, 5.0, 0);
+    head.add(hat);
+    vox(hat, 0, 0.15, 0, 6.0, 0.55, 6.0, 0x0d0b0a);
+    vox(hat, 0, 2.2, 0, 4.9, 3.6, 4.9, p.furhat);
+    vox(hat, 0, 4.65, 0, 5.6, 1.5, 5.6, p.furhat);
+    vox(hat, 0, 5.5, 0, 4.4, 0.6, 4.4, 0x0d0b0a);
+  }
+  if (p.scarf) {
+    vox(torso, 0, 2.6, 2.65 * s, 8.5 * s, 1.3, 0.5, p.scarf);
+  }
   if (p.cape) {
     vox(body, 0, 11.0, -3.1, 8.6 * s, 8.0, 0.5, p.cape);
   }
@@ -1212,13 +1244,13 @@ function makeFigure(p, bulk = 1) {
     vox(l, 0, -7.25, 0.5, 3.9, 1.5, 5.2, p.shoe);
   }
 
-  return { root, body, torso, head, armL, armR, legL, legR };
+  return { root, body, torso, head, armL, armR, legL, legR, hat };
 }
 
 /* --------------------------- Esel (Reittier) ----------------------------- */
 // Ein Esel pro Map. Er steht am Anfang der Straße und kann bestiegen werden:
 // Z = Fronttritt, X = Drehtritt, L = Superkick bei vollem Balken. Wird der Reiter
-// getroffen, stürzt er ab und der Esel galoppiert davon – pro Map kein zweiter Versuch.
+// getroffen, stürzt er ab und der Esel galoppiert davon · pro Map kein zweiter Versuch.
 const DONKEY_RIDE_Y = 0.72;
 // Superkick (L, nur bei vollem Balken)
 const DONKEY_KICK_DUR = 0.95;
@@ -1688,7 +1720,7 @@ function donkeyFrontStrike(p) {
 }
 
 // Drehtritt (K): Der Esel dreht die Hinterhand einmal herum und schlägt mit
-// einem Hinterhuf seitlich aus – trifft dadurch auch Gegner hinter dem Reiter.
+// einem Hinterhuf seitlich aus · trifft dadurch auch Gegner hinter dem Reiter.
 function donkeySpinKick(p) {
   if (!p.mount || p.state !== 'ride') return;
   p.state = 'donkeyspin';
@@ -1813,21 +1845,20 @@ function updateRiding(p, dt) {
     p.state = 'idle';
     return;
   }
-  const c = CONTROLS[p.id];
-  const kb = p.remote ? (p.netKeys || {}) : keys;
+  const c = controlsFor(p);
   // Auch in der Luft bleibt der Esel lenkbar.
   const canMove = p.state === 'ride' || p.state === 'ridehop';
   let mx = 0, mz = 0;
   if (canMove) {
-    if (moveHeld(kb, 'left', c.left)) mx -= 1;
-    if (moveHeld(kb, 'right', c.right)) mx += 1;
-    if (moveHeld(kb, 'up', c.up)) mz -= 1;
-    if (moveHeld(kb, 'down', c.down)) mz += 1;
+    if (moveHeld(p, 'left', c.left)) mx -= 1;
+    if (moveHeld(p, 'right', c.right)) mx += 1;
+    if (moveHeld(p, 'up', c.up)) mz -= 1;
+    if (moveHeld(p, 'down', c.down)) mz += 1;
   }
   p.moving = canMove && (mx !== 0 || mz !== 0);
   if (p.moving) {
     p.runT += dt;
-    p.sprint = !!(kb[c.sprint] || p.runT > 1.0);
+    p.sprint = !!(kbDown(p, c.sprint) || p.runT > 1.0);
     const speed = p.sprint ? 12.0 : 7.8;
     const len = Math.hypot(mx, mz) || 1;
     const nx = clamp(p.pos.x + (mx / len) * speed * dt, XMIN, maxWalkX());
@@ -1977,7 +2008,7 @@ const sfx = {
 };
 
 /* ============================== ENTITIES ================================= */
-// Janitschar in Kaftan, Kuşak und Börk — osmanischer Look statt Neon-Punk.
+// Janitschar in Kaftan, Kuşak und Börk · osmanischer Look statt Neon-Punk.
 const PLAYER_PAL = {
   skin: 0xd9a574, hair: 0x2a1a12, shirt: 0x2f5a4a, shirt2: 0xd9b45a,
   pants: 0x8a2f36, shoe: 0xd9b45a, band: 0xd9b45a, sash: 0xc0392b,
@@ -1997,7 +2028,7 @@ const ALL_TYPES = { ...ENEMIES, ...BOSSES };
 // Dauer, Trefferzeit, Reichweite, Schaden, Rückstoß und Hitstop; die letzte
 // Stufe ist der Finisher. Die Kette läuft nur mit freien Händen weiter.
 // Jede Stufe ist außerdem eine eigene Technik mit eigener Silhouette:
-// Links – Rechts – Uppercut – Kopfnuss – Schelle bzw. Lowkick – Highkick –
+// Links · Rechts · Uppercut · Kopfnuss · Schelle bzw. Lowkick · Highkick –
 // Roundhouse. Reichweite und Rückstoß folgen der Bewegung (Kopfnuss kurz,
 // Roundhouse weit).
 const MOVES = {
@@ -2026,6 +2057,7 @@ const MOVES = {
 };
 
 const enemies = [];
+const fallenHats = [];
 const donkeys = [];
 let mapDonkey = null;
 let hitstop = 0, shake = 0, shakeT = 0;
@@ -2071,7 +2103,7 @@ function setRoster(count) {
   updateScores();
 }
 
-// Tastenbelegung: beide Spieler nutzen dieselbe, bequeme Belegung — jeder
+// Tastenbelegung: beide Spieler nutzen dieselbe, bequeme Belegung · jeder
 // spielt an seiner eigenen Tastatur (online) bzw. kann sie im Menü umlegen.
 // WASD und die Pfeiltasten bewegen immer zusammen, egal was belegt ist.
 const DEFAULT_CONTROLS = [
@@ -2080,19 +2112,45 @@ const DEFAULT_CONTROLS = [
     special: 'KeyL', jump: 'Space', sprint: 'ShiftLeft', grapple: 'KeyG', mount: 'KeyE',
     throw: 'KeyF',
   },
+  // Lokaler Koop an einer Tastatur: eigener Block rechts und Ziffernblock,
+  // damit nichts mit Spieler 1 kollidiert. Ohne Ziffernblock lässt sich das
+  // im Steuerungsfenster frei umlegen.
   {
-    left: 'KeyA', right: 'KeyD', up: 'KeyW', down: 'KeyS', punch: 'KeyZ', kick: 'KeyX',
-    special: 'KeyL', jump: 'Space', sprint: 'ShiftLeft', grapple: 'KeyG', mount: 'KeyE',
-    throw: 'KeyF',
+    left: 'Numpad4', right: 'Numpad6', up: 'Numpad8', down: 'Numpad2',
+    punch: 'KeyO', kick: 'KeyP', special: 'Semicolon', throw: 'BracketLeft',
+    grapple: 'BracketRight', mount: 'Quote', jump: 'Backslash', sprint: 'Slash',
   },
 ];
-// Zweite Bewegungsachse: die Pfeiltasten laufen immer mit.
-const MOVE_ALIASES = { left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp', down: 'ArrowDown' };
-function moveHeld(kb, action, code) {
-  if (!kb) return false;
-  if (code && kb[code]) return true;
-  const alt = MOVE_ALIASES[action];
-  return !!(alt && kb[alt]);
+// Zweite Bewegungsachse: Bei Spieler 1 laufen die Pfeiltasten immer mit. Spieler 2
+// bekommt für Tastaturen ohne Ziffernblock zusätzlich 4/8/6/2 aus der Zahlenreihe
+// (Pfeiltasten bleiben Spieler 1, I/J/K/L kollidieren mit dessen Schlag).
+const MOVE_ALIASES = [
+  { left: ['ArrowLeft'], right: ['ArrowRight'], up: ['ArrowUp'], down: ['ArrowDown'] },
+  { left: ['Digit4'], right: ['Digit6'], up: ['Digit8'], down: ['Digit2'] },
+];
+// Lokaler Koop mit Controller in Spieler 1s Hand: dann gehört die Tastatur
+// Spieler 2, der Spieler 1s Belegung übernimmt. Wird beim Start erkannt und
+// bleibt für den Lauf stabil, damit niemand mitten im Kampf die Tasten verliert.
+let padMode = false;
+function localCoop() {
+  return mode === 'coop' && players.length > 1;
+}
+function aliasFor(p) {
+  if (p.id === 0) return padMode ? {} : MOVE_ALIASES[0];
+  return padMode ? MOVE_ALIASES[0] : MOVE_ALIASES[1];
+}
+function controlsFor(p) {
+  // Im Online-Spiel tippt der Host Spieler 2 mit der Belegung des Gastes.
+  if (p.remote) return CONTROLS[p.id];
+  // Der Gast führt Spieler 2 mit der bequemen Spieler-1-Belegung.
+  if (p.id === 1 && (net.role === 'guest' || padMode)) return CONTROLS[0];
+  return CONTROLS[p.id];
+}
+function moveHeld(p, action, code) {
+  if (kbDown(p, code)) return true;
+  const alts = aliasFor(p)[action] || [];
+  for (const alt of alts) if (kbDown(p, alt)) return true;
+  return false;
 }
 const BIND_ACTIONS = [
   ['left', 'Links'], ['right', 'Rechts'], ['up', 'Hoch'], ['down', 'Runter'],
@@ -2101,8 +2159,8 @@ const BIND_ACTIONS = [
   ['grapple', 'Greifen'], ['mount', 'Esel'],
 ];
 // Diese Tasten steuern global und bleiben deshalb frei belegbar nicht verfügbar.
-const RESERVED_BINDINGS = new Set(['Escape', 'KeyP', 'KeyM', 'KeyR', 'Tab']);
-const BIND_STORAGE_KEY = 'voxel-rage-bindings-v2';
+const RESERVED_BINDINGS = new Set(['Escape', 'KeyM', 'KeyR', 'Tab']);
+const BIND_STORAGE_KEY = 'voxel-rage-bindings-v3';
 const CONTROLS = DEFAULT_CONTROLS.map((set) => ({ ...set }));
 
 const KEY_LABELS = {
@@ -2113,7 +2171,7 @@ const KEY_LABELS = {
   ControlLeft: 'L-STRG', ControlRight: 'R-STRG', AltLeft: 'L-ALT', AltRight: 'R-ALT',
 };
 function keyLabel(code) {
-  if (!code) return '—';
+  if (!code) return '?';
   if (KEY_LABELS[code]) return KEY_LABELS[code];
   if (/^Key[A-Z]$/.test(code)) return code.slice(3);
   if (/^Digit[0-9]$/.test(code)) return code.slice(5);
@@ -2215,7 +2273,7 @@ function updateEnemyHpBar(e, dt) {
   const bar = e.hpBar;
   if (!bar) return;
   const ratio = clamp(e.hp / e.maxhp, 0, 1);
-  // Erst nach dem ersten Treffer zeigen – volle Balken über allen Gegnern
+  // Erst nach dem ersten Treffer zeigen · volle Balken über allen Gegnern
   // würden die Straße zupflastern.
   const show = !e.dead && e.state !== 'ko' && ratio < 0.999;
   bar.g.visible = show;
@@ -2243,6 +2301,7 @@ function spawnEnemy(type, x, z, isBoss = false, elite = false) {
     hitDone: false, walkPhase: 0, dead: false, hitR: 0.25 * t.bulk, kx: 0, kt: 0,
     lanePref: z, deadT: 0, score: t.score || 150, bossTimer: 3.5, stun: 0, id: nextEnemyId++,
     hpFlash: 0, hpTint: 0, elite: false, dmg: t.dmg, speed: t.speed,
+    hat: fig.hat || null, goldDrop: !!t.goldDrop,
   };
   addEnemyProps(e, t);
   if (elite && !isBoss) makeElite(e, t);
@@ -2257,7 +2316,8 @@ function spawnEnemy(type, x, z, isBoss = false, elite = false) {
 // Farbe für Waffen-Glimmen und Schlagspuren pro Typ.
 const ENEMY_FX = {
   punk: 0x9dff6b, runner: 0xffd23f, brute: 0xffb347, guard: 0xbfd2e0, knife: 0xff5f6d,
-  gunner: 0xffb347, bomber: 0xff8f4a, shield: 0x6be0ff, ninja: 0x9b6bff, janissary: 0xd9b45a,
+  gunner: 0xffb347, bomber: 0xff8f4a, shield: 0x6be0ff, ninja: 0x9b6bff, greek: 0x8fb4d8,
+  byzantin: 0xb8c6d8, marodeur: 0xe0c48a, schatzwaechter: 0xffd76e,
 };
 
 /* ------------------------------ Elite ------------------------------------ */
@@ -2286,11 +2346,10 @@ function makeElite(e, t) {
   aura.renderOrder = 3;
   e.fig.root.add(aura);
   e.eliteAura = aura;
-  // Goldene Schulterplatten und eine kleine Krone; Janitscharen tragen sie
-  // auf dem hohen Filzhut, alle anderen direkt über dem Kopf.
+  // Goldene Schulterplatten und eine kleine Krone direkt über dem Kopf.
   vox(e.fig.armL, 0, 0.1, 0, 4.2, 1.1, 4.3, ELITE_GOLD, true);
   vox(e.fig.armR, 0, 0.1, 0, 4.2, 1.1, 4.3, ELITE_GOLD, true);
-  const crownBase = e.type === 'janissary' ? 11.05 : 5.95;
+  const crownBase = 5.95;
   for (const [ox, h] of [[-1.45, 0.9], [0, 1.5], [1.45, 0.9]]) {
     vox(e.fig.head, ox, crownBase + h / 2, 0, 0.55, h, 0.55, ELITE_GOLD, true);
   }
@@ -2325,9 +2384,10 @@ function addEnemyProps(e, t) {
     vox(g.torso, 0, 3.2, -3.4, 3.6, 4.2, 2.2, 0x8a4a1f);
     vox(g.torso, 0, 5.2, -3.4, 1.0, 1.0, 1.0, 0xffb347, true);
   }
-  if (e.type === 'janissary') {
-    vox(g.head, 0, 8.0, -0.3, 4.0, 4.6, 4.0, 0xe8e2d2);
-    vox(g.head, 0, 6.3, -0.3, 4.5, 0.6, 4.5, 0xd9b45a);
+  if (e.type === 'greek') {
+    // Kurze Fellmütze der Miliz, sitzt flach auf dem Kopf.
+    vox(g.head, 0, 5.35, -0.2, 5.0, 1.5, 5.0, 0x3a2a20);
+    vox(g.head, 0, 4.75, 0, 5.2, 0.5, 5.2, 0x8a2b2f);
   }
   if (e.isBoss) {
     vox(g.head, 0, 8.4, -0.3, 4.4, 4.4, 4.4, t.pal.pads || 0xffd76e);
@@ -2565,12 +2625,27 @@ function screenFlash(color, amount, dur) {
 }
 
 /* ============================== INPUT ==================================== */
-const keys = Object.create(null);
+const keys = Object.create(null);      // echte Tastatur
+const padKeys = Object.create(null);   // Tasten, die der Controller auslöst
 let restartRequested = false;
 let paused = false;
 
-function actionFor(p, code) {
-  const c = CONTROLS[p.id];
+// In an online run the guest sits at their own keyboard and therefore plays
+// with the player-one layout, not the local-coop one.
+function guestBindings() {
+  return net.role === 'guest' ? CONTROLS[0] : CONTROLS[1];
+}
+// Welche Taste gilt für wen? Spieler 1 liest Tastatur und Controller, Spieler 2
+// an einer geteilten Tastatur nur die Tastatur. Im Online-Spiel kommen die
+// Tasten des Gastes über netKeys.
+function kbDown(p, code) {
+  if (!code) return false;
+  if (p.remote) return !!(p.netKeys && p.netKeys[code]);
+  if (p.id === 0) return padMode ? !!padKeys[code] : !!(keys[code] || padKeys[code]);
+  return !!keys[code];
+}
+function actionFor(p, code, set) {
+  const c = set || controlsFor(p);
   if (code === c.punch) return 'punch';
   if (code === c.kick) return 'kick';
   if (code === c.special) return 'special';
@@ -2582,7 +2657,7 @@ function actionFor(p, code) {
 }
 
 function doAction(p, action) {
-  // Wer am Boden liegt, kann nichts auslösen – auch nicht über Gast-Eingaben.
+  // Wer am Boden liegt, kann nichts auslösen · auch nicht über Gast-Eingaben.
   if (!p || p.down || p.dead) return;
   if (action === 'punch') tryAttack(p, 'punch');
   else if (action === 'kick') tryAttack(p, 'kick');
@@ -2596,10 +2671,17 @@ function doAction(p, action) {
 addEventListener('keydown', (ev) => {
   if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(ev.code)) ev.preventDefault();
   if (ev.repeat) return;
-  keys[ev.code] = true;
+  if (ev.__voxelPad) {
+    padKeys[ev.code] = true;
+    // Controller in die Hand genommen: ab jetzt tippt Spieler 2 an einer
+    // geteilten Tastatur mit Spieler 1s Belegung.
+    if (localCoop() && !padMode) padMode = true;
+  } else {
+    keys[ev.code] = true;
+  }
   audio();
   // ESC pausiert; wo ESC vom Browser belegt ist (z. B. Vollbild), geht auch P.
-  if (ev.code === 'Escape' || ev.code === 'KeyP') {
+  if (ev.code === 'Escape') {
     const tag = document.activeElement && document.activeElement.tagName;
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
     if (started) togglePause();
@@ -2621,13 +2703,15 @@ addEventListener('keydown', (ev) => {
 
   if (net.role === 'guest') {
     net.send({ t: 'k', code: ev.code, down: true });
-    const a = actionFor(P2, ev.code);
+    const a = actionFor(P2, ev.code, guestBindings());
     if (a) net.send({ t: 'act', a });
     return;
   }
 
   for (const p of players) {
     if (p.remote) continue;
+    // Im Controller-Modus gehört die Tastatur Spieler 2.
+    if (p.id === 0 && padMode && !ev.__voxelPad) continue;
     const a = actionFor(p, ev.code);
     if (a) doAction(p, a);
   }
@@ -2643,6 +2727,7 @@ addEventListener('keydown', (ev) => {
 });
 addEventListener('keyup', (ev) => {
   keys[ev.code] = false;
+  padKeys[ev.code] = false;
   if (net.role === 'guest' && started) net.send({ t: 'k', code: ev.code, down: false });
 });
 
@@ -2732,7 +2817,7 @@ function tryAttack(p, kind = 'punch') {
 
 function trySpecial(p) {
   if (p.dead || p.down || p.state === 'ko' || p.state === 'hurt' || p.state === 'special') return;
-  // Im Sattel ist L der Superkick – aber nur bei vollem Energiebalken.
+  // Im Sattel ist L der Superkick · aber nur bei vollem Energiebalken.
   if (p.mount) {
     if (p.state !== 'ride' || p.meter < 100) return;
     p.meter = 0;
@@ -2793,7 +2878,7 @@ function specialStrike(p) {
     ghost(hx + Math.cos(a) * 0.55, hy + Math.sin(a) * 0.5, hz - 0.5,
       i % 2 ? 0xfff1b8 : 0xffb347, 0.18, 0.18);
   }
-  // Schockwellen hinter der Hand, nicht davor – sonst verdecken sie das Modell.
+  // Schockwellen hinter der Hand, nicht davor · sonst verdecken sie das Modell.
   ring(hx, hy, hz - 0.5, 0xffd76e, 1.9, 0.38);
   ring(hx, hy, hz - 0.45, 0xff6f9b, 1.1, 0.26);
   burst(hx, hy, hz - 0.4, [0xffd76e, 0xffb347, 0xff6f9b], 18, 5, 0.09);
@@ -3307,6 +3392,27 @@ function damageEnemy(e, dmg, heavy, dir, knock = heavy ? 5.2 : 2.4, by = P, sile
       if (e.fig) e.fig.root.rotation.z = 0;
     }
     if (e.hpBar) e.hpBar.g.visible = false;
+    // Die Pelzmütze des Schatzwächters löst sich beim K.O. und fliegt weg.
+    if (e.hat) {
+      const hat = e.hat;
+      e.fig.root.updateMatrixWorld(true);
+      const wp = new THREE.Vector3();
+      hat.getWorldPosition(wp);
+      if (hat.parent) hat.parent.remove(hat);
+      scene.add(hat);
+      hat.position.copy(wp);
+      hat.rotation.set(0, 0, 0);
+      fallenHats.push({
+        m: hat, vx: dir * 1.7, vy: 3.4, vz: rndRange(-1.1, 1.1),
+        spin: rndRange(-8, 8), t: 0,
+      });
+      e.hat = null;
+    }
+    // Der Schatzwächter lässt immer Gold liegen.
+    if (e.goldDrop) {
+      spawnPickup('gold', e.pos.x, clamp(e.pos.z, -1.4, 1.4));
+      ring(e.pos.x, 0.5, e.pos.z, 0xffd76e, 2.4, 0.4);
+    }
     e.deadT = 0;
     addScore(e.score, by);
     addMeter(by, 10);
@@ -3336,7 +3442,7 @@ function damageEnemy(e, dmg, heavy, dir, knock = heavy ? 5.2 : 2.4, by = P, sile
       spawnPickup('doner', e.pos.x - 1.3, clamp(e.pos.z, -1.4, 1.4));
       spawnPickup('weapon', e.pos.x + 1.3, clamp(e.pos.z, -1.4, 1.4));
     } else if (Math.random() < diffCfg().drop + (e.elite ? 0.15 : 0)) {
-      // Beute fällt deutlich seltener — sonst liegt nach jedem Kampf die halbe Straße voll.
+      // Beute fällt deutlich seltener · sonst liegt nach jedem Kampf die halbe Straße voll.
       const dz = clamp(e.pos.z, -1.4, 1.4);
       if (Math.random() < diffCfg().weaponDrop) {
         spawnPickup('weapon', e.pos.x, dz);
@@ -3405,7 +3511,7 @@ function enemyStrike(e, style = enemyStyle(e)) {
       hits++;
     }
   }
-  // Trefferblitz am Schlagpunkt, danach Staub – ein danebengegangener
+  // Trefferblitz am Schlagpunkt, danach Staub · ein danebengegangener
   // Schlag bleibt so ebenfalls sichtbar.
   burst(hx, hy, e.pos.z, hits ? [0xffffff, col] : [col, 0xd8cdb8], hits ? 15 : 6, hits ? 4 : 2.2, 0.08);
   if (hits) {
@@ -3579,7 +3685,7 @@ function expireDown(p) {
   sfx.ko();
   const left = players.filter((q) => !q.out && !q.down);
   if (left.length === 0) {
-    showMsg('GAME OVER', 'R — NEU STARTEN');
+    showMsg('GAME OVER', 'R · NEU STARTEN');
   } else if (p.out) {
     banner(`${p.name} AUSGESCHIEDEN`);
   } else {
@@ -3591,7 +3697,7 @@ function updateDown(p, dt) {
   p.t += dt;
   p.fig.root.position.set(p.pos.x, p.y, p.pos.z);
   if (!p.remote) {
-    // Nur ein stehender Partner kann helfen – zwei Liegende retten sich nicht.
+    // Nur ein stehender Partner kann helfen · zwei Liegende retten sich nicht.
     const mate = players.find((q) => q !== p && !q.out && !q.down && !q.dead);
     const near = mate && Math.hypot(mate.pos.x - p.pos.x, mate.pos.z - p.pos.z) <= REVIVE_RANGE;
     if (near && p.reviveP < 1) {
@@ -3647,7 +3753,7 @@ function diePlayer(p) {
   showWeapon(p);
   const left = players.filter((q) => !q.out);
   if (left.length === 0) {
-    showMsg('GAME OVER', 'R — NEU STARTEN');
+    showMsg('GAME OVER', 'R · NEU STARTEN');
   } else if (p.out) {
     banner(`${p.name} AUSGESCHIEDEN`);
   } else {
@@ -3678,7 +3784,7 @@ function revivePlayer(p, mate) {
 }
 
 // Solo-Respawn ohne Partner: an der Todesstelle, etwas zurückgesetzt, mit
-// kurzer Unverwundbarkeit – sonst steht man mitten im Gegnerknäuel.
+// kurzer Unverwundbarkeit · sonst steht man mitten im Gegnerknäuel.
 function respawnAtSpot(p) {
   p.dead = false;
   p.down = false;
@@ -3729,7 +3835,7 @@ function makeHeldWeaponMesh(kind, w) {
       vox(m, 0, 0.4, 0.9, 1.7, 0.5, 0.4, 0xd9dce8);
     }
   }
-  // In der Hand muss die Waffe deutlich zu sehen sein — nicht winzig im Ärmel.
+  // In der Hand muss die Waffe deutlich zu sehen sein · nicht winzig im Ärmel.
   const heldScale = w.kind === 'gun'
     ? (kind === 'bazooka' ? 1.7 : kind === 'gewehr' ? 1.55 : 1.4)
     : 1.3;
@@ -3876,7 +3982,7 @@ function tryGrapple(p) {
     hitstop = 0.045;
     shake = Math.max(shake, 0.1); shakeT = Math.max(shakeT, 0.16);
   } else {
-    // Auch ohne Ziel peitscht die Kette nach vorn — die Mechanik ist sichtbar.
+    // Auch ohne Ziel peitscht die Kette nach vorn · die Mechanik ist sichtbar.
     sfx.chainMiss();
   }
 }
@@ -4367,7 +4473,7 @@ function removePickup(it) {
 }
 
 // Aufnahme-Hinweis je Item: nur zeigen, wenn ein Spieler zu Fuß davorsteht.
-// Nur das nächstgelegene Item zeigt „NEHMEN“ – sonst stapeln sich bei einem
+// Nur das nächstgelegene Item zeigt „NEHMEN“ · sonst stapeln sich bei einem
 // Beute-Cluster mehrere Schilder übereinander. Maßgeblich ist der Abstand zum
 // nächsten aktiven Spieler; alle anderen Hinweise werden ausgeblendet.
 const PICKUP_PROMPT_RANGE = 2.0;
@@ -4407,7 +4513,7 @@ function updatePickups(dt) {
   updatePickupPrompts();
 }
 
-// Beute wird bewusst mit der Schlag-Taste aufgenommen – nicht mehr beim Laufen.
+// Beute wird bewusst mit der Schlag-Taste aufgenommen · nicht mehr beim Laufen.
 function tryPickup(p) {
   if (!p || p.dead || p.down) return false;
   let best = null, bd = PICKUP_PROMPT_RANGE;
@@ -4449,6 +4555,8 @@ const TOTAL_WAVES = WAVE_DEFS.length;
 let waveDelay = 1.0, waveActive = false;
 let currentTrackKey = null;
 let eliteSeq = 0;
+// Der Schatzwächter erscheint einmal pro Distrikt (nie als Boss).
+let rareSpawnedThisStage = false;
 
 const music = createMusic();
 
@@ -4485,7 +4593,7 @@ function spawnSectionEnemy(type, sec, i) {
   return e;
 }
 
-// Garantierte Beute pro Abschnitt: zwei Waffen, Döner, Ayran, Gold — alles in
+// Garantierte Beute pro Abschnitt: zwei Waffen, Döner, Ayran, Gold · alles in
 // der begehbaren Gasse (z ±1.4) und mit Namen über dem Objekt.
 function spawnSectionLoot(sec) {
   const cx = SECTION_ARENA[sec] || SECTION_ARENA[0];
@@ -4513,7 +4621,7 @@ function spawnSectionLoot(sec) {
 // Albtraum-Bosskampf: drei Elite-Wachen stehen von Beginn an um den Boss.
 function spawnBossGuards(boss, d) {
   const [lo, hi] = SECTION_BOUNDS[2];
-  const types = ['guard', 'shield', 'janissary'];
+  const types = ['guard', 'shield', 'byzantin'];
   const offsets = [[-2.8, -1.0], [2.6, 1.1], [0.3, -1.7]];
   let count = 0;
   for (let i = 0; i < types.length && i < (d.guards || 0); i++) {
@@ -4535,10 +4643,11 @@ function startWave() {
   const def = WAVE_DEFS[wave];
   if (!def) return;
   const sec = wave % 3;
-  // Map wird nur beim Distriktwechsel neu gebaut — die Straße bleibt bestehen.
+  // Map wird nur beim Distriktwechsel neu gebaut · die Straße bleibt bestehen.
   if (def.district !== builtDistrict) {
     buildDistrict(def.district, wave);
     placePlayersAtStart();
+    rareSpawnedThisStage = false;
   }
   districtCleared = false;
   victory = false;
@@ -4560,6 +4669,16 @@ function startWave() {
     : Math.max(12, Math.min(32, Math.round(base * d.enemies)));
   sectionQueue = [];
   for (let i = 0; i < total; i++) sectionQueue.push(comp[i % comp.length]);
+  // Seltene Einlage: ein Schatzwächter pro Distrikt, nie in einer Bosswelle.
+  if (!def.boss && !rareSpawnedThisStage && sectionQueue.length > 4) {
+    const at = Math.max(1, Math.floor(sectionQueue.length * 0.6));
+    sectionQueue[at] = 'schatzwaechter';
+    rareSpawnedThisStage = true;
+  }
+  // Schwache Marodeure: einer pro Abschnitt, damit sie gelegentlich auffallen.
+  if (!def.boss && sectionQueue.length > 6 && Math.random() < 0.55) {
+    sectionQueue[2] = 'marodeur';
+  }
   const first = Math.min(10, Math.max(5, Math.round(total * 0.35)));
   for (let i = 0; i < first; i++) spawnSectionEnemy(sectionQueue.shift(), sec, i);
 
@@ -4599,7 +4718,7 @@ function advanceDistrict() {
     banner('ALLE 10 DISTRIKTE GESCHAFFT');
     showMsg('SIEG', players.length > 1
       ? `${P.name} ${P.score} · ${P2.name} ${P2.score} PUNKTE`
-      : `${P.name} — ${P.score} PUNKTE`);
+      : `${P.name} · ${P.score} PUNKTE`);
     showObjective('');
     music.stop();
     currentTrackKey = null;
@@ -4637,7 +4756,7 @@ function updateWaves(dt) {
     return;
   }
 
-  // Nachschub, sobald der Abschnitt fast geräumt ist — Wellen dauern länger.
+  // Nachschub, sobald der Abschnitt fast geräumt ist · Wellen dauern länger.
   const alive = enemies.filter((e) => !e.dead && e.state !== 'ko').length;
   const remaining = alive + sectionQueue.length;
   if (remaining !== lastEnemyShown) {
@@ -4703,7 +4822,7 @@ function animateFighter(f, dt, isPlayer) {
 
   if (st === 'down') {
     // Liegend am Boden: Oberkörper zurückgelehnt, ein Arm stützt, der andere
-    // winkt schwach im Takt – die Pose bleibt offen, damit Hilfe erkennbar ist.
+    // winkt schwach im Takt · die Pose bleibt offen, damit Hilfe erkennbar ist.
     const rise = easeOut(clamp(t / 0.5, 0, 1));
     const wave = Math.sin(t * 3.4);
     bodyRX = -1.28 * rise;
@@ -4941,7 +5060,7 @@ function animateFighter(f, dt, isPlayer) {
         torsoY = 0.26 * back;
         legL = 0.34 * back; legR = -0.34 * back;
       } else {
-        // Faust endet vor dem Kinn und auf der Kameraseite – nicht hinter dem Hut.
+        // Faust endet vor dem Kinn und auf der Kameraseite · nicht hinter dem Hut.
         armR = lerp(0.75, -2.2, through); armRz = lerp(0.2, -0.62, through);
         armL = lerp(-0.6, -0.8, through); armLz = -0.2;
         bodyRX = lerp(0.22, -0.14, through);
@@ -4965,7 +5084,7 @@ function animateFighter(f, dt, isPlayer) {
       legL = 0.12 + 0.42 * lunge; legR = -0.1 - 0.34 * lunge;
     } else {
       // Kleine Schelle: offene Hand holt auf der Fernseite aus und fegt dann
-      // kameranah vor dem Gesicht durch – der Finisher bleibt gut sichtbar.
+      // kameranah vor dem Gesicht durch · der Finisher bleibt gut sichtbar.
       const wind = easeOut(clamp(p / 0.36, 0, 1));
       const swat = easeOut(clamp((p - 0.36) / 0.26, 0, 1));
       const ret = clamp((p - 0.62) / 0.38, 0, 1);
@@ -5063,7 +5182,7 @@ function animateFighter(f, dt, isPlayer) {
   const kz = snapBody ? 1 : k;
   g.armL.rotation.x = lerp(g.armL.rotation.x, armL, kr);
   g.armR.rotation.x = lerp(g.armR.rotation.x, armR, kr);
-  // Auch Querachsen und Rumpf folgen der Trefferpose ohne Nachlauf – sonst
+  // Auch Querachsen und Rumpf folgen der Trefferpose ohne Nachlauf · sonst
   // verwischt gerade die breite Schelle und der Roundhouse-Bogen.
   g.armL.rotation.z = lerp(g.armL.rotation.z, armLz, kz);
   g.armR.rotation.z = lerp(g.armR.rotation.z, armRz, kz);
@@ -5111,7 +5230,7 @@ function animateFighter(f, dt, isPlayer) {
     g.legR.rotation.z = lerp(g.legR.rotation.z, legRz, kz);
   }
 
-  // Nur die Waffe auf der Kameraseite zeigen — sonst steckt sie im Körper.
+  // Nur die Waffe auf der Kameraseite zeigen · sonst steckt sie im Körper.
   // Im Sattel wird sie weggepackt, dort zählt der Superkick.
   if (isPlayer && f.fig.heldWeapons) {
     const nearLeft = f.facing > 0;
@@ -5172,27 +5291,26 @@ function updatePlayer(p, dt) {
   // Auf dem Esel übernimmt die Reitlogik Bewegung und Angriff.
   if (p.mount) { updateRiding(p, dt); return; }
 
-  const c = CONTROLS[p.id];
-  const kb = p.remote ? (p.netKeys || {}) : keys;
+  const c = controlsFor(p);
   p.swingT = Math.max(0, p.swingT - dt);
   // Schusswaffen feuern weiter, solange die Taste gehalten wird.
-  if (p.weapon && p.weapon.kind === 'gun' && kb[c.punch] && p.swingT <= 0 &&
+  if (p.weapon && p.weapon.kind === 'gun' && kbDown(p, c.punch) && p.swingT <= 0 &&
       !p.grab && (p.state === 'idle' || p.state === 'walk')) {
     shootWeapon(p);
   }
   const canMove = (p.state === 'idle' || p.state === 'walk') && !p.dead;
   let mx = 0, mz = 0;
   if (canMove) {
-    if (moveHeld(kb, 'left', c.left)) mx -= 1;
-    if (moveHeld(kb, 'right', c.right)) mx += 1;
-    if (moveHeld(kb, 'up', c.up)) mz -= 1;
-    if (moveHeld(kb, 'down', c.down)) mz += 1;
+    if (moveHeld(p, 'left', c.left)) mx -= 1;
+    if (moveHeld(p, 'right', c.right)) mx += 1;
+    if (moveHeld(p, 'up', c.up)) mz -= 1;
+    if (moveHeld(p, 'down', c.down)) mz += 1;
   }
   p.moving = (mx !== 0 || mz !== 0);
   if (p.moving && canMove) {
     // Rennen: Shift halten oder 0,85 s durchlaufen
     p.runT += dt;
-    p.sprint = (kb[c.sprint] || p.runT > 0.85) && !p.grab;
+    p.sprint = (kbDown(p, c.sprint) || p.runT > 0.85) && !p.grab;
     // Mit einem Gegner im Griff geht es nur im Schritttempo voran.
     const speed = (p.sprint ? 9.6 : 5.6) * (p.grab ? 0.52 : 1);
     const len = Math.hypot(mx, mz) || 1;
@@ -5346,7 +5464,7 @@ function updatePlayer(p, dt) {
         ghost(_tv.x, _tv.y, _tv.z, 0xfff1b8, 0.34, 0.15);
         ghost(_tv.x, _tv.y, _tv.z + 0.05, 0xffd76e, 0.22, 0.12);
       }
-      // Handspur: ein einzelner Geist pro Frame, hinter der Hand – sonst
+      // Handspur: ein einzelner Geist pro Frame, hinter der Hand · sonst
       // stapeln sich die Würfel zu einem weißen Klecks.
       if (p.slapHand && p.slapHand.visible && (frameCount & 1) === 0 && p.t > 0.34) {
         const hp = p.slapHand.position;
@@ -5389,7 +5507,7 @@ function updatePlayer(p, dt) {
 }
 
 /* -------------------- Sichtbare Gegner-Schläge --------------------------- */
-// Faust des kameranahen Arms – dort hängt die Waffe. Die Pose wird in
+// Faust des kameranahen Arms · dort hängt die Waffe. Die Pose wird in
 // animateFighter gesetzt, hier wird nur die Weltposition abgegriffen.
 const _tipV = new THREE.Vector3();
 function enemyArmTip(e) {
@@ -5644,6 +5762,32 @@ function updateEnemies(dt) {
   }
 }
 
+// Weggeflogene Hüte: kurzer Bogen, Aufprall, dann liegen bleiben und verblassen.
+function updateFallenHats(dt) {
+  for (let i = fallenHats.length - 1; i >= 0; i--) {
+    const h = fallenHats[i];
+    h.t += dt;
+    h.vy -= 14 * dt;
+    h.m.position.x += h.vx * dt;
+    h.m.position.z += h.vz * dt;
+    h.m.position.y += h.vy * dt;
+    h.m.rotation.x += h.spin * dt * 0.4;
+    h.m.rotation.z += h.spin * dt;
+    if (h.m.position.y < 0.12) {
+      h.m.position.y = 0.12;
+      h.vy = Math.abs(h.vy) * 0.28;
+      h.vx *= 0.68;
+      h.vz *= 0.68;
+      h.spin *= 0.55;
+    }
+    if (h.t > 7) {
+      h.m.visible = false;
+      scene.remove(h.m);
+      fallenHats.splice(i, 1);
+    }
+  }
+}
+
 function updateParticles(dt) {
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
@@ -5810,7 +5954,7 @@ function updateControlsHelp() {
   const block = (i) => `${row(i, [['left', 'links'], ['right', 'rechts'], ['up', 'hoch'], ['down', 'tief']])}<br>`
     + `${row(i, [['punch', 'Schlag/Item'], ['kick', 'Kick'], ['special', 'Schelle'], ['jump', 'Sprung']])}<br>`
     + `${row(i, [['throw', 'Werfen'], ['sprint', 'Rennen'], ['grapple', 'Greifen'], ['mount', 'Esel']])}`;
-  // Beide Spieler teilen sich die Belegung – dann nur einmal zeigen.
+  // Beide Spieler teilen sich die Belegung · dann nur einmal zeigen.
   const same = BIND_ACTIONS.every(([a]) => CONTROLS[0][a] === CONTROLS[1][a]);
   controlsHelpEl.innerHTML = same
     ? `<b>P1 + P2</b> ${block(0)}`
@@ -5830,7 +5974,7 @@ function updateHint() {
 }
 
 function updateGrappleHintText() {
-  if (grappleHintEl) grappleHintEl.textContent = `${keyLabel(CONTROLS[0].grapple)} — GRIFF BEREIT`;
+  if (grappleHintEl) grappleHintEl.textContent = `${keyLabel(CONTROLS[0].grapple)} · GRIFF BEREIT`;
 }
 
 // Das Schild über dem Ziel wird erst beim ersten Greifen gebaut; hier nur
@@ -5880,7 +6024,7 @@ function applyControls(sets) {
 function saveBindings() {
   try { localStorage.setItem(BIND_STORAGE_KEY, JSON.stringify(CONTROLS)); } catch (e) { /* Privatmodus */ }
   // Im Online-Lobby muss der Host die Tasten des Gasts kennen.
-  if (net.role === 'guest' && net.peer) net.send({ t: 'ctrl', c: CONTROLS[1] });
+  if (net.role === 'guest' && net.peer) net.send({ t: 'ctrl', c: guestBindings() });
 }
 
 function cancelBind(msg) {
@@ -5891,7 +6035,7 @@ function cancelBind(msg) {
 
 function startBind(p, action) {
   bindPick = { p, action };
-  if (bindMsgEl) bindMsgEl.textContent = `${bindPlayerLabel(p)} · ${bindActionLabel(action)} — Taste drücken (ESC bricht ab)`;
+  if (bindMsgEl) bindMsgEl.textContent = `${bindPlayerLabel(p)} · ${bindActionLabel(action)} · Taste drücken (ESC bricht ab)`;
   refreshBindingUI();
 }
 
@@ -6027,8 +6171,8 @@ function updateMeter(p) {
   const ready = p.meter >= 100;
   wrap.classList.toggle('ready', ready);
   hint.textContent = p.mount
-    ? `${keyLabel(CONTROLS[p.id].special)} — SUPERKICK BEREIT`
-    : `${keyLabel(CONTROLS[p.id].special)} — SCHELLE BEREIT`;
+    ? `${keyLabel(CONTROLS[p.id].special)} · SUPERKICK BEREIT`
+    : `${keyLabel(CONTROLS[p.id].special)} · SCHELLE BEREIT`;
   hint.classList.toggle('on', ready);
 }
 // Jeder Spieler hat seinen eigenen Punktestand. Solo zeigt das HUD eine Zeile,
@@ -6044,7 +6188,7 @@ function updateScores() {
 
 /* ------------------------------- Leben ----------------------------------- */
 // Jeder Spieler startet mit 3 Leben. Alle 2000 eigenen Punkte gibt es ein
-// Extraleben für genau diesen Spieler – wer ausgeschieden ist, kommt nicht zurück.
+// Extraleben für genau diesen Spieler · wer ausgeschieden ist, kommt nicht zurück.
 const LIFE_SCORE_STEP = 2000;
 const LIFE_MAX = 9;
 
@@ -6081,7 +6225,7 @@ function updateLifeProgress(p) {
   const fmt = (n) => n.toLocaleString('de-DE');
   labelEl.textContent = info.mode === 'next' ? 'NÄCHSTES LEBEN' : 'LEBEN';
   nextEl.textContent = info.mode === 'max' ? 'MAX'
-    : info.mode === 'none' ? '—'
+    : info.mode === 'none' ? '?'
     : `${fmt(info.have)} / ${fmt(info.need)}`;
   barEl.classList.toggle('full', info.mode === 'max');
   fillEl.style.width = info.mode === 'max' ? '100%'
@@ -6118,7 +6262,7 @@ function showMsg(h, s) {
 function hideMsg() { msgEl.classList.remove('on'); }
 
 /* ============================== PAUSE ==================================== */
-// ESC oder P halten die Simulation an; im Online-Koop pausiert der Host die
+// ESC hält die Simulation an; im Online-Koop pausiert der Host die
 // Runde für beide, ein Pausieren des Gasts wird an den Host weitergereicht.
 function canPause() {
   return started && menuEl.classList.contains('hide') && !msgEl.classList.contains('on') && !victory;
@@ -6128,11 +6272,12 @@ let pausedBy = '';
 function setPaused(on, relay = true, by = '') {
   if (paused === on) return;
   paused = on;
-  // Wer pausiert hat – im Online-Koop steht das klein im Pausenmenü.
+  // Wer pausiert hat · im Online-Koop steht das klein im Pausenmenü.
   pausedBy = on ? (by || (net.role || 'local')) : '';
   pauseEl.classList.toggle('on', on);
   // Losgelassene Tasten lösen, sonst läuft man nach dem Weiterlaufen weiter.
   for (const k in keys) keys[k] = false;
+  for (const k in padKeys) padKeys[k] = false;
   if (paused) music.pause();
   else {
     music.resume();
@@ -6223,13 +6368,13 @@ function resetGame() {
 
 // Koop-Leine: Keiner darf so weit vorauslaufen, dass der andere aus dem Bild
 // fällt. Gebremst wird der Spieler, der sich in diesem Frame weiter bewegt hat
-// (Rennen, Sprung, Rückstoß) – der andere bleibt unangetastet.
+// (Rennen, Sprung, Rückstoß) · der andere bleibt unangetastet.
 const COOP_MAX_SPREAD = 16;
 let tetherWarnT = 0;
 function keepPlayersTogether(dt) {
   tetherWarnT = Math.max(0, tetherWarnT - dt);
   if (players.length < 2) return;
-  // Online ohne Gegenüber (Disconnect) nicht fesseln – sonst hängt einer am
+  // Online ohne Gegenüber (Disconnect) nicht fesseln · sonst hängt einer am
   // eingefrorenen Avatar des anderen fest.
   if (net.role && !net.peer) return;
   const a = players[0], b = players[1];
@@ -6242,7 +6387,7 @@ function keepPlayersTogether(dt) {
     const other = offender === a ? b : a;
     const dir = Math.sign(offender.pos.x - other.pos.x) || 1;
     offender.pos.x = clamp(other.pos.x + dir * COOP_MAX_SPREAD, XMIN, maxWalkX());
-    // Wer reitet, zieht seinen Esel mit – sonst reißt die Leine Reiter und
+    // Wer reitet, zieht seinen Esel mit · sonst reißt die Leine Reiter und
     // Reittier jeden Frame auseinander.
     if (offender.mount) offender.mount.pos.x = offender.pos.x;
     if (tetherWarnT <= 0) {
@@ -6300,6 +6445,14 @@ let started = false;
 let guestDistrict = -1;
 const names = ['JANITSCHAR', 'MURAD'];
 
+// Beim Start eines lokalen Koop-Laufs: liegt Spieler 1 schon am Controller,
+// spielt Spieler 2 mit dessen Tastenbelegung an der Tastatur.
+function detectPadMode() {
+  const api = typeof window !== 'undefined' ? window.VoxelPad : null;
+  if (!localCoop() || !api) { padMode = false; return; }
+  padMode = !!api.state().connected && api.activityAge() < 8000;
+}
+
 function startGame() {
   names[0] = (name1El.value || 'JANITSCHAR').trim().toUpperCase().slice(0, 14) || 'JANITSCHAR';
   names[1] = (name2El.value || 'MURAD').trim().toUpperCase().slice(0, 14) || 'MURAD';
@@ -6311,6 +6464,7 @@ function startGame() {
   P.remote = net.role === 'guest';
   P2.remote = net.role === 'host';
   setRoster(mode === 'solo' ? 1 : 2);
+  detectPadMode();
   p1Label.textContent = net.role === 'host' ? 'Spieler 1 · Host' : 'Spieler 1';
   p2Label.textContent = net.role === 'host' ? 'Spieler 2 · Gast' : 'Spieler 2';
   started = true;
@@ -6395,7 +6549,7 @@ const net = {
       netStatus.textContent = '';
       if (netMsg) netMsg.textContent = 'Verbindung getrennt.';
     };
-    ws.onerror = () => { netMsg.textContent = 'WebSocket-Fehler — läuft server.js?'; };
+    ws.onerror = () => { netMsg.textContent = 'WebSocket-Fehler · läuft server.js?'; };
   },
   send(obj) {
     if (this.ws && this.ws.readyState === 1) this.ws.send(JSON.stringify(obj));
@@ -6424,11 +6578,11 @@ function handleNet(m) {
     netStatus.textContent = m.role === 'host' ? `HOST ${m.room}` : 'GAST';
   } else if (m.t === 'peer') {
     net.peer = true;
-    netMsg.textContent = m.role === 'host' ? 'Gast verbunden — Start drücken.' : 'Host verbunden — warte auf Start …';
+    netMsg.textContent = m.role === 'host' ? 'Gast verbunden · Start drücken.' : 'Host verbunden · warte auf Start …';
     if (m.role === 'guest') {
       startMsg.textContent = 'Warte auf den Host …';
       // Eigene Belegung an den Host schicken, damit er die Gast-Tasten kennt.
-      if (net.role === 'guest') net.send({ t: 'ctrl', c: CONTROLS[1] });
+      if (net.role === 'guest') net.send({ t: 'ctrl', c: guestBindings() });
     }
   } else if (m.t === 'left') {
     net.peer = false;
@@ -6473,7 +6627,7 @@ function sendSnapshot() {
       p.down ? 1 : 0, Math.round(p.reviveP * 100), Math.ceil(p.downT),
       // Hält gerade einen Gegner: der Gast zeigt dieselbe Griffpose.
       p.grab ? 1 : 0,
-      // Eigener Punktestand pro Spieler – der Gast zeigt beide Zeilen.
+      // Eigener Punktestand pro Spieler · der Gast zeigt beide Zeilen.
       Math.round(p.score),
     ]),
     k: mapDonkey ? [
@@ -6499,7 +6653,7 @@ function applySnapshot(s) {
     guestDistrict = s.d;
     wave = s.w;
     buildDistrict(s.d, s.w);
-    districtTag.textContent = `${String(s.d + 1).padStart(2, '0')} · ${THEME.name} — ${THEME.sub}`;
+    districtTag.textContent = `${String(s.d + 1).padStart(2, '0')} · ${THEME.name} · ${THEME.sub}`;
     currentTrackKey = null;
     playTrackForWave();
   }
@@ -6614,7 +6768,7 @@ function applySnapshot(s) {
     e.facing = facing;
     // Wurfhöhe mitglätten, damit der Bogen auch beim Gast sichtbar ist.
     if (typeof ey === 'number') e.y = lerp(e.y || 0, ey, 0.55);
-    // Beim ersten Snapshot ist maxhp noch der echte Typwert – danach nur 1.
+    // Beim ersten Snapshot ist maxhp noch der echte Typwert · danach nur 1.
     if (e.maxhp === 1 && hpR < e.hp - 0.001) e.hpFlash = 0.14;
     e.hp = hpR; e.maxhp = 1;
     if (e.state !== state) { e.state = state; e.t = t; }
@@ -6681,7 +6835,7 @@ function guestFrame(raw) {
     p.t += raw;
     // Die Eselhöhe überträgt der Snapshot; so hebt und senkt sich der Reiter
     // gemeinsam mit dem Esel, auch wenn die Spielerposition nur 10×/s kommt.
-    // Ohne Sattel gibt es keine Höhe – sonst bliebe ein mitten im Hüpfer
+    // Ohne Sattel gibt es keine Höhe · sonst bliebe ein mitten im Hüpfer
     // abgeworfener Reiter beim Gast dauerhaft in der Luft stehen.
     if (p.riding && mapDonkey) p.y = mapDonkey.hopH || 0;
     else if (!p.riding) p.y = 0;
@@ -6785,6 +6939,7 @@ function update(raw) {
   updateShots(dt);
   updatePickups(dt);
   updateParticles(dt);
+  updateFallenHats(dt);
   updatePropDamageVisuals(dt);
   updateRings(dt);
   updateSlapFx(dt);
@@ -6801,7 +6956,7 @@ function update(raw) {
 
 resetGame();
 buildDistrict(0, 0);
-banner('KONSTANTINOPEL');
+banner('KOSTANTINIYE');
 tick();
 
 // Debug-Handle (nur für Entwicklung)

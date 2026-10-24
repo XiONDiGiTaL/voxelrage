@@ -40,9 +40,10 @@ Diese Runde hat Wortzeichen, Steuerung und Balken neu gebaut:
 - **Das Wortzeichen ist wieder lila und gold — und RAGE brennt.** Ein blockiger Voxel-Riegel mit hart gestufter Extrusion: VOXEL in einem beleuchteten Goldverlauf mit weitem Glut-Halo, RAGE mit einem lebendigen Feuerverlauf in den eigenen Buchstaben. Die Flamme steigt in einer langsamen Schleife, ein Glutband flackert über die Glyphen, und einziges Ornament ist die osmanische Rauten-Haarlinie darunter.
 - **Die Balken sind ein System.** Leben und Spezial teilen sich jetzt ein festes Drei-Spalten-Raster — Symbol, Balken, Zahl —, sodass Herz und neues Voxel-Flammensymbol, beide 15 px, an derselben Kante sitzen und beide Balken dieselben 186 px in derselben Höhe laufen. Die Flamme ersetzt den alten Stern und bleibt auch bei 52 px lesbar.
 - **Das Gamepad ist eine echte Silhouette.** Ein breites Gehäuse, dessen Schultern zwei schmale Trigger und zwei abgerundete Bumper (LT/LB, RT/RB) tragen, eine erhöhte Brücke mit Rundtaste, ein asymmetrisches Stick-Paar, ein plusförmiges Steuerkreuz und ein Vier-Tasten-Rombus mit Aktionsbeschriftung — eine durchgehende goldene Haarlinie über einem lila Glaskörper, symmetrisch zur Mitte. Jedes gezeichnete Element lässt sich weiterhin anklicken und belegen.
-- **Beide Spieler teilen eine Belegung.** WASD *und* die Pfeiltasten bewegen, `Z` Schlag, `X` Kick, `F` Werfen, `G` Greifen, `L` Osmanische Schelle, `E` Esel, `Space` Sprung, `Shift` Rennen, `Esc` Pause. Die Belegung gilt gleich für Host, Gast und Spieler 2, und das Tastatur-Diagramm lässt den Pfeilblock als zweite Bewegungsachse leuchten.
+- **Eine Belegung pro Spieler, kein Kreuzen.** Online spielen Host und Gast jeweils die volle Spieler-1-Belegung an der eigenen Tastatur, und die Tasten des Gastes gehen an den Host, damit keiner die Eingaben des anderen liest. Lokaler Koop bekommt für Spieler 2 einen eigenen Block (`Num 8 4 6 2` oder `8 4 6 2`, `O` `P`, `;` `[` `]` `'` `/` `\`), der keine Taste von Spieler 1 berührt. Nimmt Spieler 1 einen Controller, wandert die Tastatur mit der Spieler-1-Belegung zu Spieler 2. `Esc` pausiert beide.
 - **Menüs hören auf Z und X.** `Z` bestätigt (Schlacht starten, Pause fortsetzen), `X` bricht jedes Fenster ab — parallel zu `Esc`.
 - **Die Pause ist geteilt und nennt den Verursacher.** Im Online-Koop steht die Runde für beide, und das Pause-Panel schreibt in kleinen Versalien, welche Seite pausiert hat — auch den Fall, dass du pausiert hast und dein Partner wartet.
+- **Die Mannschaft von 1638.** Byzantinische Linientruppen mit Federbuschhelm und Kettenpanzer, griechische Miliz in blauem Rock und kurzer Fellmütze sowie barhäuptige Marodeure mit Turban halten jetzt die Straße; die alte Janitscharenwache ist fort. Ein seltener Schatzwächter im schwarzen Anzug und hoher Pelzmütze taucht einmal pro Distrikt auf, verliert beim Fall seine Mütze und lässt immer Gold liegen.
 - **Das HUD-Porträt ist gerahmt, nicht beschnitten.** Die Offscreen-Kamera lässt jetzt Rand um das Kopfmodell der Figur, sodass Turban und Kinn im 52-px-Rahmen liegen.
 - **Kleine Korrekturen.** Die Tastenleiste am unteren Rand ist weg (die Anleitung übernimmt das), der Waffen-Chip ist kleiner, und der Spezial-Hinweis kollidiert nicht mehr mit dem Mittelfeld.
 
@@ -71,8 +72,10 @@ Aufgenommen aus dem laufenden Spiel, keine Mock-ups.
 | Straßenkampf | Bosskampf |
 | ![Osmanische Schelle](screenshots/voxel-rage-special.png) | ![Online-Koop](screenshots/online-koop.png) |
 | Die Osmanische Schelle | Online-Koop |
-| ![Esel reiten](screenshots/donkey-final2.png) | ![Voxel Rage](screenshots/voxel-rage-menu-final.png) |
-| Auf dem Esel | Frühere Menüaufnahme |
+| ![Esel reiten](screenshots/donkey-final2.png) | ![Straße 1638](screenshots/street-1638.png) |
+| Auf dem Esel | Planwagen und Laternen in der Straße von 1638 |
+| ![Byzantiner, Miliz und Marodeure](screenshots/enemies-1638.png) | ![Der seltene Schatzwächter](screenshots/enemy-treasurer.png) |
+| Byzantinische Linie, griechische Miliz und Marodeure mit Turban | Der seltene Schatzwächter; die Mütze fällt, Gold bleibt |
 
 Weitere Bilder liegen in [screenshots/](screenshots/).
 
@@ -127,7 +130,7 @@ Albtraum markiert jeden dritten Gegner als Elite (goldene Aura, Schulterplatten,
 
 ### Tastatur (Standard)
 
-Beide Spieler nutzen dieselbe bequeme Belegung — jeder an seiner eigenen Tastatur. Im lokalen Koop an einer Tastatur belegt man Spieler 2 im Steuerungsfenster neu.
+Spieler 1 — Solo, Online-Host, Online-Gast und Spieler 2 im lokalen Koop an zwei Tastaturen:
 
 | Aktion | Taste |
 |---|---|
@@ -141,7 +144,23 @@ Beide Spieler nutzen dieselbe bequeme Belegung — jeder an seiner eigenen Tasta
 | Greifen / Kette | `G` |
 | Auf-/Absteigen (Esel) | `E` |
 
-`Z` bestätigt und `X` bricht in den Menüs ab; `Esc` oder `P` pausiert, `M` schaltet die Musik, `R` startet neu. Die Belegung wird lokal gespeichert und im Online-Koop an den Host übertragen.
+`Z` bestätigt und `X` bricht in den Menüs ab; `Esc` pausiert, `M` schaltet die Musik, `R` startet neu. Die Belegung liegt lokal unter `voxel-rage-bindings-v3`; im Online-Koop wird die des Gastes beim Verbinden an den Host geschickt.
+
+Spieler 2 — lokaler Koop an einer Tastatur — hat einen eigenen Block, damit keine Taste kollidiert:
+
+| Aktion | Taste |
+|---|---|
+| Bewegen | `Num 8` `Num 4` `Num 6` `Num 2` oder `8` `4` `6` `2` ohne Ziffernblock |
+| Schlag / Waffe / Aufnehmen | `O` |
+| Kick | `P` |
+| Osmanische Schelle | `;` |
+| Werfen (im Griff) | `[` |
+| Greifen / Kette | `]` |
+| Auf-/Absteigen (Esel) | `'` |
+| Rennen (halten) | `/` |
+| Sprung / Esel-Hüpfer | `\` |
+
+Spieler 1 kann im lokalen Koop auch am Controller spielen: Das Spiel erkennt das Pad beim Start des Laufs (oder beim ersten Tastendruck) und übergibt die Tastatur mit der Spieler-1-Belegung an Spieler 2, sodass eine geteilte Tastatur trotzdem einen vollen zweiten Satz hat. Alles ist im Steuerungsfenster umbelegbar.
 
 ### Controller (Standard)
 
@@ -180,7 +199,7 @@ Jede Belegung im Popup ist live: Sie folgt Umbelegungen und der gewählten Sprac
 - **Controller** — ein kompaktes Outline-Gamepad mit Steuerkreuz, zwei Sticks, vier Gesichtstasten (A / B / X / Y), beiden Bumpern und beiden Triggern. Wähle rechts eine Aktion und drücke dann eine Taste am Pad — oder klicke direkt auf den gezeichneten Button.
 - **Tastatur** — eine vollständige Tastatur, deren Tasten gold leuchten, wenn sie belegt sind. Wähle Spieler und Aktion und drücke dann die Taste oder klicke auf das Keycap.
 
-Belegungen werden getauscht statt doppelt vergeben, damit keine Taste zweimal existiert. Die Pad-Belegung liegt unter `voxelrage-pad-v1`, die Tastaturbelegung unter `voxel-rage-bindings-v2`. Beides gilt nur im jeweiligen Browser.
+Belegungen werden getauscht statt doppelt vergeben, damit keine Taste zweimal existiert. Die Pad-Belegung liegt unter `voxelrage-pad-v1`, die Tastaturbelegung unter `voxel-rage-bindings-v3`. Beides gilt nur im jeweiligen Browser.
 
 ### Bildschirmfilter
 
@@ -188,7 +207,7 @@ Belegungen werden getauscht statt doppelt vergeben, damit keine Taste zweimal ex
 
 ## Pause-Menü und Sprache
 
-`Esc` oder `P` friert Simulation, Snapshots und Musik ein und öffnet das Pause-Menü:
+`Esc` friert Simulation, Snapshots und Musik für beide Spieler ein und öffnet das Pause-Menü (steht die andere Seite, nennt das Panel sie in kleinen Versalien):
 
 - **Weiterspielen** — weiter.
 - **Neustart** — Lauf zurücksetzen.
@@ -233,7 +252,7 @@ Die Wahl liegt unter `voxelrage-audio-v1` und wird beim nächsten Besuch wiederh
 
 **Koop-Überleben.** Bei 0 HP geht ein Koop-Spieler zu Boden statt zu sterben; bleib in der Nähe, dann rettet ihn der Rettungsbalken ohne Lebensverlust. Solo kostet 0 HP sofort ein Leben. Drei Leben pro Spieler, alle 2.000 eigenen Punkte ein Extraleben, getrennte Punktezeilen.
 
-**Gegner.** Zehn Typen mit eigenen Ausholbewegungen, Reichweiten und Verhalten: Sprint, Block, Schild, Fernkampf, Explosion, Elite-Varianten. Über verletzten Gegnern erscheinen Lebensbalken, jeder Treffer zeigt eine Schadenszahl.
+**Gegner.** Die Straße von 1638 wird gehalten von byzantinischen Truppen in Kettenpanzer, Federbuschhelm und Messingband, griechischer Miliz in blauem Rock und kurzer Fellmütze sowie barhäuptigen kurdischen Marodeuren mit Turban und Schärpe, die mit zwei Treffern fallen. Ein seltener Schatzwächter im schwarzen Anzug und hoher Pelzmütze erscheint einmal pro Distrikt und nie als Boss: Beim K. O. fliegt die Mütze weg, und er lässt immer Gold liegen. Dazu kommen die zehn Typen mit Sprint, Block, Schild, Fernkampf, Explosion und Elite-Varianten. Über verletzten Gegnern erscheinen Lebensbalken, jeder Treffer zeigt eine Schadenszahl.
 
 **Beute und Zerstörung.** Döner, Ayran und Gold; Pistole, Gewehr, Bazooka, Schläger, Schlagring und Kusarigama. Autos, Laternen, Bänke und Requisiten nehmen stufenweisen Schaden; zerstörte Autos lösen Alarme aus, die Gegner ablenken und Verstärkung rufen.
 

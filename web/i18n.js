@@ -1,4 +1,4 @@
-/* i18n.js — DE/EN language toggle for VOXEL RAGE, modeled on Leap
+/* i18n.js · DE/EN language toggle for VOXEL RAGE, modeled on Leap
  * Buddies' language switcher (a clickable DE | EN control, choice
  * persisted, every UI string swapped). The game itself is German
  * and its code is upstream's, so instead of patching hundreds of
@@ -24,8 +24,8 @@
     'Schwierigkeit': 'Difficulty',
     'Spieler 1': 'Player 1',
     'Spieler 2': 'Player 2',
-    'Spieler 1 — Name': 'Player 1 — name',
-    'Spieler 2 — Name': 'Player 2 — name',
+    'Spieler 1 · Name': 'Player 1 · name',
+    'Spieler 2 · Name': 'Player 2 · name',
     'Solo': 'Solo',
     'Koop lokal': 'Local co-op',
     'Online': 'Online',
@@ -36,15 +36,14 @@
     'Tasten belegen': 'Remap keys',
     'Belegen schließen': 'Close remapping',
     'Standard wiederherstellen': 'Restore defaults',
-    'Lokal gespeichert – vor dem Start frei änderbar.': 'Saved locally – can be changed freely before the start.',
+    'Lokal gespeichert · vor dem Start frei änderbar.': 'Saved locally · can be changed freely before the start.',
     'Musik an/aus ·': 'Music on/off ·',
     'neu starten.': 'restart.',
     'Host startet das Spiel, der Gast kommt in denselben Run.': 'The host starts the game, the guest joins the same run.',
     'Host erstellt einen Raum, Gast tritt mit dem 4-stelligen Code bei.': 'The host creates a room, the guest joins with the 4-letter code.',
     'OSMANISCHES REICH · 1638 · 30 WELLEN': 'OTTOMAN EMPIRE · 1638 · 30 WAVES',
-    'VOXEL RAGE — Janitscharen': 'VOXEL RAGE — Janissaries',
-    '— KONSTANTINOPEL —': '— CONSTANTINOPLE —',
-    'KONSTANTINOPEL': 'CONSTANTINOPLE',
+    'VOXEL RAGE · Janitscharen': 'VOXEL RAGE · Janissaries',
+    'KOSTANTINIYE': 'KOSTANTINIYE',
     'PAUSE': 'PAUSE',
     'BOSS': 'BOSS',
     'HITS': 'HITS',
@@ -57,19 +56,19 @@
       'Thirty waves, ten bosses. You are a Janissary: punch, kick, jump attack, run, grab and throw.',
     'Zehn Distrikte als Map-Runden: drei Abschnitte pro Straße, Tore, Boss am Ende.':
       'Ten districts as map rounds: three sections per street, gates, a boss at the end.',
-    'Drei Leben pro Spieler, alle 2000 Punkte gibt es ein Extraleben dazu —':
-      'Three lives per player, every 2000 points earns an extra life —',
-    'der Fortschritt steht unter dem Punktestand.': 'progress is shown under the score.',
-    'Jede Runde ist eine neue Straße — eigener Look, eigene Musik, eigener Boss.':
-      'Every round is a new street — its own look, its own music, its own boss.',
-    'Im Koop gehst du bei 0 HP erst zu Boden: Bleib beim Partner, dann steht er wieder auf —':
-      'In co-op, at 0 HP you first go down: stay close to your partner and they will get back up —',
+    'Drei Leben pro Spieler, alle 2000 Punkte gibt es ein Extraleben dazu.':
+      'Three lives per player, every 2000 points earns an extra life.',
+    'Der Fortschritt steht unter dem Punktestand.': 'Progress is shown under the score.',
+    'Jede Runde ist eine neue Straße · eigener Look, eigene Musik, eigener Boss.':
+      'Every round is a new street · its own look, its own music, its own boss.',
+    'Im Koop gehst du bei 0 HP erst zu Boden: Bleib beim Partner, dann steht er wieder auf,':
+      'In co-op, at 0 HP you first go down: stay close to your partner and they will get back up,',
     'ohne ein Leben zu verlieren. Allein am Boden kostet es nach 12 s ein Leben.':
       'without losing a life. Down and alone costs a life after 12 s.',
-    'In jeder Runde wartet ein Esel: aufsteigen, hüpfen und mit Fronttritt, Drehtritt':
-      'Every round has a donkey waiting: mount up, hop, and with front kick, spin kick',
-    'oder – bei vollem Balken – dem Superkick austeilen —': 'or — with a full bar — unleash the superkick —',
-    'ein Treffer wirft dich vom Sattel, dann rennt der Esel weg.': 'one hit throws you from the saddle, then the donkey runs off.',
+    'In jeder Runde wartet ein Esel: aufsteigen, hüpfen, mit Fronttritt und Drehtritt zutreten':
+      'Every round has a donkey waiting: mount up, hop, kick with front and spin kicks',
+    'und bei vollem Balken den Superkick austeilen.': 'and unleash the superkick on a full bar.',
+    'Ein Treffer wirft dich vom Sattel, dann rennt der Esel weg.': 'One hit throws you from the saddle, then the donkey runs off.',
     'Greifen packt Gegner am Kragen (weiter weg: Kette); halten, mitlaufen,':
       'Grab seizes enemies by the collar (from further away: chain); hold, walk along,',
     'mit Schlag werfen. Im Sattel: Sprung = Hüpfen, Schlag = Fronttritt,':
@@ -83,8 +82,8 @@
     '; der letzte Treffer ist der Finisher.': '; the last hit is the finisher.',
     'Die Waffe wird sichtbar in der Hand getragen; Schlag-Taste halten = Dauerfeuer mit Mündungsfeuer und Leuchtspur.':
       'The weapon is carried visibly in hand; hold the punch key = automatic fire with muzzle flash and tracers.',
-    'Aufnehmen: zu Fuß mit der Schlag-Taste in Reichweite — nicht beim Laufen.':
-      'Pick up: on foot with the punch key within reach — not while running.',
+    'Aufnehmen: zu Fuß mit der Schlag-Taste in Reichweite · nicht beim Laufen.':
+      'Pick up: on foot with the punch key within reach · not while running.',
     '(Haltbarkeit).': '(durability).',
     '(Munition) ·': '(ammo) ·',
     'Baseballschläger ·': 'Baseball bat ·',
@@ -97,10 +96,10 @@
     /* difficulties */
     'Leicht': 'Easy', 'Normal': 'Normal', 'Hart': 'Hard', 'Albtraum': 'Nightmare',
     'LEICHT': 'EASY', 'NORMAL': 'NORMAL', 'HART': 'HARD', 'ALBTRAUM': 'NIGHTMARE',
-    'Leicht: 14–18 Gegner pro Abschnitt, mehr Beute, sanfter Schaden.': 'Easy: 14–18 enemies per section, more loot, gentler damage.',
-    'Normal: 18–24 Gegner pro Abschnitt, knappe Beute.': 'Normal: 18–24 enemies per section, scarce loot.',
-    'Hart: 24–32 Gegner pro Abschnitt, wenig Beute, härtere Treffer.': 'Hard: 24–32 enemies per section, little loot, harder hits.',
-    'Albtraum: 28–32 Gegner, Elite-Gegner, 3 Boss-Wachen, minimale Beute.': 'Nightmare: 28–32 enemies, elite enemies, 3 boss guards, minimal loot.',
+    'Leicht: 14·18 Gegner pro Abschnitt, mehr Beute, sanfter Schaden.': 'Easy: 14·18 enemies per section, more loot, gentler damage.',
+    'Normal: 18·24 Gegner pro Abschnitt, knappe Beute.': 'Normal: 18·24 enemies per section, scarce loot.',
+    'Hart: 24·32 Gegner pro Abschnitt, wenig Beute, härtere Treffer.': 'Hard: 24·32 enemies per section, little loot, harder hits.',
+    'Albtraum: 28·32 Gegner, Elite-Gegner, 3 Boss-Wachen, minimale Beute.': 'Nightmare: 28·32 enemies, elite enemies, 3 boss guards, minimal loot.',
     /* online / status lines */
     'Verbinde …': 'Connecting …',
     'Verbunden. Warte auf Gegenüber …': 'Connected. Waiting for partner …',
@@ -109,15 +108,15 @@
     'Warte auf den Host …': 'Waiting for the host …',
     'Erst Raum erstellen oder beitreten.': 'Create or join a room first.',
     'Bitte 4-stelligen Code eingeben.': 'Please enter the 4-letter code.',
-    'Gast verbunden — Start drücken.': 'Guest connected — press Start.',
-    'Host verbunden — warte auf Start …': 'Host connected — waiting for start …',
+    'Gast verbunden · Start drücken.': 'Guest connected · press Start.',
+    'Host verbunden · warte auf Start …': 'Host connected · waiting for start …',
     'Server nicht erreichbar.': 'Server unreachable.',
-    'Raum nicht gefunden — Code prüfen oder der Host hat den Raum geschlossen.': 'Room not found — check the code, or the host closed the room.',
+    'Raum nicht gefunden · Code prüfen oder der Host hat den Raum geschlossen.': 'Room not found · check the code, or the host closed the room.',
     'Dieser Raum ist bereits voll (Host + 1 Gast).': 'This room is already full (host + 1 guest).',
-    'Raumcode schon vergeben — bitte neuen Raum erstellen.': 'Room code already taken — please create a new room.',
+    'Raumcode schon vergeben · bitte neuen Raum erstellen.': 'Room code already taken · please create a new room.',
     'Verbindung zum Relay verloren.': 'Connection to the relay lost.',
-    'Relay nicht erreichbar — Verbindung prüfen und erneut versuchen.': 'Relay unreachable — check your connection and try again.',
-    'Online-Bibliothek konnte nicht geladen werden — Seite neu laden.': 'Online library failed to load — reload the page.',
+    'Relay nicht erreichbar · Verbindung prüfen und erneut versuchen.': 'Relay unreachable · check your connection and try again.',
+    'Online-Bibliothek konnte nicht geladen werden · Seite neu laden.': 'Online library failed to load · reload the page.',
     'Nachricht konnte nicht gesendet werden.': 'Message could not be sent.',
     'Raum konnte nicht betreten werden.': 'Could not enter the room.',
     'GAST': 'GUEST',
@@ -129,7 +128,7 @@
     'Standardbelegung wiederhergestellt.': 'Default bindings restored.',
     'TASTE …': 'KEY …',
     'ESC bricht das Belegen ab · P, M, R und ESC bleiben Spieltasten': 'ESC cancels remapping · P, M, R and ESC stay game keys',
-    'ESC ODER P · WEITER': 'ESC OR P · CONTINUE',
+    'ESC · WEITER': 'ESC · CONTINUE',
     'R NEU STARTEN · M MUSIK · KLICK ZUM FORTSETZEN': 'R RESTART · M MUSIC · CLICK TO CONTINUE',
     /* moves / binding labels */
     'Schelle': 'Slap', 'Schlag': 'Punch', 'Kick': 'Kick', 'Sprung': 'Jump',
@@ -211,7 +210,7 @@
     [/^ABSCHNITT (\d+)$/, 'SECTION $1'],
     [/^DISTRIKT (\d+)$/, 'DISTRICT $1'],
     [/^GEGNER (\d+)$/, 'ENEMIES $1'],
-    [/^(\d+) · (.+) — (.+)$/, function (m, n, name, sub) { return n + ' · ' + dict(name) + ' — ' + dict(sub); }],
+    [/^(\d+) · (.+) · (.+)$/, function (m, n, name, sub) { return n + ' · ' + dict(name) + ' · ' + dict(sub); }],
     [/^(.+) BESIEGT$/, '$1 DEFEATED'],
     [/^(.+) AM BODEN$/, '$1 DOWN'],
     [/^(.+) AUSGESCHIEDEN$/, '$1 IS OUT'],
@@ -223,9 +222,9 @@
     [/^GOLD \+(.+)$/, 'GOLD +$1'],
     [/^(.+) FRONTTRITT · (.+) DREHTRITT · (.+) SUPERKICK \(VOLLER BALKEN\)$/, '$1 FRONT KICK · $2 SPIN KICK · $3 SUPERKICK (FULL BAR)'],
     [/^GRIFF · (.+) WIRFT · (.+)\/(.+) DREHT$/, 'GRAB · $1 THROWS · $2/$3 TURNS'],
-    [/^(.+) — GRIFF BEREIT$/, '$1 — GRAB READY'],
-    [/^(.+) — SCHELLE BEREIT$/, '$1 — SLAP READY'],
-    [/^(.+) · (.+) — Taste drücken \(ESC bricht ab\)$/, function (m, a, b) { return dict(a) + ' · ' + dict(b) + ' — press a key (ESC cancels)'; }],
+    [/^(.+) · GRIFF BEREIT$/, '$1 · GRAB READY'],
+    [/^(.+) · SCHELLE BEREIT$/, '$1 · SLAP READY'],
+    [/^(.+) · (.+) · Taste drücken \(ESC bricht ab\)$/, function (m, a, b) { return dict(a) + ' · ' + dict(b) + ' · press a key (ESC cancels)'; }],
     [/^(.+) · (.+) = (.+)$/, function (m, a, b, c) { return dict(a) + ' · ' + dict(b) + ' = ' + c; }],
     [/^(.+) ist für Pause, Musik oder Neustart reserviert\.$/, '$1 is reserved for pause, music or restart.'],
     [/^Verbindungsfehler: (.+)$/, 'Connection error: $1']
@@ -310,7 +309,7 @@
   function apply() {
     document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'de');
     if (lang === 'en' && DICT[document.title]) document.title = DICT[document.title];
-    if (lang === 'de' && document.title === 'VOXEL RAGE — Janissaries') document.title = 'VOXEL RAGE — Janitscharen';
+    if (lang === 'de' && document.title === 'VOXEL RAGE · Janissaries') document.title = 'VOXEL RAGE · Janitscharen';
     walk(document.body);
     refreshSwitches();
   }

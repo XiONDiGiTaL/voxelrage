@@ -1,4 +1,4 @@
-/* ui.js — the web edition's interface layer for VOXEL RAGE.
+/* ui.js · the web edition's interface layer for VOXEL RAGE.
  *
  * Everything here is added on top of the game at runtime, so the game's
  * own files stay untouched (the same rule as net.js and i18n.js):
@@ -35,19 +35,19 @@
     de: {
       pause: 'PAUSE', resume: 'WEITERSPIELEN', restart: 'NEUSTART', controls: 'STEUERUNG',
       music: 'MUSIK', on: 'AN', off: 'AUS', leave: 'VERLASSEN', language: 'SPRACHE',
-      pauseNote: 'ESC ODER P · WEITERSPIELEN    R · NEUSTART    M · MUSIK',
+      pauseNote: 'ESC · WEITERSPIELEN    R · NEUSTART    M · MUSIK',
       controlsTitle: 'STEUERUNG', tabPad: 'CONTROLLER', tabKeys: 'TASTATUR',
       player1: 'SPIELER 1', player2: 'SPIELER 2', reset: 'STANDARD', done: 'FERTIG',
-      hintPad: 'Aktion wählen, dann die Taste am Controller drücken — oder direkt auf den 3D-Button klicken.',
-      hintKeys: 'Aktion wählen, dann die Taste drücken — oder direkt auf die 3D-Taste klicken.',
+      hintPad: 'Aktion wählen, dann die Taste am Controller drücken · oder direkt auf den 3D-Button klicken.',
+      hintKeys: 'Aktion wählen, dann die Taste drücken · oder direkt auf die 3D-Taste klicken.',
       drag: 'Ziehen zum Drehen', listening: 'Warte auf Eingabe …',
-      padConnected: 'Controller verbunden', padNone: 'Kein Controller — anschließen und eine Taste drücken',
+      padConnected: 'Controller verbunden', padNone: 'Kein Controller · anschließen und eine Taste drücken',
       padLabel: 'Controller', reserved: 'ist für Pause, Musik oder Neustart reserviert.',
-      inviteCopy: 'EINLADUNGSLINK KOPIEREN', copied: 'Link kopiert — an den Partner senden.',
-      noRoom: 'Erst einen Raum erstellen.', copyFail: 'Kopieren nicht möglich — Link aus der Adresszeile kopieren.',
+      inviteCopy: 'EINLADUNGSLINK KOPIEREN', copied: 'Link kopiert · an den Partner senden.',
+      noRoom: 'Erst einen Raum erstellen.', copyFail: 'Kopieren nicht möglich · Link aus der Adresszeile kopieren.',
       statusIdle: 'NICHT VERBUNDEN', statusHost: 'RAUM OFFEN', statusGuest: 'WARTE AUF HOST',
       statusReady: 'VERBUNDEN', statusLost: 'VERBINDUNG GETRENNT', statusReconnect: 'VERBINDE NEU …',
-      inviteFound: 'Einladung erkannt — Code übernommen. Auf „Beitreten“ drücken.',
+      inviteFound: 'Einladung erkannt · Code übernommen. Auf „Beitreten“ drücken.',
       hostLeft: 'DER HOST HAT DEN RAUM VERLASSEN',
       hostLeftBody: 'Die Sitzung ist beendet. Zurück ins Menü, um eine neue Runde zu starten.',
       toMenu: 'ZURÜCK ZUM MENÜ', guestLeft: 'Der Gast hat den Raum verlassen.',
@@ -55,10 +55,10 @@
       sound: 'SOUND', volume: 'LAUTSTÄRKE', soundOn: 'Ton an', soundOff: 'Ton aus',
       howTo: 'SO WIRD GESPIELT', setup: 'STEUERUNG EINRICHTEN',
       guideTitle: 'SO WIRD GESPIELT',
-      guideLede: 'Alles, was du auf der Straße brauchst — Tasten, Kombos, Beute und Waffen.',
+      guideLede: 'Alles, was du auf der Straße brauchst · Tasten, Kombos, Beute und Waffen.',
       gtabPlay: 'SPIELPRINZIP',
-      guideKeys: 'Die Tastatur mit der aktuellen Belegung. Gold ist belegt — auf jeder Taste steht, was sie tut. WASD und die Pfeiltasten bewegen immer beide.',
-      guideKeysNote: 'Beide Spieler nutzen dieselbe Belegung — jeder an seiner eigenen Tastatur. Lässt sich im Steuerungsfenster frei umlegen.',
+      guideKeys: 'Die Tastatur mit der aktuellen Belegung. Gold ist Spieler 1, Cyan ist Spieler 2 im lokalen Koop. Auf jeder belegten Taste steht ihre Aktion.',
+      guideKeysNote: 'Spieler 1 bewegt mit WASD und den Pfeiltasten. Spieler 2 im lokalen Koop nutzt den Ziffernblock oder die Zahlenreihe 8 4 6 2 sowie O, P, Semikolon, die eckigen Klammern, Apostroph, Schrägstrich und Backslash. Im Online-Koop tippt jeder die Spieler-1-Belegung. Alles ist im Steuerungsfenster umlegbar.',
       guidePad: 'Ein Standard-Gamepad (Xbox-, DualShock- oder 8BitDo-Layout). Anschließen, Stick bewegen, fertig.',
       guidePadNote: 'Das Pad folgt deinen Tastaturbelegungen: änderst du im Steuerungsfenster eine Taste, ändert sich das Pad mit.',
       clickBind: 'Taste oder Button anklicken zum Belegen',
@@ -67,15 +67,15 @@
       gMove: 'BEWEGUNG', gCombat: 'KAMPF', gGrabTitle: 'GREIFEN &amp; WERFEN', gDonkey: 'DER ESEL',
       gFood: 'VERPFLEGUNG', gWeapons: 'WAFFEN',
       gWalk: 'Laufen', gWalkD: 'Seitwärts und in die Tiefe; der Gehweg ist begehbar.',
-      gRun: 'Rennen', gRunD: 'Taste halten — nach 0,85 s läuft die Figur von selbst.',
+      gRun: 'Rennen', gRunD: 'Taste halten · nach 0,85 s läuft die Figur von selbst.',
       gJump: 'Sprung', gJumpD: 'In der Luft + Schlag wird zum Sprungangriff.',
       gPunch: 'Schlagkette', gPunchD: 'Fünf Schläge in Folge; der fünfte ist der Finisher.',
       gKick: 'Trittkette', gKickD: 'Drei Tritte in Folge; der dritte ist der Roundhouse-Finisher.',
-      gSpecial: 'Osmanische Schelle', gSpecialD: 'Spezial bei vollem Balken — trifft mehrere Gegner.',
+      gSpecial: 'Osmanische Schelle', gSpecialD: 'Spezial bei vollem Balken · trifft mehrere Gegner.',
       gGrab: 'Greifen', gGrabD: 'Am Kragen packen oder mit der Kette heranziehen.',
-      gThrow: 'Werfen', gThrowD: 'Im Griff mit Schlag werfen — trifft weitere Gegner.',
+      gThrow: 'Werfen', gThrowD: 'Im Griff mit Schlag werfen · trifft weitere Gegner.',
       gMount: 'Aufsteigen', gMountD: 'Beim Esel drücken; erneut drücken steigt ab.',
-      gHop: 'Hüpfen', gHopD: 'Sprung im Sattel — in der Luft steuerbar.',
+      gHop: 'Hüpfen', gHopD: 'Sprung im Sattel · in der Luft steuerbar.',
       gFront: 'Fronttritt', gFrontD: 'Schlag im Sattel: 18 Schaden.',
       gSpin: 'Drehtritt', gSpinD: 'Kick im Sattel: 24 Schaden, trifft auch hinter dir.',
       gSuper: 'Superkick', gSuperD: 'Spezial bei vollem Balken: 46 Schaden.',
@@ -92,9 +92,9 @@
         grapple: 'GREIFEN', mount: 'ESEL', throw: 'WERFEN', pause: 'PAUSE', restart: 'NEUSTART',
         left: 'LINKS', right: 'RECHTS', up: 'HOCH', down: 'RUNTER',
       },
-      pauseByYou: 'DU HAST PAUSIERT — DER ANDERE SPIELER WARTET',
-      pauseByP1: 'SPIELER 1 HAT PAUSIERT — DIE RUNDE STEHT FÜR BEIDE',
-      pauseByP2: 'SPIELER 2 HAT PAUSIERT — DIE RUNDE STEHT FÜR BEIDE',
+      pauseByYou: 'DU HAST PAUSIERT · DER ANDERE SPIELER WARTET',
+      pauseByP1: 'SPIELER 1 HAT PAUSIERT · DIE RUNDE STEHT FÜR BEIDE',
+      pauseByP2: 'SPIELER 2 HAT PAUSIERT · DIE RUNDE STEHT FÜR BEIDE',
       pauseSolo: 'DIE RUNDE STEHT',
       keysPitch: 'Tasten gelten für den gewählten Spieler und werden wie im Spiel lokal gespeichert.',
       padPitch: 'Der Controller steuert den lokalen Spieler und folgt automatisch deiner Tastenbelegung.',
@@ -106,19 +106,19 @@
     en: {
       pause: 'PAUSE', resume: 'RESUME', restart: 'RESTART', controls: 'CONTROLS',
       music: 'MUSIC', on: 'ON', off: 'OFF', leave: 'LEAVE', language: 'LANGUAGE',
-      pauseNote: 'ESC OR P · RESUME    R · RESTART    M · MUSIC',
+      pauseNote: 'ESC · RESUME    R · RESTART    M · MUSIC',
       controlsTitle: 'CONTROLS', tabPad: 'CONTROLLER', tabKeys: 'KEYBOARD',
       player1: 'PLAYER 1', player2: 'PLAYER 2', reset: 'DEFAULTS', done: 'DONE',
-      hintPad: 'Pick an action, then press a controller button — or click the 3D button directly.',
-      hintKeys: 'Pick an action, then press the key — or click the 3D key directly.',
+      hintPad: 'Pick an action, then press a controller button · or click the 3D button directly.',
+      hintKeys: 'Pick an action, then press the key · or click the 3D key directly.',
       drag: 'drag to rotate', listening: 'waiting for input …',
-      padConnected: 'Controller connected', padNone: 'No controller — plug one in and press a button',
+      padConnected: 'Controller connected', padNone: 'No controller · plug one in and press a button',
       padLabel: 'Controller', reserved: 'is reserved for pause, music or restart.',
-      inviteCopy: 'COPY INVITE LINK', copied: 'Link copied — send it to your partner.',
-      noRoom: 'Create a room first.', copyFail: 'Copy blocked — copy the link from the address bar.',
+      inviteCopy: 'COPY INVITE LINK', copied: 'Link copied · send it to your partner.',
+      noRoom: 'Create a room first.', copyFail: 'Copy blocked · copy the link from the address bar.',
       statusIdle: 'NOT CONNECTED', statusHost: 'ROOM OPEN', statusGuest: 'WAITING FOR HOST',
       statusReady: 'CONNECTED', statusLost: 'CONNECTION LOST', statusReconnect: 'RECONNECTING …',
-      inviteFound: 'Invite detected — code filled in. Press “Join”.',
+      inviteFound: 'Invite detected · code filled in. Press “Join”.',
       hostLeft: 'THE HOST LEFT THE ROOM',
       hostLeftBody: 'The session ended. Go back to the menu to start a new run.',
       toMenu: 'BACK TO MENU', guestLeft: 'Your partner left the room.',
@@ -126,10 +126,10 @@
       sound: 'SOUND', volume: 'VOLUME', soundOn: 'Sound on', soundOff: 'Sound off',
       howTo: 'HOW TO PLAY', setup: 'SET UP CONTROLS',
       guideTitle: 'HOW TO PLAY',
-      guideLede: 'Everything you need on the street — keys, combos, loot and weapons.',
+      guideLede: 'Everything you need on the street · keys, combos, loot and weapons.',
       gtabPlay: 'THE GAME',
-      guideKeys: 'The keyboard with your current bindings. Gold is bound — every key names what it does. WASD and the arrow keys always move.',
-      guideKeysNote: 'Both players use the same layout — each on their own keyboard. Remap anything in the controls window.',
+      guideKeys: 'The keyboard with your current bindings. Gold is player one, cyan is player two in local co-op. Every bound key carries its action.',
+      guideKeysNote: 'Player one moves with WASD and the arrow keys. Player two in local co-op uses the numpad or the number row 8 4 6 2, plus O, P, semicolon, the bracket keys, apostrophe, slash and backslash. Online, each player types the player-one layout. Everything is remappable in the controls window.',
       guidePad: 'A standard gamepad (Xbox, DualShock or 8BitDo layout). Plug it in, move a stick and it works.',
       guidePadNote: 'The pad follows your key bindings: change a key in the controls window and the pad changes with it.',
       clickBind: 'Click a key or button to bind',
@@ -138,15 +138,15 @@
       gMove: 'MOVEMENT', gCombat: 'COMBAT', gGrabTitle: 'GRAB &amp; THROW', gDonkey: 'THE DONKEY',
       gFood: 'FOOD', gWeapons: 'WEAPONS',
       gWalk: 'Walk', gWalkD: 'Sideways and into depth; the sidewalk is walkable.',
-      gRun: 'Run', gRunD: 'Hold — after 0.85 s the character runs on its own.',
+      gRun: 'Run', gRunD: 'Hold · after 0.85 s the character runs on its own.',
       gJump: 'Jump', gJumpD: 'In the air + punch becomes a dive attack.',
       gPunch: 'Punch chain', gPunchD: 'Five punches in a row; the fifth is the finisher.',
       gKick: 'Kick chain', gKickD: 'Three kicks in a row; the third is the roundhouse finisher.',
-      gSpecial: 'Ottoman Slap', gSpecialD: 'Special with a full meter — hits several enemies.',
+      gSpecial: 'Ottoman Slap', gSpecialD: 'Special with a full meter · hits several enemies.',
       gGrab: 'Grab', gGrabD: 'Seize by the collar, or pull distant targets in with the chain.',
-      gThrow: 'Throw', gThrowD: 'While holding, punch to throw — hits other enemies too.',
+      gThrow: 'Throw', gThrowD: 'While holding, punch to throw · hits other enemies too.',
       gMount: 'Mount', gMountD: 'Press at the donkey; press again to dismount.',
-      gHop: 'Hop', gHopD: 'Jump in the saddle — steerable in the air.',
+      gHop: 'Hop', gHopD: 'Jump in the saddle · steerable in the air.',
       gFront: 'Front kick', gFrontD: 'Punch while mounted: 18 damage.',
       gSpin: 'Spin kick', gSpinD: 'Kick while mounted: 24 damage, also hits behind you.',
       gSuper: 'Superkick', gSuperD: 'Special with a full meter: 46 damage.',
@@ -163,9 +163,9 @@
         grapple: 'GRAB', mount: 'DONKEY', throw: 'THROW', pause: 'PAUSE', restart: 'RESTART',
         left: 'LEFT', right: 'RIGHT', up: 'UP', down: 'DOWN',
       },
-      pauseByYou: 'YOU PAUSED — THE OTHER PLAYER IS WAITING',
-      pauseByP1: 'PLAYER 1 PAUSED — THE ROUND IS HELD FOR BOTH',
-      pauseByP2: 'PLAYER 2 PAUSED — THE ROUND IS HELD FOR BOTH',
+      pauseByYou: 'YOU PAUSED · THE OTHER PLAYER IS WAITING',
+      pauseByP1: 'PLAYER 1 PAUSED · THE ROUND IS HELD FOR BOTH',
+      pauseByP2: 'PLAYER 2 PAUSED · THE ROUND IS HELD FOR BOTH',
       pauseSolo: 'THE ROUND IS HELD',
       keysPitch: 'Keys apply to the chosen player and are stored locally, exactly like in-game.',
       padPitch: 'The controller drives the local player and follows your key bindings automatically.',
@@ -301,7 +301,7 @@
     '.vr-hero-meta{min-width:0;flex:1}',
     '.vr-hero-meta .label{margin-bottom:2px;font-size:8.5px;letter-spacing:.26em}',
     '.vr-hero-meta #pName,.vr-hero-meta #p2Name{margin-bottom:2px;font-size:13px}',
-    /* Both meters share one grid: icon, bar, number — so heart and flame,
+    /* Both meters share one grid: icon, bar, number · so heart and flame,
        bar length and height line up exactly. */
     '.vr-hprow{display:grid;grid-template-columns:15px minmax(0,1fr) 24px;gap:6px;align-items:center;margin:1px 0 2px}',
     '.vr-heart{width:15px;height:15px;flex:0 0 auto;color:var(--ecg,#9dff6b);' +
@@ -1017,7 +1017,7 @@
       r.setAttribute('aria-valuetext', pct + '%');
     });
     global.document.querySelectorAll('.vr-volnum').forEach(function (n) {
-      n.textContent = sound.on ? pct + '%' : '—';
+      n.textContent = sound.on ? pct + '%' : 'MUTE';
     });
   }
   function buildSoundUI() {
@@ -1289,7 +1289,7 @@
       '</g>';
   }
 
-  /* The gamepad: one continuous outline in the style of a modern pad — wide
+  /* The gamepad: one continuous outline in the style of a modern pad · wide
    * shoulders that cradle two slim bumpers, a small raised bridge with the
    * round home button, a plus-shaped D-pad, four face buttons and two sticks —
    * drawn as a single gold hairline over a purple glass body. Mirror-symmetric
@@ -1334,7 +1334,7 @@
       '</g>';
     };
 
-    /* Slim triggers behind, rounded bumpers in front — both hugging the
+    /* Slim triggers behind, rounded bumpers in front · both hugging the
      * shoulder ridge so the pad reads as one piece. */
     /* Shoulders follow the shell: a slim trigger peeking out behind a rounded
      * bumper, both angled with the top-left / top-right edge. */
@@ -1632,7 +1632,7 @@
         value.textContent = global.VoxelPad ? global.VoxelPad.padName(map[action]) : ('B' + map[action]);
       } else {
         var code = b && b.controls && b.controls[ui.player] ? b.controls[ui.player][action] : '';
-        value.textContent = b && b.keyLabel ? b.keyLabel(code) : (code || '—');
+        value.textContent = b && b.keyLabel ? b.keyLabel(code) : (code || '?');
       }
       if (ui.listen && ui.listen.action === action) {
         row.classList.add('listening');
@@ -2027,7 +2027,7 @@
 
     /* The game resumes on any click on #pause; our panel must not let
      * button clicks bubble there. The dim backdrop deliberately does
-     * nothing — the Resume button is the way back. */
+     * nothing · the Resume button is the way back. */
     pauseWrap.addEventListener('click', function (ev) { ev.stopPropagation(); });
     pauseWrap.addEventListener('mousedown', function (ev) { ev.stopPropagation(); });
 
@@ -2353,7 +2353,7 @@
   function installKeyCapture() {
     reservedHandler = function (ev) {
       if (ev.__voxelPad) return;
-      /* Z bestätigt, X bricht ab — auch in den Fenstern. */
+      /* Z bestätigt, X bricht ab · auch in den Fenstern. */
       var isConfirm = ev.code === 'KeyZ';
       var isCancel = ev.code === 'KeyX' || ev.code === 'Escape';
       if (guideOpen()) {
@@ -2364,7 +2364,11 @@
       }
       if (!ui.modal || ui.modal.hidden) {
         var pauseEl = global.document.getElementById('pause');
-        if (!ev.repeat && pauseEl && pauseEl.classList.contains('on') && (isConfirm || isCancel)) {
+        /* Resuming from the pause panel: Z or X. ESC is owned by the game's
+         * own handler, otherwise the same keypress would open and close the
+         * panel in one go (game listener runs first, then this one). */
+        if (!ev.repeat && pauseEl && pauseEl.classList.contains('on') &&
+            (isConfirm || ev.code === 'KeyX')) {
           var pb = bridge();
           ev.preventDefault();
           ev.stopImmediatePropagation();
