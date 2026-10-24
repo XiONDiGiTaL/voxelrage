@@ -108,21 +108,30 @@ if (!index.includes(MODULE_TAG)) {
 }
 index = index.replace(MODULE_TAG, [
   '<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>',
-  '<script src="./net.js?v=6"></script>',
-  '<script src="./i18n.js?v=2"></script>',
-  '<script src="./gamepad.js?v=1"></script>',
-  '<script src="./ui.js?v=3"></script>',
+  '<script src="./net.js?v=7"></script>',
+  '<script src="./i18n.js?v=3"></script>',
+  '<script src="./gamepad.js?v=2"></script>',
+  '<script src="./ui.js?v=4"></script>',
   /* The game module is versioned too: unlike net.js it is patched on
    * every build, and an unversioned URL let a test browser pair a
    * fresh index/net.js with a stale game.js from an earlier deploy
    * (the mix presented exactly like a transport failure). Leap
    * Buddies versions every script for the same reason. */
-  '<script type="module" src="./game.js?v=7"></script>',
+  '<script type="module" src="./game.js?v=8"></script>',
 ].join('\n'));
 await writeFile(path.join(out, 'index.html'), index);
 
 /* ------------------------------- game.js -------------------------------- */
 let game = lf(await readFile(path.join(src, 'game.js'), 'utf8'));
+
+/* Patch 0: version the content import as well. game.js pulls its roster with
+ * a bare './content.js', so a returning browser could otherwise keep the old
+ * module after a deploy even though game.js itself was re-fetched. */
+const CONTENT_IMPORT = "from './content.js'";
+if (!game.includes(CONTENT_IMPORT)) {
+  throw new Error('content import changed upstream: re-check the version patch before publishing');
+}
+game = game.replace(CONTENT_IMPORT, "from './content.js?v=3'");
 if (!game.includes('WebSocket') || !game.includes('/ws')) {
   throw new Error('Networking changed upstream: inspect game.js before publishing');
 }
