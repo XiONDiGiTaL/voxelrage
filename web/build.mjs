@@ -109,9 +109,9 @@ if (!index.includes(MODULE_TAG)) {
 index = index.replace(MODULE_TAG, [
   '<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>',
   '<script src="./net.js?v=7"></script>',
-  '<script src="./i18n.js?v=3"></script>',
+  '<script src="./i18n.js?v=4"></script>',
   '<script src="./gamepad.js?v=2"></script>',
-  '<script src="./ui.js?v=4"></script>',
+  '<script src="./ui.js?v=6"></script>',
   /* The game module is versioned too: unlike net.js it is patched on
    * every build, and an unversioned URL let a test browser pair a
    * fresh index/net.js with a stale game.js from an earlier deploy

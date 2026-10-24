@@ -427,37 +427,48 @@
        carrying a living fire gradient inside its own letters. Ottoman
        hairlines and the diamond sit underneath as the only ornament. */
     '#menu h1{font-family:"Rubik Mono One","Arial Black",ui-sans-serif,sans-serif;font-weight:400;' +
-      'letter-spacing:.015em;line-height:1.16;padding:0 2px .1em;' +
-      'background:linear-gradient(180deg,#fffdf2 0%,#ffedb4 26%,#ffd76e 52%,#e0aa4c 74%,#a4701f 100%);' +
+      'letter-spacing:.015em;line-height:1.16;padding:0 2px .1em;text-shadow:none;' +
+      'background:linear-gradient(180deg,#fffdf4 0%,#fff4cc 20%,#ffd76e 54%,#ffd76e 64%,#dcb05c 100%);' +
       '-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;' +
-      'text-shadow:2px 2px 0 #b07a2a,4px 4px 0 #9a6722,6px 6px 0 #82541c,8px 8px 0 #6a4316,' +
-        '10px 10px 0 #523210,12px 12px 0 #3a220a,18px 20px 28px rgba(0,0,0,.6);' +
-      'filter:drop-shadow(0 0 16px rgba(255,205,110,.34)) drop-shadow(0 0 44px rgba(255,170,60,.2))}',
+      'filter:drop-shadow(3px 4px 0 #40305e) drop-shadow(3px 4px 0 #2e2444) ' +
+        'drop-shadow(0 0 18px rgba(255,215,110,.34)) drop-shadow(0 0 50px rgba(217,180,90,.14))}',
     /* RAGE carries fire inside the glyphs: a vertical flame gradient clipped to
        the letters, slowly rising, with an ember band flickering over it. */
-    '#menu h1 span{position:relative;display:inline-block;isolation:isolate;' +
+    '#menu h1 span{position:relative;display:inline-block;isolation:isolate;text-shadow:none;' +
       '-webkit-text-fill-color:transparent;color:transparent;' +
       'background-image:' +
-        'radial-gradient(60% 38% at 50% 104%,rgba(255,255,235,.92),rgba(255,220,140,.35) 55%,rgba(255,190,90,0) 78%),' +
-        'linear-gradient(0deg,#8f1405 0%,#e32d08 16%,#ff6b0c 38%,#ffa41b 58%,#ffcf5e 76%,#fff4cf 100%);' +
-      'background-size:100% 100%,100% 240%;background-position:50% 100%,50% 92%;background-repeat:no-repeat,no-repeat;' +
+        'radial-gradient(60% 38% at 50% 104%,rgba(255,255,235,.95),rgba(255,225,150,.4) 55%,rgba(255,190,90,0) 78%),' +
+        'linear-gradient(0deg,#a81c07 0%,#ff4a08 14%,#ff7a12 32%,#ffa41b 50%,#ffcf5e 68%,#fff3c4 88%,#fffdf0 100%);' +
+      'background-size:100% 100%,100% 260%;background-position:50% 100%,50% 74%;background-repeat:no-repeat,no-repeat;' +
       '-webkit-background-clip:text;background-clip:text;' +
-      'animation:vrFlame 3.8s ease-in-out infinite;' +
-      'text-shadow:2px 2px 0 #8a2c0c,4px 4px 0 #742407,6px 6px 0 #5c1b05,8px 8px 0 #441203,' +
-        '10px 10px 0 #2e0c02,12px 12px 0 #1c0601,18px 20px 28px rgba(0,0,0,.6);' +
-      'filter:drop-shadow(0 0 12px rgba(255,120,30,.55)) drop-shadow(0 0 34px rgba(255,70,10,.32))}',
-    '#menu h1 span:before{content:"RAGE";position:absolute;left:0;top:0;z-index:-1;' +
-      '-webkit-text-fill-color:#4a1505;color:#4a1505;-webkit-text-stroke:0;animation:none;' +
-      'text-shadow:2px 2px 0 #6a220a,4px 4px 0 #571a06,6px 6px 0 #3f1204,8px 8px 0 #2a0b02,' +
-        '10px 10px 0 #1a0601,18px 20px 28px rgba(0,0,0,.55)}',
+      'animation:vrFlame 3.8s ease-in-out infinite,vrRageGlow 7.6s ease-in-out infinite;' +
+      'filter:drop-shadow(4px 5px 0 #5a1c06) drop-shadow(0 0 12px rgba(255,130,35,.35)) drop-shadow(0 0 26px rgba(255,70,10,.16))}',
+    '#menu h1 span:before{content:"RAGE";position:absolute;left:0;top:0;z-index:0;pointer-events:none;' +
+      'color:transparent;-webkit-text-fill-color:transparent;' +
+      'background-image:' +
+        'radial-gradient(26% 40% at 20% 86%,rgba(255,246,205,.9),rgba(255,170,40,0) 70%),' +
+        'radial-gradient(22% 46% at 42% 92%,rgba(255,252,225,.95),rgba(255,180,50,0) 72%),' +
+        'radial-gradient(26% 42% at 63% 84%,rgba(255,240,190,.85),rgba(255,160,30,0) 70%),' +
+        'radial-gradient(22% 38% at 84% 90%,rgba(255,250,215,.9),rgba(255,175,45,0) 72%);' +
+      'background-size:100% 210%;background-position:50% 108%;background-repeat:no-repeat;' +
+      '-webkit-background-clip:text;background-clip:text;mix-blend-mode:screen;' +
+      'animation:vrTongues 2.9s linear infinite}' +
+    '@keyframes vrTongues{0%{background-position:50% 112%;opacity:.2}15%{opacity:.95}' +
+      '55%{background-position:50% 38%;opacity:.75}100%{background-position:50% -34%;opacity:.15}}' +
     '#menu h1 span:after{content:"RAGE";position:absolute;left:0;top:0;z-index:1;pointer-events:none;' +
       'color:transparent;-webkit-text-fill-color:transparent;' +
-      'background-image:repeating-linear-gradient(0deg,rgba(255,230,150,.75) 0 4px,rgba(255,120,20,.35) 4px 11px,rgba(255,60,0,0) 11px 20px);' +
-      'background-size:100% 220%;background-position:50% 100%;' +
+      'background-image:linear-gradient(0deg,rgba(255,255,220,0) 10%,rgba(255,238,174,.6) 44%,' +
+        'rgba(255,164,54,.22) 62%,rgba(255,90,0,0) 84%);' +
+      'background-size:100% 320%;background-position:50% 110%;' +
       '-webkit-background-clip:text;background-clip:text;mix-blend-mode:screen;' +
-      'animation:vrEmbers 2.2s steps(9) infinite}',
-    '@keyframes vrFlame{0%,100%{background-position:50% 100%,50% 96%}40%{background-position:50% 100%,50% 38%}70%{background-position:50% 100%,50% 68%}}',
-    '@keyframes vrEmbers{0%{background-position:50% 100%;opacity:.55}50%{background-position:50% 30%;opacity:.8}100%{background-position:50% -40%;opacity:.5}}',
+      'animation:vrEmbers 3.4s linear infinite}',
+    '@keyframes vrFlame{0%,100%{background-position:50% 100%,50% 86%}40%{background-position:50% 100%,50% 34%}70%{background-position:50% 100%,50% 58%}}',
+    '@keyframes vrEmbers{0%{background-position:50% 108%;opacity:.35}45%{background-position:50% 46%;opacity:.85}100%{background-position:50% -34%;opacity:.35}}',
+    '@keyframes vrRageGlow{' +
+      '0%,100%{filter:drop-shadow(4px 5px 0 #5a1c06) drop-shadow(0 0 10px rgba(255,130,35,.18)) drop-shadow(0 0 22px rgba(255,70,10,.08))}' +
+      '34%{filter:drop-shadow(4px 5px 0 #5a1c06) drop-shadow(0 0 22px rgba(255,150,40,.55)) drop-shadow(0 0 56px rgba(255,85,10,.3))}' +
+      '54%{filter:drop-shadow(4px 5px 0 #5a1c06) drop-shadow(0 0 36px rgba(255,186,70,1)) drop-shadow(0 0 96px rgba(255,90,10,.6))}' +
+      '76%{filter:drop-shadow(4px 5px 0 #5a1c06) drop-shadow(0 0 18px rgba(255,140,40,.5)) drop-shadow(0 0 44px rgba(255,80,10,.24))}}',
     '#menu h1:after{content:"";display:block;width:min(360px,62%);height:11px;margin-top:12px;' +
       'background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 60 14%27%3E%3Cg fill=%27none%27 stroke=%27%23ffd76e%27 stroke-width=%271.1%27%3E%3Cpath d=%27M18 7 L30 -5 L42 7 L30 19 Z%27 opacity=%27.85%27/%3E%3Cpath d=%27M24 7 L30 1 L36 7 L30 13 Z%27/%3E%3C/g%3E%3C/svg%3E"),' +
       'linear-gradient(90deg,rgba(255,215,110,0),rgba(255,215,110,.55) 18%,rgba(255,215,110,.55) 42%,rgba(255,215,110,0) 44%),' +
@@ -466,6 +477,33 @@
       'background-size:60px 14px,calc(50% - 32px) 2px,calc(50% - 32px) 2px;' +
       'filter:drop-shadow(0 0 8px rgba(255,200,90,.35))}',
     '#menu .lede{font-size:12.5px;letter-spacing:.015em;line-height:1.85;color:#b9b0d8;max-width:780px}',
+
+    /* language pills: the same gold / dull-purple gel as every other button */
+    '.voxel-lang{gap:6px!important}',
+    '.voxel-lang button{position:relative;overflow:hidden;font-family:"Manrope",sans-serif;font-size:10px;' +
+      'font-weight:800;letter-spacing:.18em;' +
+      'min-width:38px;padding:6px 12px;border-radius:999px;cursor:pointer;color:#d8d0ee;' +
+      'background:linear-gradient(180deg,rgba(255,255,255,.17),rgba(255,255,255,.05) 52%,rgba(0,0,0,.2));' +
+      'border:1px solid rgba(255,255,255,.2);' +
+      'box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -10px 16px rgba(0,0,0,.22),0 8px 18px rgba(0,0,0,.28);' +
+      'transition:color .16s,border-color .16s,transform .16s,box-shadow .16s}',
+    '.voxel-lang button:before{content:"";position:absolute;left:8%;right:8%;top:2px;height:44%;' +
+      'border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,0));opacity:.7;pointer-events:none}',
+    '.voxel-lang button:hover{color:#fff;border-color:rgba(255,215,110,.8);transform:translateY(-1px)}',
+    '.voxel-lang button.on{color:#2b1d0a;border-color:rgba(255,238,176,.95);' +
+      'background:linear-gradient(180deg,#fff4cc,#ffd76e 54%,#d9b45a 100%);' +
+      'box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 -8px 12px rgba(120,74,16,.25),' +
+        '0 0 16px rgba(255,215,110,.4),0 6px 14px rgba(0,0,0,.3)}',
+    '.vr-head-right .voxel-lang,.vr-sheet-head .voxel-lang{margin-left:2px}',
+
+    /* aero glass: a soft top sheen and a slow diagonal glare over the shells */
+    '.vr-sheet:after,.vr-pause-panel:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;' +
+      'background:' +
+        'linear-gradient(180deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.06) 13%,rgba(255,255,255,0) 32%,' +
+          'rgba(0,0,0,0) 74%,rgba(0,0,0,.12) 100%),' +
+        'linear-gradient(114deg,rgba(255,255,255,.09) 0%,rgba(255,255,255,.025) 24%,rgba(255,255,255,0) 46%),' +
+        'radial-gradient(120% 55% at 50% -8%,rgba(255,244,214,.1),rgba(255,244,214,0) 62%);' +
+      'box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 -1px 0 rgba(255,255,255,.06)}',
 
     /* ornaments */
     '.vr-corners{position:absolute;inset:0;pointer-events:none;border-radius:inherit;overflow:hidden}',
@@ -540,7 +578,7 @@
 
     /* controls window */
     '.vr-body{padding:0 22px 20px;gap:18px}',
-    '.vr-stage{position:relative;min-height:360px;border-radius:18px;overflow:hidden;' +
+    '.vr-stage{position:relative;min-height:392px;border-radius:18px;overflow:hidden;' +
       'background:radial-gradient(ellipse at 50% 42%,rgba(120,90,190,.18),rgba(8,5,14,.55) 68%);' +
       'border:1px solid rgba(255,255,255,.1);' +
       'box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 -30px 60px rgba(0,0,0,.35)}',
@@ -571,24 +609,26 @@
     '.vkey.is-listen .kt{stroke:#fff;stroke-width:2.2}',
 
     /* SVG controller */
-    '.vr-pad{filter:drop-shadow(0 24px 34px rgba(0,0,0,.5))}',
+    '.vr-pad{filter:drop-shadow(0 18px 26px rgba(0,0,0,.45))}',
     '.vpadbtn{cursor:pointer}',
     '.vpadbtn .pb-base{fill:rgba(0,0,0,.3);stroke:rgba(255,255,255,.08)}',
     '.vpadbtn .pb-top{fill:rgba(255,255,255,.05);stroke:#ffd76e;stroke-width:1.6;transition:fill .15s,stroke .15s}',
-    '.vpadbtn .pb-letter{fill:#ffe9b0;text-anchor:middle;font-family:ui-monospace,Menlo,monospace;font-size:12px;font-weight:700}',
-    '.vpadbtn .pb-act{fill:#a99bd4;text-anchor:middle;font-family:"Manrope",sans-serif;font-size:5.4px;font-weight:800;letter-spacing:.06em}',
+    '.vpadbtn .pb-letter{fill:#ffe9b0;text-anchor:middle;font-family:ui-monospace,Menlo,monospace;font-size:14px;font-weight:700}',
+    '.vpadbtn .pb-act{fill:#b0a3d8;text-anchor:middle;font-family:"Manrope",sans-serif;font-size:6.6px;font-weight:800;letter-spacing:.02em}',
     '.vpadbtn:hover .pb-top{fill:rgba(255,215,110,.16)}',
     '.vpadbtn.is-listen .pb-top{fill:rgba(255,215,110,.3);stroke:#fff}',
     '.vpd path{fill:rgba(255,255,255,.05);stroke:rgba(255,215,110,.5);stroke-width:1.3;stroke-linejoin:round}',
     '.vpd circle{fill:rgba(255,215,110,.5)}',
-    '.vp-label{fill:#8f86b8;text-anchor:middle;font-family:"Manrope",sans-serif;font-size:5.4px;font-weight:700;letter-spacing:.12em}',
+    '.vp-label{fill:#9188bc;text-anchor:middle;font-family:"Manrope",sans-serif;font-size:7.6px;font-weight:700;letter-spacing:.1em}',
     '.vs-base{fill:rgba(0,0,0,.28);stroke:rgba(255,255,255,.1)}',
     '.vs-ring{fill:rgba(255,255,255,.02);stroke:rgba(107,224,255,.5);stroke-width:1.4}',
-    '.vs-dot{fill:rgba(107,224,255,.22)}',
+    '.vs-dome{fill:url(#stickDome)}',
+    '.vs-dot{fill:rgba(107,224,255,.3)}',
     '.vpbumper{cursor:pointer}',
-    '.vpbumper rect{fill:transparent;stroke:transparent;stroke-width:0;transition:fill .15s}',
-    '.vpbumper:hover rect{fill:rgba(255,215,110,.16)}',
-    '.vpbumper.is-listen rect{fill:rgba(255,215,110,.3)}',
+    '.vpbumper rect{fill:rgba(62,46,96,.97);stroke:rgba(255,215,110,.5);stroke-width:1.4;transition:fill .15s,stroke .15s}',
+    '.vpbumper:hover rect{fill:rgba(255,215,110,.2);stroke:#ffd76e}',
+    '.vpbumper.is-listen rect{fill:rgba(255,215,110,.32);stroke:#fff}',
+    '.vp-blabel{fill:#d8cdf2;text-anchor:middle;font-family:ui-monospace,Menlo,monospace;font-weight:700;letter-spacing:.1em;pointer-events:none}',
     '.vpguide,.vpstart{cursor:pointer}',
     '.vpguide:hover circle:first-child,.vpstart:hover rect{fill:rgba(255,215,110,.2)}',
 
@@ -608,7 +648,7 @@
     '.vr-guide-lede{font-size:11px;letter-spacing:.04em;line-height:1.9;color:#b9b0d8;margin:0 0 14px;max-width:860px}',
     '.vr-gdiagram{max-width:860px;margin:0 auto 18px}',
     '.vr-gdiagram svg{width:100%;height:auto;display:block}',
-    '.vr-gdiagram-pad{max-width:600px;margin:0 auto 10px}',
+    '.vr-gdiagram-pad{max-width:470px;margin:0 auto 10px}',
     '.vr-glegend{display:grid;grid-template-columns:1fr 1fr;gap:16px 26px;max-width:860px;margin:0 auto}',
     '@media(max-width:760px){.vr-glegend{grid-template-columns:1fr}}',
     '.vr-legcol h4{font-family:"Cinzel",serif;font-size:10.5px;letter-spacing:.22em;color:#d9b45a;' +
@@ -1289,130 +1329,131 @@
       '</g>';
   }
 
-  /* The gamepad: one continuous outline in the style of a modern pad · wide
-   * shoulders that cradle two slim bumpers, a small raised bridge with the
-   * round home button, a plus-shaped D-pad, four face buttons and two sticks —
-   * drawn as a single gold hairline over a purple glass body. Mirror-symmetric
-   * about x = 460. Clicking any element binds it. */
+  /* The gamepad: the plain silhouette of a dual-stick pad, traced as one
+   * continuous gold hairline over a purple glass body. The crown is flat, the
+   * shoulders roll out into two grips and a deep arch separates them. Every
+   * control sits where a hand would find it: left stick high on the left with
+   * the D-pad below it, the A/B/X/Y diamond on the right, the right stick low
+   * over the arch, LT/LB/RT/RB on the shoulders and Start/Back between them.
+   * Clicking any drawn element binds it. */
   var PAD_OUTLINE =
-    'M392 206C384 208 376 216 374 232C360 228 352 224 344 220C330 214 314 206 300 200' +
-    'C282 192 266 189 252 190C230 190 212 192 200 196C184 202 170 210 166 222' +
-    'C160 236 156 250 156 266C156 288 158 304 162 320C166 340 172 356 178 372' +
-    'C182 392 184 414 186 436C190 470 194 520 200 546C206 572 220 590 244 592' +
-    'C268 594 286 580 292 554C296 528 298 500 304 478C308 468 312 464 320 458' +
-    'C336 446 350 444 362 442C394 434 426 432 460 432C494 432 526 434 558 442' +
-    'C570 444 584 446 600 458C608 464 612 468 616 478C622 500 624 528 628 554' +
-    'C634 580 652 594 676 592C700 590 714 572 720 546C726 520 730 470 734 436' +
-    'C736 414 738 392 742 372C748 356 754 340 758 320C762 304 764 288 764 266' +
-    'C764 250 760 236 754 222C750 210 736 202 720 196C708 192 690 190 668 190' +
-    'C654 189 638 192 620 200C606 206 590 214 576 220C568 224 560 228 546 232' +
-    'C544 216 536 208 528 206Z';
+    'M360 148' +
+    'L472 148' +
+    'C502 150 524 160 538 178' +
+    'C562 208 574 250 582 298' +
+    'C590 348 596 398 592 442' +
+    'C588 484 576 512 550 524' +
+    'C526 535 499 528 489 504' +
+    'C481 485 477 467 469 453' +
+    'C456 433 429 423 402 418' +
+    'C388 415 374 414 360 414' +
+    'C346 414 332 415 318 418' +
+    'C291 423 264 433 251 453' +
+    'C243 467 239 485 231 504' +
+    'C221 528 194 535 170 524' +
+    'C144 512 132 484 128 442' +
+    'C124 398 130 348 138 298' +
+    'C146 250 158 208 182 178' +
+    'C196 160 218 150 248 148' +
+    'Z';
 
   function svgPad(opts) {
     opts = opts || {};
 
     var face = [
-      padButtonSvg(634, 250, 22, 'Y', 'special', 3, false),
-      padButtonSvg(586, 300, 22, 'X', 'kick', 2, false),
-      padButtonSvg(682, 300, 22, 'B', 'jump', 1, false),
-      padButtonSvg(634, 350, 22, 'A', 'punch', 0, false),
+      padButtonSvg(496, 228, 23, 'Y', 'special', 3, false),
+      padButtonSvg(448, 276, 23, 'X', 'kick', 2, false),
+      padButtonSvg(544, 276, 23, 'B', 'jump', 1, false),
+      padButtonSvg(496, 324, 23, 'A', 'punch', 0, false),
     ].join('');
 
     var dpad =
       '<g class="vpd">' +
-        '<path d="M306 396 H334 V416 H360 V444 H334 V464 H306 V444 H280 V416 H306 Z"/>' +
-        '<circle cx="320" cy="430" r="3.6"/>' +
+        '<path d="M237 364 H255 V386 H277 V404 H255 V426 H237 V404 H215 V386 H237 Z"/>' +
+        '<circle cx="246" cy="395" r="3.6"/>' +
       '</g>';
 
     var stick = function (cx, cy, label) {
       return '<g class="vpstick">' +
-        '<circle class="vs-base" cx="' + cx + '" cy="' + (cy + 2) + '" r="42"/>' +
-        '<circle class="vs-ring" cx="' + cx + '" cy="' + cy + '" r="32"/>' +
-        '<circle class="vs-ring" cx="' + cx + '" cy="' + cy + '" r="21" stroke-opacity=".32"/>' +
-        '<circle class="vs-dot" cx="' + cx + '" cy="' + cy + '" r="8"/>' +
-        (label ? '<text class="vp-label" x="' + cx + '" y="' + (cy + 60) + '">' + label + '</text>' : '') +
+        '<circle class="vs-base" cx="' + cx + '" cy="' + (cy + 2) + '" r="' + (label ? 40 : 36) + '"/>' +
+        '<circle class="vs-ring" cx="' + cx + '" cy="' + cy + '" r="' + (label ? 31 : 28) + '"/>' +
+        '<circle class="vs-dome" cx="' + cx + '" cy="' + cy + '" r="' + (label ? 23 : 21) + '"/>' +
+        '<circle class="vs-ring" cx="' + cx + '" cy="' + cy + '" r="' + (label ? 13 : 12) + '" stroke-opacity=".28"/>' +
+        '<circle class="vs-dot" cx="' + cx + '" cy="' + cy + '" r="' + (label ? 6 : 5.4) + '"/>' +
+        (label ? '<text class="vp-label" x="' + cx + '" y="' + (cy + 58) + '">' + label + '</text>' : '') +
       '</g>';
     };
 
-    /* Slim triggers behind, rounded bumpers in front · both hugging the
-     * shoulder ridge so the pad reads as one piece. */
-    /* Shoulders follow the shell: a slim trigger peeking out behind a rounded
-     * bumper, both angled with the top-left / top-right edge. */
-    var bumpers =
-      '<g transform="rotate(-8 251 191)">' +
-        '<rect x="192" y="162" width="124" height="13" rx="6.5" fill="rgba(255,255,255,.06)" stroke="rgba(255,215,110,.3)" stroke-width="1.1"/>' +
-        '<text x="254" y="171.5" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-size="7.5" font-weight="700" fill="#8f86b8" letter-spacing="1">LT</text>' +
-        '<rect x="182" y="178" width="148" height="26" rx="13" fill="rgba(255,255,255,.06)" stroke="rgba(255,215,110,.55)" stroke-width="1.5"/>' +
-        '<text x="256" y="196" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-size="10.5" font-weight="700" fill="#d8cdf2" letter-spacing="1">LB</text>' +
-      '</g>' +
-      '<g transform="rotate(8 669 191)">' +
-        '<rect x="604" y="162" width="124" height="13" rx="6.5" fill="rgba(255,255,255,.06)" stroke="rgba(255,215,110,.3)" stroke-width="1.1"/>' +
-        '<text x="666" y="171.5" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-size="7.5" font-weight="700" fill="#8f86b8" letter-spacing="1">RT</text>' +
-        '<rect x="590" y="178" width="148" height="26" rx="13" fill="rgba(255,255,255,.06)" stroke="rgba(255,215,110,.55)" stroke-width="1.5"/>' +
-        '<text x="664" y="196" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-size="10.5" font-weight="700" fill="#d8cdf2" letter-spacing="1">RB</text>' +
+    /* Triggers and bumpers sit on the shoulders: drawn before the body, so the
+     * shell itself hides their lower edge and they read as one piece. */
+    function shoulder(x1, x2, y1, y2, r, label, ly, fs, pad, act) {
+      return '<g class="vpbumper" data-pad="' + pad + '" data-act="' + act + '">' +
+        '<rect x="' + x1 + '" y="' + y1 + '" width="' + (x2 - x1) + '" height="' + (y2 - y1) + '" rx="' + r + '"/>' +
+        '<text x="' + ((x1 + x2) / 2) + '" y="' + ly + '" class="vp-blabel" font-size="' + fs + '">' + label + '</text>' +
       '</g>';
+    }
 
-    /* Bumpers and triggers are their own click targets, so they sit above the
-     * body stroke rather than inside it. */
-    var bumperHits =
-      '<g class="vpbumper" data-pad="4" data-act="grapple">' +
-        '<rect x="182" y="178" width="148" height="26" rx="13" transform="rotate(-8 251 191)"/>' +
-      '</g>' +
-      '<g class="vpbumper" data-pad="5" data-act="mount">' +
-        '<rect x="590" y="178" width="148" height="26" rx="13" transform="rotate(8 669 191)"/>' +
-      '</g>' +
-      '<g class="vpbumper" data-pad="6" data-act="throw">' +
-        '<rect x="192" y="162" width="124" height="13" rx="6.5" transform="rotate(-8 251 191)"/>' +
-      '</g>' +
-      '<g class="vpbumper" data-pad="7" data-act="sprint">' +
-        '<rect x="604" y="162" width="124" height="13" rx="6.5" transform="rotate(8 669 191)"/>' +
-      '</g>';
+    var shoulders =
+      shoulder(252, 346, 90, 120, 9, 'LT', 109, 7.6, 6, 'throw') +
+      shoulder(240, 356, 122, 158, 14, 'LB', 139, 9.6, 4, 'grapple') +
+      shoulder(374, 468, 90, 120, 9, 'RT', 109, 7.6, 7, 'sprint') +
+      shoulder(364, 480, 122, 158, 14, 'RB', 139, 9.6, 5, 'mount');
 
     var centre =
       '<g class="vpguide" data-pad="9" data-act="pause">' +
-        '<circle cx="460" cy="248" r="15.5" fill="rgba(255,255,255,.05)" stroke="#ffd76e" stroke-width="1.6"/>' +
-        '<circle cx="460" cy="248" r="9" fill="none" stroke="rgba(255,215,110,.5)" stroke-width="1.2"/>' +
-        '<path d="M460 241 l2.6 4.4 4.8 1 -3.4 3.6 0.8 4.9 -4.8 -2.3 -4.8 2.3 0.8 -4.9 -3.4 -3.6 4.8 -1 z" ' +
+        '<circle cx="360" cy="196" r="14" fill="rgba(255,255,255,.05)" stroke="#ffd76e" stroke-width="1.5"/>' +
+        '<path d="M360 190 l2.1 3.6 4 .8 -2.8 3 0.7 4.1 -4 -2 -4 2 0.7 -4.1 -2.8 -3 4 -0.8 z" ' +
           'fill="rgba(255,215,110,.85)"/>' +
       '</g>' +
+      '<text class="vp-label" x="360" y="224">START</text>' +
       '<g class="vpstart" data-pad="8" data-act="restart">' +
-        '<rect x="420" y="304" width="28" height="10" rx="5" fill="rgba(255,255,255,.16)" stroke="rgba(255,255,255,.3)" stroke-width="1"/>' +
-        '<rect x="472" y="304" width="28" height="10" rx="5" fill="rgba(255,255,255,.16)" stroke="rgba(255,255,255,.3)" stroke-width="1"/>' +
-      '</g>';
+        '<circle cx="360" cy="248" r="9" fill="rgba(255,255,255,.08)" ' +
+          'stroke="rgba(255,255,255,.34)" stroke-width="1.3"/>' +
+        '<path d="M356 248 h8" stroke="rgba(255,255,255,.5)" stroke-width="1.4" stroke-linecap="round"/>' +
+      '</g>' +
+      '<text class="vp-label" x="360" y="274">BACK</text>';
 
-    return '<svg class="vr-pad" viewBox="134 136 652 480" role="img" aria-label="' + T('tabPad') + '">' +
+    var seam =
+      '<path d="M148 232 C240 214 480 214 572 232" fill="none" ' +
+        'stroke="rgba(255,255,255,.07)" stroke-width="1.2"/>';
+
+    return '<svg class="vr-pad" viewBox="110 84 500 462" role="img" aria-label="' + T('tabPad') + '">' +
       '<defs>' +
         '<linearGradient id="padFill" x1="0" y1="0" x2="0" y2="1">' +
-          '<stop offset="0" stop-color="#403059" stop-opacity=".97"/>' +
-          '<stop offset=".46" stop-color="#271d3d" stop-opacity=".98"/>' +
-          '<stop offset="1" stop-color="#120d20" stop-opacity=".99"/>' +
+          '<stop offset="0" stop-color="#463469" stop-opacity=".99"/>' +
+          '<stop offset=".46" stop-color="#2a2042" stop-opacity=".99"/>' +
+          '<stop offset="1" stop-color="#150f26" stop-opacity="1"/>' +
         '</linearGradient>' +
         '<linearGradient id="padSheen" x1="0" y1="0" x2="0" y2="1">' +
           '<stop offset="0" stop-color="#ffffff" stop-opacity=".2"/>' +
-          '<stop offset=".5" stop-color="#ffffff" stop-opacity=".03"/>' +
+          '<stop offset=".38" stop-color="#ffffff" stop-opacity=".04"/>' +
           '<stop offset="1" stop-color="#ffffff" stop-opacity="0"/>' +
         '</linearGradient>' +
         '<linearGradient id="padEdge" x1="0" y1="0" x2="0" y2="1">' +
-          '<stop offset="0" stop-color="#ffe9b0"/>' +
+          '<stop offset="0" stop-color="#ffeebd"/>' +
           '<stop offset=".55" stop-color="#ffd76e"/>' +
-          '<stop offset="1" stop-color="#a8722a"/>' +
+          '<stop offset="1" stop-color="#c08f3c"/>' +
         '</linearGradient>' +
-        '<filter id="padGlow" x="-25%" y="-25%" width="150%" height="150%">' +
-          '<feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#000" flood-opacity=".55"/>' +
-          '<feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#ffc861" flood-opacity=".3"/>' +
+        '<radialGradient id="stickDome" cx=".42" cy=".34" r=".72">' +
+          '<stop offset="0" stop-color="#5b4d84" stop-opacity=".9"/>' +
+          '<stop offset=".58" stop-color="#2a2144" stop-opacity=".92"/>' +
+          '<stop offset="1" stop-color="#120d20" stop-opacity=".95"/>' +
+        '</radialGradient>' +
+        '<filter id="padGlow" x="-20%" y="-20%" width="140%" height="150%">' +
+          '<feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity=".5"/>' +
+          '<feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ffc861" flood-opacity=".2"/>' +
         '</filter>' +
       '</defs>' +
+      shoulders +
       '<g filter="url(#padGlow)">' +
         '<path d="' + PAD_OUTLINE + '" fill="url(#padFill)"/>' +
         '<path d="' + PAD_OUTLINE + '" fill="url(#padSheen)"/>' +
-        '<path d="' + PAD_OUTLINE + '" fill="none" stroke="url(#padEdge)" stroke-width="3.2" stroke-linejoin="round"/>' +
-        '<path d="' + PAD_OUTLINE + '" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="1" stroke-linejoin="round" transform="translate(0,2)"/>' +
+        '<path d="' + PAD_OUTLINE + '" fill="none" stroke="url(#padEdge)" stroke-width="2.8" stroke-linejoin="round"/>' +
+        '<path d="' + PAD_OUTLINE + '" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1" stroke-linejoin="round" transform="translate(0,2)"/>' +
       '</g>' +
-      '<path d="M404 240C420 226 440 218 460 218C480 218 500 226 516 240" fill="none" ' +
-        'stroke="rgba(255,215,110,.22)" stroke-width="1.6" stroke-linecap="round"/>' +
-      bumpers + bumperHits +
-      stick(296, 300, 'MOVE') + dpad +
-      stick(550, 396, '') +
+      seam +
+      stick(250, 302, 'MOVE') + dpad +
+      stick(468, 390, '') +
       face + centre +
       '</svg>';
   }

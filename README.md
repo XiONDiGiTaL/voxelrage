@@ -37,10 +37,11 @@ The game itself is [player529](https://github.com/player529/Jannitschar)'s work 
 
 This pass rebuilt the wordmark, the controls and the meters:
 
-- **The wordmark is purple and gold again, and RAGE burns.** A blocky voxel slab with a hard stepped extrusion: VOXEL in a lit gold gradient with a wide ember halo, RAGE carrying a living fire gradient inside its own letters. The flame rises on a slow loop, an ember band flickers across the glyphs, and the only ornament is the Ottoman diamond-and-hairline rule underneath.
+- **The wordmark is purple and gold again, and RAGE burns.** A blocky voxel slab with a hard stepped edge: VOXEL in the same gold as the buttons over a dull-purple extrusion, RAGE carrying a living fire gradient inside its own letters. A soft tongue of light rises through the glyphs on a slow loop while an orange halo breathes out and fades around the word, and the only ornament is the Ottoman diamond-and-hairline rule underneath.
 - **The meters are one system.** Health and special now share a fixed three-column grid — icon, bar, number — so the heart and the new voxel flame, both 15 px, sit at the same x and both bars run the same 186 px at the same height. The flame replaces the old star and reads at 52 px.
-- **The gamepad is a real silhouette.** A wide shell with shoulders that cradle two slim triggers and two rounded bumpers (LT/LB, RT/RB), a raised bridge with the round home button, an asymmetric stick pair, a plus-shaped D-pad and a four-button diamond labelled with its action — one continuous gold hairline over a purple glass body, symmetric about its centre. Clicking any drawn element still binds it.
+- **The gamepad is the plain outline of a real pad.** One continuous gold hairline traces the shell: a flat crown, two shoulders and the deep arch between the grips over a purple glass body. The left stick sits high with the D-pad below it, the A/B/X/Y diamond carries its action on the right, the right stick rests low over the arch, and LT/LB/RT/RB hug the shoulders. Clicking any drawn element still binds it.
 - **One layout per player, no crossfire.** Online, host and guest each play the full player-one layout on their own keyboard, and the guest's bindings travel to the host so the two never read each other's keys. Local co-op gets its own block for player two (`Numpad 8 4 6 2` or `8 4 6 2`, `O` `P`, `;` `[` `]` `'` `/` `\`) that never collides with player one. When player one picks up a controller, the keyboard passes to player two with the player-one layout. `Esc` pauses both players.
+- **Glass and gold.** Every window shell carries a soft aero sheen and a diagonal glare, DE | EN wear the same gold and dull-purple pills as the rest of the interface, and the pause panel, guide and controls window keep one continuous frame.
 - **Menus answer to Z and X.** `Z` confirms (start the battle, resume the pause) and `X` cancels out of any window, alongside `Esc`.
 - **Pause is shared, and says who did it.** In online co-op the round stops for both players and the pause panel names the side that paused it in small caps — including the case where you paused and your partner is waiting.
 - **The 1638 roster.** Byzantine line troops with plumed helmets and chainmail, Greek militia in blue coats and short fur caps, and bare-chested marauders in turbans now hold the street; the old janissary guard is gone. A rare treasurer in a black suit and a tall fur hat shows up once per district, loses his hat on the way down and always leaves gold.
@@ -61,8 +62,8 @@ Captured from the running game, not mock-ups.
 | How to Play: game rules, keycaps and item sprites | Pause menu with sound, guide, display and language |
 | ![Keyboard guide](screenshots/controls-keyboard.png) | ![Controller guide](screenshots/controls-controller.png) |
 | Keyboard diagram, arrows lit as the second movement axis | Controller diagram with the beat-'em-up layout |
-| ![Display filters](screenshots/display-filters.png) | ![1638 street](screenshots/street-1638.png) |
-| Display filters: vignette, CRT, watercolour, cinematic | Covered carts, market stalls and lanterns on cobblestone |
+| ![Display filters](screenshots/display-filters.png) | ![Controls window](screenshots/controls-window.png) |
+| Display filters: vignette, CRT, watercolour, cinematic | Controls window: click a drawn key or pad button to bind it |
 
 ### Combat
 

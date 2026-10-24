@@ -37,10 +37,11 @@ Das Spiel selbst stammt von [player529](https://github.com/player529/Jannitschar
 
 Diese Runde hat Wortzeichen, Steuerung und Balken neu gebaut:
 
-- **Das Wortzeichen ist wieder lila und gold — und RAGE brennt.** Ein blockiger Voxel-Riegel mit hart gestufter Extrusion: VOXEL in einem beleuchteten Goldverlauf mit weitem Glut-Halo, RAGE mit einem lebendigen Feuerverlauf in den eigenen Buchstaben. Die Flamme steigt in einer langsamen Schleife, ein Glutband flackert über die Glyphen, und einziges Ornament ist die osmanische Rauten-Haarlinie darunter.
+- **Das Wortzeichen ist wieder lila und gold, und RAGE brennt.** Ein blockiger Voxel-Riegel mit hart gestufter Kante: VOXEL im selben Gold wie die Buttons über einer matt-lila Extrusion, RAGE mit einem lebendigen Feuerverlauf in den eigenen Buchstaben. Eine weiche Lichtzunge steigt in einer langsamen Schleife durch die Glyphen, während ein orangener Halo um das Wort auf- und wieder abklingt; einziges Ornament ist die osmanische Rauten-Haarlinie darunter.
 - **Die Balken sind ein System.** Leben und Spezial teilen sich jetzt ein festes Drei-Spalten-Raster — Symbol, Balken, Zahl —, sodass Herz und neues Voxel-Flammensymbol, beide 15 px, an derselben Kante sitzen und beide Balken dieselben 186 px in derselben Höhe laufen. Die Flamme ersetzt den alten Stern und bleibt auch bei 52 px lesbar.
-- **Das Gamepad ist eine echte Silhouette.** Ein breites Gehäuse, dessen Schultern zwei schmale Trigger und zwei abgerundete Bumper (LT/LB, RT/RB) tragen, eine erhöhte Brücke mit Rundtaste, ein asymmetrisches Stick-Paar, ein plusförmiges Steuerkreuz und ein Vier-Tasten-Rombus mit Aktionsbeschriftung — eine durchgehende goldene Haarlinie über einem lila Glaskörper, symmetrisch zur Mitte. Jedes gezeichnete Element lässt sich weiterhin anklicken und belegen.
+- **Das Gamepad ist die schlichte Kontur eines echten Pads.** Eine durchgehende goldene Haarlinie zieht das Gehäuse nach: flache Krone, zwei Schultern und der tiefe Bogen zwischen den Griffen über einem lila Glaskörper. Der linke Stick sitzt hoch mit dem Steuerkreuz darunter, rechts trägt das A/B/X/Y-Rombus seine Aktion, der rechte Stick ruht tief über dem Bogen, und LT/LB/RT/RB liegen an den Schultern. Jedes gezeichnete Element lässt sich weiterhin anklicken und belegen.
 - **Eine Belegung pro Spieler, kein Kreuzen.** Online spielen Host und Gast jeweils die volle Spieler-1-Belegung an der eigenen Tastatur, und die Tasten des Gastes gehen an den Host, damit keiner die Eingaben des anderen liest. Lokaler Koop bekommt für Spieler 2 einen eigenen Block (`Num 8 4 6 2` oder `8 4 6 2`, `O` `P`, `;` `[` `]` `'` `/` `\`), der keine Taste von Spieler 1 berührt. Nimmt Spieler 1 einen Controller, wandert die Tastatur mit der Spieler-1-Belegung zu Spieler 2. `Esc` pausiert beide.
+- **Glas und Gold.** Jede Fensterschale trägt einen weichen Aero-Glanz und einen diagonalen Lichtstreifen, DE | EN tragen dieselben Gold- und Mattsilber-Pillen wie der Rest der Oberfläche, und Pause-Panel, Anleitung und Steuerungsfenster behalten einen durchgehenden Rahmen.
 - **Menüs hören auf Z und X.** `Z` bestätigt (Schlacht starten, Pause fortsetzen), `X` bricht jedes Fenster ab — parallel zu `Esc`.
 - **Die Pause ist geteilt und nennt den Verursacher.** Im Online-Koop steht die Runde für beide, und das Pause-Panel schreibt in kleinen Versalien, welche Seite pausiert hat — auch den Fall, dass du pausiert hast und dein Partner wartet.
 - **Die Mannschaft von 1638.** Byzantinische Linientruppen mit Federbuschhelm und Kettenpanzer, griechische Miliz in blauem Rock und kurzer Fellmütze sowie barhäuptige Marodeure mit Turban halten jetzt die Straße; die alte Janitscharenwache ist fort. Ein seltener Schatzwächter im schwarzen Anzug und hoher Pelzmütze taucht einmal pro Distrikt auf, verliert beim Fall seine Mütze und lässt immer Gold liegen.
@@ -61,8 +62,8 @@ Aufgenommen aus dem laufenden Spiel, keine Mock-ups.
 | Spielanleitung: Spielprinzip, Keycaps und Item-Sprites | Pause-Menü mit Sound, Anleitung, Bildschirm und Sprache |
 | ![Tastatur-Anleitung](screenshots/controls-keyboard.png) | ![Controller-Anleitung](screenshots/controls-controller.png) |
 | Tastatur-Diagramm, Pfeile als zweite Bewegungsachse | Controller-Diagramm im Beat-'em-up-Layout |
-| ![Bildschirmfilter](screenshots/display-filters.png) | ![Straße 1638](screenshots/street-1638.png) |
-| Bildschirmfilter: Vignette, CRT, Aquarell, Kinofilm | Planwagen, Marktstände und Laternen auf Kopfsteinpflaster |
+| ![Bildschirmfilter](screenshots/display-filters.png) | ![Steuerungsfenster](screenshots/controls-window.png) |
+| Bildschirmfilter: Vignette, CRT, Aquarell, Kinofilm | Steuerungsfenster: gezeichnete Taste oder Pad-Knopf anklicken zum Belegen |
 
 ### Kampf
 

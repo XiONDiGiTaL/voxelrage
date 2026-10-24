@@ -331,17 +331,13 @@
    * the way Leap Buddies' language buttons do instead of floating in a
    * corner. Marked data-noi18n so the translator never touches it. */
   var switches = [];
+  /* Styled by ui.js as the same gold / dull-purple gel pills the other
+   * buttons use, so DE | EN reads as part of the interface. */
   function paintSwitch(sw) {
-    sw.de.style.cssText = btnStyle(lang === 'de');
-    sw.en.style.cssText = btnStyle(lang === 'en');
+    sw.de.classList.toggle('on', lang === 'de');
+    sw.en.classList.toggle('on', lang === 'en');
     sw.de.setAttribute('aria-pressed', lang === 'de' ? 'true' : 'false');
     sw.en.setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
-  }
-  function btnStyle(active) {
-    return 'font:inherit;font-size:12px;letter-spacing:.1em;padding:6px 11px;cursor:pointer;' +
-      'border:1px solid ' + (active ? '#6be0ff' : '#4a4370') + ';' +
-      'background:' + (active ? '#123a4d' : 'rgba(10,8,32,.85)') + ';' +
-      'color:' + (active ? '#bffcff' : '#8f86b8') + ';';
   }
   function refreshSwitches() {
     for (var i = 0; i < switches.length; i++) paintSwitch(switches[i]);
@@ -359,11 +355,11 @@
     row.setAttribute('aria-label', 'Sprache / Language');
     row.style.cssText = 'display:flex;gap:5px;font-family:inherit;align-items:center;';
     var de = document.createElement('button');
-    de.type = 'button'; de.textContent = 'DE';
+    de.type = 'button'; de.className = 'vr-langbtn'; de.textContent = 'DE';
     de.title = 'Deutsch';
     de.addEventListener('click', function (ev) { ev.preventDefault(); setLang('de'); });
     var en = document.createElement('button');
-    en.type = 'button'; en.textContent = 'EN';
+    en.type = 'button'; en.className = 'vr-langbtn'; en.textContent = 'EN';
     en.title = 'English';
     en.addEventListener('click', function (ev) { ev.preventDefault(); setLang('en'); });
     row.appendChild(de); row.appendChild(en);
