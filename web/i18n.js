@@ -312,53 +312,80 @@
     if (lang === 'en' && DICT[document.title]) document.title = DICT[document.title];
     if (lang === 'de' && document.title === 'VOXEL RAGE — Janissaries') document.title = 'VOXEL RAGE — Janitscharen';
     walk(document.body);
-    renderToggle();
+    refreshSwitches();
   }
 
   function setLang(next) {
+    var before = lang;
     lang = next === 'en' ? 'en' : 'de';
     try { global.localStorage.setItem('voxelrage-lang', lang); } catch (e) {}
     apply();
+    if (before !== lang) {
+      try {
+        global.document.dispatchEvent(new global.CustomEvent('voxel-lang', { detail: { lang: lang } }));
+      } catch (e) {}
+    }
   }
 
-  /* The toggle itself: a DE | EN segmented control, fixed top-right,
-   * styled after the game's menu buttons, marked data-noi18n so the
-   * translator never touches it. */
-  var toggleEl = null;
-  function renderToggle() {
-    if (!toggleEl) return;
-    var btns = toggleEl.querySelectorAll('button');
-    btns[0].style.cssText = btnStyle(lang === 'de');
-    btns[1].style.cssText = btnStyle(lang === 'en');
+  /* The DE | EN switch. The menu and the pause menu each own a slot
+   * (ui.js creates it), so the control lives in the game's own menus
+   * the way Leap Buddies' language buttons do instead of floating in a
+   * corner. Marked data-noi18n so the translator never touches it. */
+  var switches = [];
+  function paintSwitch(sw) {
+    sw.de.style.cssText = btnStyle(lang === 'de');
+    sw.en.style.cssText = btnStyle(lang === 'en');
+    sw.de.setAttribute('aria-pressed', lang === 'de' ? 'true' : 'false');
+    sw.en.setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
   }
   function btnStyle(active) {
-    return 'font:inherit;font-size:12px;letter-spacing:.08em;padding:5px 10px;cursor:pointer;' +
+    return 'font:inherit;font-size:12px;letter-spacing:.1em;padding:6px 11px;cursor:pointer;' +
       'border:1px solid ' + (active ? '#6be0ff' : '#4a4370') + ';' +
       'background:' + (active ? '#123a4d' : 'rgba(10,8,32,.85)') + ';' +
       'color:' + (active ? '#bffcff' : '#8f86b8') + ';';
   }
-  function buildToggle() {
-    toggleEl = document.createElement('div');
-    toggleEl.setAttribute('data-noi18n', '');
-    toggleEl.style.cssText = 'position:fixed;top:10px;right:10px;z-index:60;display:flex;gap:4px;font-family:inherit;';
+  function refreshSwitches() {
+    for (var i = 0; i < switches.length; i++) paintSwitch(switches[i]);
+  }
+  /* attach(hostEl) fills a slot with the control and returns the row. */
+  function attach(hostEl) {
+    if (!hostEl) return null;
+    for (var i = 0; i < switches.length; i++) {
+      if (switches[i].el.parentNode === hostEl) return switches[i].el;
+    }
+    var row = document.createElement('div');
+    row.className = 'voxel-lang';
+    row.setAttribute('data-noi18n', '');
+    row.setAttribute('role', 'group');
+    row.setAttribute('aria-label', 'Sprache / Language');
+    row.style.cssText = 'display:flex;gap:5px;font-family:inherit;align-items:center;';
     var de = document.createElement('button');
     de.type = 'button'; de.textContent = 'DE';
-    de.addEventListener('click', function () { setLang('de'); });
+    de.title = 'Deutsch';
+    de.addEventListener('click', function (ev) { ev.preventDefault(); setLang('de'); });
     var en = document.createElement('button');
     en.type = 'button'; en.textContent = 'EN';
-    en.addEventListener('click', function () { setLang('en'); });
-    toggleEl.appendChild(de); toggleEl.appendChild(en);
-    document.body.appendChild(toggleEl);
-    renderToggle();
+    en.title = 'English';
+    en.addEventListener('click', function (ev) { ev.preventDefault(); setLang('en'); });
+    row.appendChild(de); row.appendChild(en);
+    hostEl.appendChild(row);
+    var sw = { el: row, de: de, en: en };
+    switches.push(sw);
+    paintSwitch(sw);
+    return row;
   }
 
   function init() {
-    buildToggle();
     startObserver();
     apply();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 
-  global.VoxelI18n = { setLang: setLang, getLang: function () { return lang; } };
+  global.VoxelI18n = {
+    setLang: setLang,
+    getLang: function () { return lang; },
+    attach: attach,
+    refresh: refreshSwitches,
+  };
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -1,93 +1,107 @@
+<p align="center">
+  <a href="README.md"><img alt="English" src="https://img.shields.io/badge/EN-English-ffd76e?style=flat-square&labelColor=1a1428"></a>
+  <a href="README_DE.md"><img alt="Deutsch" src="https://img.shields.io/badge/DE-Deutsch-8f86b8?style=flat-square&labelColor=1a1428"></a>
+</p>
+
 # VOXEL RAGE — Janissaries
 
-[Play in your browser: xiondigital.net/voxelrage](https://xiondigital.net/voxelrage/)
+**Play now: [xiondigital.net/voxelrage](https://xiondigital.net/voxelrage/)**
 
-A voxel beat-'em-up set in Ottoman Istanbul. Everything is made of cubes: characters, streets, buildings, and particles. The original local version needs no build step or npm dependencies; Three.js r160 is included locally in `vendor/`. The hosted web edition uses the separate build described below.
+A voxel beat-'em-up set in Ottoman Istanbul. Every character, street, building and particle is built from cubes. This repository is the web edition of [player529/Jannitschar](https://github.com/player529/Jannitschar): the original game, plus hosted online co-op, controller support, in-menu language switching, a full pause menu, a How to Play guide, a voxel HUD and sound controls.
 
-## About this fork and the web edition
+<p align="center">
+  <img src="screenshots/menu.png" alt="Voxel Rage start menu" width="88%">
+</p>
 
-This is the web-hosting fork of [player529/Jannitschar](https://github.com/player529/Jannitschar). Pushing to `main` builds the static web edition and deploys it to GitHub Pages through `.github/workflows/pages.yml`, so the live page follows the tip of `main`—the same setup as Leap Buddies and KankaKombat. Sync this fork with upstream to receive new game versions.
+## What this fork adds
 
-GitHub Pages cannot run the original Node WebSocket relay. For online play in the web edition, `web/` replaces the `/ws` socket with a Supabase Realtime broadcast transport: a public anonymous browser key, isolated `voxelrage-v1-` rooms, and no stored game data. Rooms use four-character codes and support two players. The host's browser runs the authoritative simulation and must stay open. Solo and local co-op require no network connection once the game assets have loaded.
+The game itself is [player529](https://github.com/player529/Jannitschar)'s work and keeps its art direction, combat feel and content. Everything below is layered on top for the web release at xiondigital.net/voxelrage and leaves the original game files untouched — the web layer is attached at build time.
 
-From a local checkout, `node server.js` remains the original way to play online on your own network. See [the web deployment documentation](web/README.md) for details.
+- **Online co-op that actually connects.** Rooms run on the same Supabase Realtime transport as [Leap Buddies](https://github.com/XiONDiGiTaL/leapbuddies): one outbound WebSocket per browser, presence-based membership, host-authoritative play, no ports, no tunnels, no relay to host.
+- **Invite links.** The host's room code is mirrored into the address bar. `Copy invite link` in the menu shares a URL that opens the game with the code already filled in.
+- **Live connection state.** The lobby and pause menu show whether the room is open, who has joined, and whether the relay is reconnecting.
+- **Graceful exits.** If the host leaves mid-run, the guest gets a clear message and a one-click return to the menu instead of a frozen street.
+- **Plug-and-play controllers.** Standard-mapping gamepads work as soon as they are connected, with a beat-'em-up button layout.
+- **3D control configuration.** A compact voxel gamepad with a D-pad, separated ABXY buttons and two sticks, and a 75 % voxel keyboard with a player-two arrow cluster. Both are clickable and show the current bindings; pick an action and press a button or key to remap it.
+- **Language switch in the menus.** DE | EN sits in the main menu and in the pause menu, and the whole interface follows — the same easy switch Leap Buddies uses.
+- **A real pause menu.** Resume, restart, controls, guide, sound, language and leave, drawn in the game's own voxel/noir style.
+- **A How to Play guide.** Keycaps drawn as voxel keys for both players, with the food and weapon pickups shown as voxel sprites next to their values.
+- **A voxel HUD.** A portrait rendered from the character's own head mesh, a pixel heart and an ECG health trace that colours, slows and flattens as health drops — plus a special meter that glows at full charge.
+- **Sound controls and a menu theme.** A muted/volume pair in the menu and pause menu drives the looped menu track and the in-game soundtrack.
 
-This translation changes the documentation, not the in-game interface. Quoted HUD messages and menu labels below are translated into English for explanation. The numerical values and upstream testing limitations are retained.
+## Latest revision
+
+This pass rebuilt the parts of the interface that still looked hand-drawn:
+
+- **HUD portraits are exact sprite renders.** The game's own head group — geometry, hat, band, eyes and moustache — is cloned into a small offscreen scene and rendered once per palette, then cached as an image. The card now shows the same face that walks the street.
+- **The 3D controller was rebuilt.** A compact rounded body with a clean D-pad, four separated face buttons (A / B / X / Y), two analog sticks with accent rings, shoulders and triggers. Face buttons are bound to the actions, so picking Punch and pressing the green button still works.
+- **The 3D keyboard was rebuilt.** Chunky keycaps on a two-tone deck, a player-two arrow cluster, a bottom modifier row with both Shift keys, status LEDs and unlit key labels that stay readable from any angle.
+- **The guide, pause menu, HUD and sound row are captured below** so the README shows the current build instead of an older menu.
 
 ## Screenshots
 
-These are existing game captures included in this repository, not newly generated images.
+Captured from the running game, not mock-ups.
 
-### Street combat
+### Interface
 
-![Voxel Rage street combat](screenshots/voxel-rage-fight.png)
+| | |
+|---|---|
+| ![Start menu](screenshots/menu.png) | ![In-game HUD](screenshots/hud.png) |
+| Start menu with language and sound controls | HUD: sprite portrait, heart, ECG health and special meter |
+| ![How to Play](screenshots/how-to-play.png) | ![Pause menu](screenshots/pause-menu.png) |
+| How to Play with voxel keycaps and item sprites | Pause menu with sound, guide and language |
+| ![Controller configuration](screenshots/controls-controller.png) | ![Keyboard configuration](screenshots/controls-keyboard.png) |
+| 3D controller configuration | 3D keyboard configuration |
 
-### Boss encounter
+### Combat
 
-![Voxel Rage boss encounter](screenshots/voxel-rage-boss.png)
+| | |
+|---|---|
+| ![Street combat](screenshots/voxel-rage-fight.png) | ![Boss encounter](screenshots/voxel-rage-boss.png) |
+| Street combat | Boss encounter |
+| ![Ottoman Slap](screenshots/voxel-rage-special.png) | ![Online co-op](screenshots/online-koop.png) |
+| The Ottoman Slap special | Online co-op |
+| ![Donkey riding](screenshots/donkey-final2.png) | ![Voxel Rage](screenshots/voxel-rage-menu-final.png) |
+| Riding a donkey | Earlier menu capture |
 
-### Ottoman Slap special attack
+More images live in [screenshots/](screenshots/).
 
-![The Ottoman Slap special attack](screenshots/voxel-rage-special.png)
+## Play online
 
-### Online co-op
+1. Open [xiondigital.net/voxelrage](https://xiondigital.net/voxelrage/) in two browsers, or on two devices.
+2. One player picks **Online → Create room (Host)**. A four-character code appears, and the page URL becomes an invite link.
+3. The other player either presses **Copy invite link** and opens it, or picks **Online**, types the code and presses **Join**.
+4. The host presses **Start battle**. Both players enter the same run.
 
-![Voxel Rage online co-op](screenshots/online-koop.png)
+The host's browser runs the simulation and streams about ten snapshots per second; the guest sends inputs and renders. Both tabs must stay open, and the host's browser is the authoritative one. Solo and local co-op need no connection once the page has loaded.
 
-### Riding a donkey
+Rooms are ephemeral Supabase broadcast channels (`voxelrage-v1-<CODE>`) with a public anonymous key; no game data is stored. A room holds exactly one host and one guest — a third browser is told the room is full.
 
-![Donkey riding in Voxel Rage](screenshots/donkey-final2.png)
-
-### Start menu
-
-![Voxel Rage start menu](screenshots/voxel-rage-menu-final.png)
-
-More captures are available in [screenshots/](screenshots/).
-
-## Getting started locally
+## Play locally
 
 ```bash
-node server.js                # http://127.0.0.1:8123 (this computer only)
-node server.js 9000           # use a different port
-node server.js 8123 0.0.0.0   # accessible over your local network; see below
+node server.js                # http://127.0.0.1:8123, this computer only
+node server.js 9000           # another port
+node server.js 8123 0.0.0.0   # reachable on the local network
 ```
 
-Node.js must be installed; the original server was tested with Node 26. The server serves the files and provides the WebSocket relay for online co-op. For the original, unmodified local edition, a static server such as `python -m http.server` is sufficient for solo and local co-op, but not online play. The hosted web edition instead uses the Supabase transport described above.
+`server.js` is the original dependency-free static server and WebSocket relay. On the local network, friends open the printed address, pick Online, and use the room code. For internet play with the original relay, a Cloudflare Tunnel works:
 
-## Playing with friends
+```bash
+cloudflared tunnel --url http://localhost:8123
+```
 
-With the original Node relay, both players must open the same server address in their browsers. Sending someone `index.html` is not enough: the server relays the connection.
+The hosted edition does not need the relay; it uses the Supabase transport described above.
 
-### On the same local Wi-Fi network
+## Modes and difficulty
 
-1. On the host computer, run `node server.js 8123 0.0.0.0`, or `HOST=0.0.0.0 node server.js`. The startup output shows a local network address, for example `http://192.168.1.183:8123`.
-2. If prompted by your firewall on the first run, allow Node.js on private networks.
-3. The host opens that address, selects Online, clicks Create Room (Host), and shares the four-character code. Friends open the same address, select Online, enter the code, and click Join. The host clicks Begin Battle to start.
-4. Keep both the server and the host's browser running throughout the session. The host calculates the simulation; the guest sends inputs.
+| Mode | Players | Notes |
+|---|---|---|
+| Solo | 1 | One Janissary, one keyboard. |
+| Local co-op | 2 | Shared keyboard and a shared camera. |
+| Online | 2 | Host + guest, host-authoritative, invite link or room code. |
 
-### Over the internet, without port forwarding
-
-For the original Node server:
-
-1. Install Cloudflare Tunnel once: `winget install Cloudflare.cloudflared`.
-2. Start the game server, then run `cloudflared tunnel --url http://localhost:8123`. Share the displayed `https://…trycloudflare.com` address and room code with your friends.
-3. Keep the tunnel and `node server.js` running while playing. The tunnel address changes whenever the tunnel restarts. Alternatively, deploy `server.js` to a Node server that supports WebSockets.
-
-Online co-op is designed for two players—host and guest—and is host-authoritative.
-
-For this fork's hosted web edition, players use the browser link at the top of this README and the Online room controls; the separate Node server and tunnel are not used.
-
-## Game modes
-
-At startup, enter player names of your choice, up to 14 characters, and select a mode.
-
-- Solo: one Janissary; a knockout means Game Over, and `R` restarts. See also the lives system described under Features.
-- Local co-op: two players share one keyboard and a camera.
-- Online: the host creates a room and receives a four-character code. The guest enters it to join. The host starts the battle, and both players take part in the same run. The host calculates the simulation; the guest sends inputs and renders snapshots.
-
-## Difficulty
-
-Choose a difficulty before starting. In online co-op, the host's selection applies.
+Choose a difficulty before starting; the host's choice applies to an online run.
 
 | Setting | Easy | Normal | Hard | Nightmare |
 |---|---|---|---|---|
@@ -95,230 +109,157 @@ Choose a difficulty before starting. In online co-op, the host's selection appli
 | Loot per section | 7 | 5 | 4 | 3 |
 | Enemy HP | 85% | 100% | 120% | 135% |
 | Enemy damage | 75% | 100% | 125% | 145% |
-| Reinforcements arrive at | 4 enemies remaining | 5 enemies remaining | 6 enemies remaining | 8 enemies remaining |
-| Drop chance: enemies / props | 22% / 35% | 14% / 22% | 9% / 12% | 6% / 7% |
+| Reinforcements at | 4 left | 5 left | 6 left | 8 left |
 
-The selected difficulty appears in the HUD below the wave indicator. More enemies also means more reinforcements: groups of 3–6 arrive when the section is almost cleared.
-
-Nightmare marks every third spawn as an elite: a golden ground aura, shoulder plates, and a crown, with 70% more health, 30% more damage, 8% more speed, double points, and a higher loot chance. Every boss wave also places three elite bodyguards around the boss—a Guard, Shield Bearer, and Janissary. The objective becomes Defeat the Boss + Guards. The boss remains a boss and does not become an elite.
+Nightmare marks every third spawn as an elite (golden aura, shoulder plates, crown, +70% health) and puts three elite guards around every boss.
 
 ## Controls
 
+### Keyboard (defaults)
+
 | Action | Player 1 | Player 2 |
 |---|---|---|
-| Move horizontally / move into depth | `A`/`D`, `W`/`S` | `←`/`→`, `↑`/`↓` |
-| Punch / use weapon / pick up item | `J` | `,` |
+| Move | `W` `A` `S` `D` | `↑` `←` `↓` `→` |
+| Punch / use weapon / pick up | `J` | `,` |
 | Kick | `K` | `.` |
-| Special: Ottoman Slap | `L` | `/` |
+| Special (Ottoman Slap / Superkick) | `L` | `/` |
 | Jump / donkey hop | `Space` | `Enter` |
-| Run: hold | `Shift` | `Right Shift` |
+| Run (hold) | `Shift` | `Right Shift` |
 | Grab / chain / throw setup | `G` | `;` |
 | Mount / dismount donkey | `E` | `'` |
 
-### Custom key bindings
+`M` toggles music, `R` restarts, `Esc` or `P` pauses. Bindings are stored locally and shared with the host in online co-op.
 
-In the start menu, open Controls → Rebind Keys to reassign every action for either player. Click a binding, then press the desired key. If the key is already assigned, the bindings are swapped rather than duplicated. `Esc` cancels rebinding; Restore Defaults resets everything.
+### Controller (defaults)
 
-Bindings are stored locally in the browser under `voxel-rage-bindings-v1` and synchronized with the host in online co-op. The guest sends their bindings when joining and whenever they change. `P`, `M`, `R`, `Esc`, and function keys remain reserved for pause, music, restart, and browser functions.
+Standard-mapping pads: Xbox-style, DualShock/DualSense, and most 8BitDo and generic pads.
 
-The table above lists the defaults. In-game hints—including the footer, grab markers, loot prompts, donkey sign, and HUD—follow the updated bindings.
+| Action | Button |
+|---|---|
+| Move | Left stick or D-pad |
+| Punch / pick up / fire | A (bottom) |
+| Jump / donkey hop | B (right) |
+| Kick | X (left) |
+| Special | Y (top) |
+| Grab / chain | LB |
+| Mount | RB |
+| Run (hold) | RT |
+| Pause | Start |
+| Restart | Back / View |
 
-### Music, running, and pause
+The pad translates into the game's own key bindings, so remapping a key also remaps the pad, and Player 2 in local co-op still uses the keyboard.
 
-- `M`: toggle music.
-- `R`: restart.
-- Running also starts automatically after 0.85 seconds of walking.
-- `Esc` or `P`: freeze the simulation, snapshots, and music, and show the pause overlay. Press either again, or click, to resume. `R` also restarts from pause.
-- Pausing is disabled in the start menu and during Victory or Game Over.
-- In online co-op, the host pauses for both players. A guest's pause request is forwarded to the host. If the browser captures `Esc`, such as in fullscreen, use `P` instead.
+### How to play
 
-### Sidewalks and aerial attacks
+The start menu has a **How to play** button — the same idea as Leap Buddies' field guide. It opens a two-column guide: movement, combat, grab and throw, the donkey, food and weapons. Every action shows the live key binding for both players as voxel keycaps (gold P1, cyan P2), and each pickup shows a small voxel sprite next to its effect. The guide follows remaps and the selected language, and it is reachable from the pause menu too.
 
-The curb is walkable. Use `W`/`S`, or Player 2's `↑`/`↓`, to step onto the sidewalk. Characters stand 0.3 units higher there, and the camera follows their depth movement. Parked cars block the edge; move between cars to get through.
+### Remapping in 3D
 
-Punch while airborne to perform a jumping attack: a divekick with a shockwave on landing.
+Open **Set up controls** in the start menu, or **Controls** in the pause menu. The window has two tabs:
 
-### Combos
+- **Controller** — a compact voxel gamepad with a D-pad, two sticks and four face buttons labelled A / B / X / Y. Pick an action on the right, then press a button on your pad, or click the 3D button directly. Drag the model to turn it.
+- **Keyboard** — a voxel keyboard with every key lit in gold (P1) or cyan (P2) when it is bound. Pick a player and an action, then press the key or click the 3D key.
 
-While unarmed, the punch button builds a five-hit punch chain, and the kick button builds a three-hit kick chain. Each stage is a distinct technique with its own silhouette, range, and impact—not simply a different angle.
+Bindings swap instead of duplicating, so no key is ever assigned twice. Pad layout is stored under `voxelrage-pad-v1`; keyboard bindings under `voxel-rage-bindings-v1`. Both are local to the browser.
 
-| Stage | Punch | Damage | Range | Movement |
-|---|---|---|---|---|
-| 1 | Left Jab | 8 | 1.95 | Brief chamber, straight from the shoulder, guard held high |
-| 2 | Right Cross | 9 | 2.05 | Hip and heel rotate, with a short step forward |
-| 3 | Uppercut | 11 | 1.90 | Bend the knees, then drive the fist upward toward the chin |
-| 4 | Headbutt | 12 | 1.75 | Fists stay in guard while the head and body thrust forward |
-| 5 | Small Slap | 25 | 2.20 | The hand winds up on the far side and sweeps through toward the camera |
+## Pause menu and language
 
-| Stage | Kick | Damage | Range | Movement |
-|---|---|---|---|---|
-| 1 | Low Kick | 13 | 2.25 | Shallow hip swing, with the foot just above the ground |
-| 2 | High Kick | 17 | 2.65 | The supporting leg straightens as the foot rises to head height |
-| 3 | Roundhouse | 30 | 3.00 | The hip winds up and the extended foot sweeps in an arc |
+`Esc` or `P` freezes the simulation, the snapshots and the music, and opens the pause menu:
 
-The Jab, Cross, Uppercut, and Slap have their own arm curves and fist trails. The Headbutt includes a short step into the enemy. The finisher—the fifth punch or third kick—has its own ring, screen flash, and camera push; the Slap also gets a slapping sound.
+- **Resume** — continue.
+- **Restart** — reset the run.
+- **Controls** — open the 3D control configuration.
+- **How to play** — open the guide.
+- **Leave** — end the session and return to the menu.
+- **Sound** — a speaker toggle and a volume slider under the buttons.
+- **Language** — the same DE | EN switch as the main menu.
 
-The chain remains open for 0.55 seconds after an attack. Taking a hit breaks it, and weapons interrupt it.
+The language choice is stored under `voxelrage-lang` and applies to the whole interface, including HUD updates and status messages, not just the menus.
 
-### Grabbing and throwing
+## HUD
 
-`G` grabs an enemy within reach directly by the collar; the chain pulls in more distant targets. While holding an enemy, the player can walk slowly and turn with `A`/`D`. Press `J` to throw the enemy forward. Bosses cannot be held, but they take chain damage. See Features for detailed distances and damage values.
+Each player card is a voxel panel with a small portrait window of the chosen character, built from that character's own palette, next to the name and lives.
 
-### Ottoman Slap
+The health bar carries a pixel heart and an ECG trace — a scrolling SVG heartbeat mask inside the fill — running through it. The colour and pace follow the health: green above 60 %, yellow in the middle, red below 30 %. As health drops the trace slows down, loses amplitude and flattens toward a flatline, while the heart pulse slows with it. The numeric HP sits beside the bar.
 
-The Ottoman Slap, activated with `L`, is the special attack. A huge open hand emerges from the sleeve, winds up, and sweeps through a wide semicircle. Every enemy hit receives a red handprint, with “ŞAK!” above the impact, plus a hand trail, shockwaves, slow motion, and a solid slapping sound.
+The special meter glows cyan and runs a light sheen through the fill when it is full, so the Ottoman Slap / Superkick is readable at a glance. Weapons show as a highlighted chip under the bars.
 
-It can hit multiple enemies, launch them away, break props, and shake the camera. Hits fill the meter below the health bar. When full, the HUD shows “L — SLAP READY.”
+## Sound
 
-## Features
+A speaker toggle and volume slider sit in the main menu header and in the pause menu. They control:
 
-### Districts, sections, and waves
+- the looped menu theme (`web/assets/menu-theme.mp3`), which plays only while the start menu is up and stops when a run begins,
+- the synthesised district and boss soundtrack, through a volume control added to the music engine by the build,
+- and the game's own sound effects via its mute flag, so the `M` key and the menu toggle stay in agreement.
 
-There are 10 map rounds, or districts, with three sections each: 30 waves in total. A round is one continuous street roughly 340 units long: walk, fight, pass an intermediate gate, and keep moving.
+The choice is stored under `voxelrage-audio-v1` and restored on the next visit. Browsers usually require one click before audio may start; the first interaction unlocks the theme.
 
-Each section has 18–24 enemies on Normal, 14–18 on Easy, 24–32 on Hard, or 28–32 on Nightmare, including the initial group and reinforcements. A section ends only when every enemy is defeated and the gate opens. The boss waits at the end of section three. Defeating the boss opens the exit gate at the far end of the street and starts the next map round.
+## Gameplay
 
-### Downed state and revival in co-op
+**Structure.** Ten districts with three sections each — 30 waves, each a 340-unit street with a gate and a boss at the end. Each district has its own sky, facades, music and boss.
 
-At 0 HP, a co-op player is not immediately knocked out: they lie down for 12 seconds. Their partner only needs to remain within 2.1 units. The golden rescue bar fills in 1.7 seconds, after which the player stands up with 60 HP and two seconds of invulnerability, without losing a life.
+**Combat.** Five-hit punch chain and three-hit kick chain, each stage with its own silhouette and range. Punch in the air for a divekick. The Ottoman Slap special sweeps a wide arc, leaves handprints and fills from landed hits.
 
-If the timer expires, or the partner is already out, a life is consumed as usual. Downed players are not targeted by enemies and cannot attack or move. The HUD counts down the remaining time, for example “HELP 8s,” then shows rescue progress, such as “REVIVING 64%.” Solo has no downed state: reaching 0 HP immediately costs a life.
+**Grabbing.** Grab an enemy by the collar up close, or pull them in with the chain from up to 12.5 units. Walk them around, then throw them into other enemies and props. Bosses cannot be held.
 
-### Shared co-op camera
+**The donkey.** One per map, with hopping, front kick, spin kick and a full-meter superkick. Any hit throws the rider off, and the donkey bolts.
 
-The camera follows the midpoint between the players and pulls back, using the actual projection, until both characters' heads and feet fit within the frame with a margin—even in portrait orientation.
+**Co-op survival.** At 0 HP a co-op player goes down instead of dying; stay close and the rescue bar revives them without losing a life. Solo at 0 HP loses a life immediately. Three lives each, an extra life every 2,000 personal points, separate score rows.
 
-A tether keeps players at most 16 units apart so neither can leave the screen. The leading player stops at that limit, and “TOO FAR AWAY · STAY WITH YOUR PARTNER” appears at most once every 3.5 seconds. The player who moved during that frame is stopped; the other stays where they are. Mounted players bring their donkey with them. The solo camera is unchanged.
+**Enemies.** Ten types with their own windups, reach and behaviour: dash, block, shield, ranged, exploding, elite variants. Health bars appear over wounded enemies, and every hit shows a damage number.
 
-### Three lives per player
+**Loot and destruction.** Döner, Ayran and Gold; pistol, rifle, bazooka, bat, knuckleduster and kusarigama. Cars, lamps, benches and props take staged damage; wrecked cars trigger alarms that distract enemies and call reinforcements.
 
-A knockout costs one life. After six seconds, the player respawns next to their partner in co-op, or at the death location when alone, with 2.4 seconds of invulnerability. At zero lives, that player is eliminated and stays out. In co-op, the other player can continue; Game Over occurs only when both are eliminated.
+**Sound.** Every in-game track is synthesized live in the browser — a sequencer per district and a faster minor-key boss track. The only audio file is the bundled menu theme.
 
-### Separate scores and extra lives
+## Build and deploy
 
-Each player earns their own points: kills count for the player who lands the hit, and gold counts for the player who collects it. The co-op HUD displays two score rows, P1 in gold and P2 in blue, each with its own progress toward an extra life.
+```bash
+node web/build.mjs    # writes dist/
+```
 
-Every 2,000 personal points grants that player an extra life, up to nine. This does not bring eliminated players back. Lives appear as `♥ n` below the player name. Solo shows only the P1 row. The district bonus of +500 goes to both players because both helped clear the street.
+Node 20+, no dependencies. The build:
 
-### Ten enemy types
+- copies `vendor/` and `web/assets/` (menu theme)
+- copies `web/net.js`, `web/i18n.js`, `web/gamepad.js` and `web/ui.js` next to the game
+- copies `content.js` with an asserted patch that gives the music engine a 0–1 volume control
+- injects the supabase-js UMD build and the web scripts into `index.html`
+- patches `game.js` so the classic controls talk to the room transport, maps relay errors to readable messages, and exposes `window.VoxelGame` for the web UI
+- fails loudly if an upstream anchor has moved, instead of publishing a stale patch
 
-Each has its own stats and props: Punk, Runner with a dash, Brute, blocking Guard, Knife Fighter, ranged Gunner, Bomber that explodes when knocked out, Shield Bearer, Ninja, and Janissary.
-
-All enemies visibly wind up and follow through. The striking arm pulls back, the torso twists away, and the weapon glows in the enemy type's color. The follow-through leaves a bright trail, while the impact produces a flash, ring, and dust. Weapons and shields are attached to both arms, with only the camera-facing copy visible so attacks remain readable in either direction. Ranged enemies have a brief recoil instead of a swing.
-
-### Distinct attack styles
-
-Each enemy type has its own attack curve rather than one shared curve:
-
-- Punk and Bomber: wide swing with a 0.52-second windup.
-- Knife Fighter and Ninja: narrow lunging stab with a 0.34-second windup and a tight hit area.
-- Guard and Shield Bearer: forward shield bash with a 0.46-second windup and strong knockback.
-- Brute and Janissary: both fists raised overhead, with a 0.66-second windup.
-- Runner: jumps toward the player's position and hits within a 1.45-unit radius after 0.5 seconds.
-- Gunner: fires even at point-blank range instead of switching to melee.
-
-Hit windows, range, and knockback depend on the style. Bosses use their enemy type's style with a 20% shorter windup.
-
-### Enemy health bars
-
-After the first hit, a small bar appears above an enemy's head, with three quarter-division marks and a gold frame. It fills in proportion to remaining HP and changes color: green above 60%, yellow above 30%, and red below that. Each hit flashes white. Uninjured enemies have no bar. Bosses retain the large HUD bar at the top.
-
-### Damage numbers
-
-Every hit displays its exact damage above the enemy's head. The number rises, pops into view, then fades. Color indicates damage: cream below 15, gold from 15, orange from 30, and red from 50—for example, finishers, the Slap, and the Bazooka.
-
-Textures are cached per number, with at most 48 numbers visible at once. In online co-op, the host includes hits in the snapshot so the guest sees the same numbers.
-
-### Ten bosses
-
-One boss appears per district, always at the end of its third wave. Each has its own name, stats, colors, and a shockwave slam. The boss raises both fists; a warning ring expands on the ground to show the attack's reach; then the impact lands with shockwaves, dust, and screen shake. Move outside the ring to escape.
-
-### Items and pickups
-
-Döner restores 40 HP, Ayran restores 15 HP, and Gold grants 50 points. Depending on difficulty, only 4–7 objects lie in the fighting lane per section, including at least one weapon, a Döner, an Ayran, and Gold.
-
-Items are compact, with models and text at half size, a glowing ring, a light column, and a name label such as “DÖNER.” When within reach, “J / , · PICK UP” appears above only the nearest item so clustered loot does not produce overlapping prompts.
-
-Pick up items on foot using the punch button, `J` or Player 2's `,`, rather than simply walking over them. Enemies and breakable barrels or crates drop loot only occasionally; see Difficulty.
-
-### Destructible streets and car alarms
-
-Cars, streetlamps, benches, trash cans, hydrants, traffic cones, barrels, and crates take damage. Small props break in one hit, lamps and benches need two, and cars need four. Heavy attacks count double; the Ottoman Slap destroys props immediately.
-
-Cars explode, damage nearby enemies, and leave a burned-out wreck with a glowing hood. The car's collision disappears. Its alarm then sounds for 3.6 seconds: red and blue warning lights with columns above the wreck, a two-tone sound, and ground waves every 0.6 seconds. Enemies within 13 units—including bosses—leave the player and run to the wreck at 1.45× speed. The alarm provides a tactical distraction before they return.
-
-The alarm also summons a small reinforcement wave: three enemies, or two during boss waves, appear to the left and right of the wreck in the road, with red and blue rings and an “ALARM · REINFORCEMENTS” banner. They count toward the section and must be defeated.
-
-At most two such squads can arrive per section, separated by 14 seconds. No reinforcements arrive after the section is cleared or between sections. Lamps go out with sparks and glass, leaving a bent pole. Benches splinter into boards on the sidewalk. Props within reach occasionally drop loot, with the chance depending on difficulty.
-
-### Visible damage stages
-
-After each of their three nonfatal hits, cars show more cracks, soot, and smoke. After the second hit, the bumper hangs loose; at the final stage, the hood opens and the cabin sits crooked. Streetlamp glass cracks, the light dims and flickers, and benches splinter, tilt slightly, and release dust. Damage stages remain visible until the prop breaks.
-
-### Weapons
-
-Weapons use ammunition or durability and are picked up with the punch button, `J` or Player 2's `,`:
-
-- Pistol.
-- Rifle with penetrating shots.
-- Bazooka with area damage.
-- Baseball Bat.
-- Brass Knuckles.
-- Kusarigama.
-
-Each weapon lies in the street as its own model with a name label. Once collected, it is visibly held in the player's hand. Hold `J` to fire automatic repeated shots from firearms, complete with muzzle flashes, tracers, and camera recoil. The muzzle flash originates at the barrel.
-
-### Grabbing and throwing: detailed mechanics
-
-`G`, or Player 2's `;`, grabs the nearest enemy. Within 2.4 units, both hands grab the enemy directly by the collar. Farther away, up to 12.5 units, the visible chain pulls the enemy in. A target ring and a “G · GRAB” label mark the target.
-
-While held, the enemy hangs in front of the player, cannot attack, and is dragged along at walking speed. Turning with `A`/`D` moves the enemy with the grip. After 2.6 seconds, the enemy breaks free.
-
-`J`, or Player 2's `,`, throws the enemy: 34 damage on release, an arcing flight that hits other enemies for 22 damage and also hits props, and a small shockwave on landing for 12 damage.
-
-### One donkey per map
-
-A donkey waits at the beginning of every map round, with an “E / ' · RIDE” sign. Press `E`, or Player 2's `'`, to mount and move much faster. Hold `Shift` to gallop.
-
-While mounted, `Space`, or Player 2's `Enter`, triggers a hop. The donkey tucks its legs, jumps, and remains steerable in midair. If already moving, it jumps forward a little. Landing throws up dust and briefly shakes the camera.
-
-Mounted combat uses the donkey's own attacks:
-
-| Action | Default keys | Effect |
-|---|---|---|
-| Front Kick | P1 `J`, P2 `,` | Both front legs strike: 18 damage, short range, fast attack; gains 6 energy |
-| Spinning Kick | P1 `K`, P2 `.` | The hindquarters swing around, hitting enemies behind the rider too: 24 damage in a 2.9-unit radius; gains 9 energy |
-| Superkick | P1 `L`, P2 `/`, with a full meter | Both hind legs strike together toward the target: 46 damage, a wide hit area, strong launch, damage to props, two hoof impacts, and a “SUPERKICK” banner; empties the meter |
-
-If the meter is not full, the special button does nothing. Weapons, the Ottoman Slap, and the chain are inactive while mounted. Any hit on the rider knocks them off, and the donkey gallops away in the opposite direction for the rest of that map.
-
-Dismount voluntarily with `E` to leave the donkey standing so it can be mounted again.
-
-### Music and sound
-
-Each district has its own synthesized track, including its scale, tempo, and bass line. Boss fights use a faster minor-key track. Music is generated live in the browser; there are no audio files.
+`.github/workflows/pages.yml` runs that build on every push to `main` and publishes `dist/` to GitHub Pages, which serves xiondigital.net/voxelrage. `server.js`, screenshots and `.check` never end up in `dist/`.
 
 ## Architecture
 
 | File | Contents |
 |---|---|
-| `index.html` | HUD, start menu, online panel, and all CSS |
-| `game.js` | Three.js scene, character factory, combat, waves, items, networking, and menu |
-| `content.js` | District, enemy, boss, weapon, and item data; 30 waves; music sequencer |
-| `server.js` | Dependency-free static server and WebSocket relay |
-| `vendor/three.module.js` | Three.js r160, MIT license |
-| `web/` | This fork's static web build and Supabase multiplayer transport |
-| `.github/workflows/pages.yml` | This fork's GitHub Pages build and deployment workflow |
+| `index.html` | HUD, start menu, online panel, CSS |
+| `game.js` | Three.js scene, characters, combat, waves, items, host simulation, menu |
+| `content.js` | Districts, enemies, bosses, weapons, items, 30 waves, music sequencer |
+| `server.js` | Original dependency-free static server and WebSocket relay |
+| `vendor/three.module.js` | Three.js r160, MIT |
+| `web/net.js` | Supabase room transport, invite links, connection status |
+| `web/i18n.js` | DE/EN DOM translation and the menu language switches |
+| `web/gamepad.js` | Controller polling, default beat-'em-up map, rebinding |
+| `web/ui.js` | Pause menu, guide, HUD, 3D control configuration, sound, lobby extras |
+| `web/assets/menu-theme.mp3` | Main menu theme |
+| `web/build.mjs` | Build and patch pipeline |
+| `.github/workflows/pages.yml` | GitHub Pages build and deployment |
 
-`window.__voxel` is a development handle exposing players, enemies, `step()`, `startWave()`, `give()`, and network status to help with debugging.
+`window.__voxel` remains the game's development handle. The web layer uses the smaller `window.VoxelGame` bridge (bindings, net state, pause helpers) added by the build.
 
 ## Limitations
 
-- Online co-op is host-authoritative and designed for two players. The guest interpolates host positions at roughly 10 snapshots per second. There is no prediction or lobby list. The donkey is transmitted as a single snapshot containing position, state, kick timing for the Superkick, Front Kick, and Spinning Kick, and hop height. Both clients derive Superkick and Spinning Kick rotation from the corresponding attack time. Mounting and dismounting use the guest's normal action message.
-- The upstream limitations section describes enemy attack poses as a shared procedural windup/follow-through curve, with types distinguished by weapon, color, and speed rather than separate animations. It also states that bosses deal damage only through their slam and normal attack. This older description is retained here, although the Distinct Attack Styles section above describes type-specific attack curves.
-- No gamepad support, persistence, or continues; the upstream summary describes only the six-second co-op respawn. See the detailed lives and revival systems above.
-- Districts are procedurally built variations of the same street, with their own landmarks, colors, and props—not 10 individually modeled levels.
-- The donkey is designed for one attempt per map: after being knocked off, it is gone. Upstream reports that riding was tested in solo and local co-op, but not with two real online clients.
-- Music and sound effects are synthesized; no soundtrack file is included.
+- Online co-op is host-authoritative for two players. The guest interpolates host positions from roughly ten snapshots per second; there is no prediction. The host's browser must stay open for the session to continue.
+- A room holds one host and one guest. There is no lobby list or matchmaking beyond sharing a code or link.
+- Districts are procedural variations of one street with distinct palettes, landmarks and props, not ten hand-modelled levels.
+- The donkey is a single attempt per map; once the rider is knocked off it runs away.
+- The 3D control views need WebGL. If it is unavailable the rest of the game still runs; the 2D key lists stay usable.
+- Music and effects are synthesized in real time, so the mix depends on the browser; the menu theme is a bundled audio file and may need one click before the browser allows playback.
+- The HUD reads the local simulation state, so in online co-op the guest's health card mirrors the host's snapshots.
 
-Documentation consistency note: the upstream Solo summary says a knockout means Game Over, while its detailed lives section describes losing a life and respawning. Both descriptions are retained rather than treating this translation as a gameplay change or a new verification of behavior.
+## Credits
+
+Original game, design and art direction: [player529](https://github.com/player529/Jannitschar) — *Janitscharen / Voxel Rage*. This fork keeps that vision intact and adds the web hosting, online transport, controller support and interface work. Three.js is MIT licensed; see `vendor/three.module.js`.
+
+Main menu theme: *Voxel Rage (Main Menu)*, bundled for this fork as `web/assets/menu-theme.mp3`.

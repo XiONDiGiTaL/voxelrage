@@ -1,23 +1,21 @@
 /* net.js — VOXEL RAGE room transport: a direct adaptation of Leap
  * Buddies' net.js (the transport XiØN's own co-op game runs on,
  * verified live). Same Supabase project, same client options, same
- * presence/broadcast room pattern. The differences are only the ones
- * this game needs:
- *   - channel namespace 'voxelrage-v1-' instead of 'uxs3-'
- *   - 4-letter room codes from the old Node relay's alphabet (the
- *     game UI enforces exactly 4 characters) instead of 5
- *   - the host locks onto the first guest that sends ANY message
- *     (Leap locks on its 'hello'/'pick' handshake; this game's guest
- *     opens with a 'ctrl' message, so first-message-of-any-type is
- *     the equivalent rule here)
- *   - onError reports short keys ('room-not-found', 'relay-timeout',
- *     'relay-unavailable') that the game's patched handleNet maps to
- *     German player texts, instead of Leap's English sentences
+ * presence/broadcast room pattern.
+ *
  * Public interface: Net.makeCode(), Net.host(code, cbs),
- * Net.join(code, cbs), Net.libReady(). Callbacks: onOpen(code),
- * onGuest, onData(obj), onClose, onError(key). Returned handle:
- * send(obj), isOpen(), close(). App messages ride as broadcast
- * payloads tagged __from/__gid; payloads are objects end to end.
+ * Net.join(code, cbs), Net.libReady(), Net.roomFromUrl(),
+ * Net.inviteUrl(code), Net.setRoomParam(code), Net.clearRoomParam().
+ * Callbacks: onOpen(code), onGuest, onData(obj), onClose,
+ * onError(key), onStatus(state) — state is 'connecting' | 'online' |
+ * 'reconnecting' | 'closed'. Returned handle: send(obj), isOpen(),
+ * close(). App messages ride as broadcast payloads tagged __from/__gid;
+ * payloads are objects end to end.
+ *
+ * Room links: the host mirrors its code into the page URL
+ * (?room=CODE) so the address bar is shareable; Net.inviteUrl(code)
+ * returns that same link, and a guest that opens it can join without
+ * retyping. This is Leap Buddies' invite flow, kept uniform.
  *
  * Debug: with ?debug=1 in the page URL, state transitions are logged
  * to an on-page box, mirrored into localStorage ('voxelrage-debug-
@@ -30,6 +28,7 @@
   var SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6d3hwcGl1eGJ5em1taGVja2NlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MjE4MjEsImV4cCI6MjEwMzI5NzgyMX0.fh6AUpeKPDlm4Tr2xXwhf0VdKsRv1A1bZ2s4WFPDMaE';
   var PREFIX = 'voxelrage-v1-';
   var ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var CODE_LEN = 4;
 
   /* ---- debug logging (inert unless ?debug=1) ---- */
   var DEBUG = /[?&]debug=1(&|$)/.test(global.location ? global.location.search : '');
@@ -74,7 +73,7 @@
 
   function makeCode() {
     var s = '';
-    for (var i = 0; i < 4; i++) s += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+    for (var i = 0; i < CODE_LEN; i++) s += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
     return s;
   }
   function libReady() {
@@ -106,6 +105,47 @@
     };
   }
 
+  /* ------------------------------ room links ------------------------------ */
+  function normalizeCode(raw) {
+    return String(raw || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, CODE_LEN);
+  }
+  function roomFromUrl() {
+    try {
+      var p = new global.URLSearchParams(global.location.search);
+      var code = normalizeCode(p.get('room'));
+      return code.length === CODE_LEN ? code : '';
+    } catch (e) { return ''; }
+  }
+  function pageBase() {
+    var loc = global.location;
+    var path = loc.pathname.replace(/index\.html$/i, '');
+    return loc.origin + path;
+  }
+  function inviteUrl(code) {
+    return pageBase() + '?room=' + normalizeCode(code);
+  }
+  function setRoomParam(code) {
+    try {
+      global.history.replaceState(null, '', inviteUrl(code));
+    } catch (e) { /* file:// or blocked history */ }
+  }
+  function clearRoomParam() {
+    try {
+      if (roomFromUrl()) global.history.replaceState(null, '', pageBase());
+    } catch (e) {}
+  }
+
+  function status(cbs, state, detail) {
+    dbg('status: ' + state + (detail ? ' (' + detail + ')' : ''));
+    if (cbs && cbs.onStatus) { try { cbs.onStatus(state, detail); } catch (e) {} }
+    /* The web UI shows relay health without knowing the callbacks. */
+    try {
+      global.dispatchEvent(new global.CustomEvent('voxel-net-status', {
+        detail: { state: state, detail: detail || '' },
+      }));
+    } catch (e) {}
+  }
+
   function host(code, cbs) {
     if (!libReady()) { dbg('host: lib not ready'); cbs.onError && cbs.onError('relay-unavailable'); return null; }
     var client = newClient();
@@ -116,6 +156,7 @@
       config: { broadcast: { self: false }, presence: { key: 'host-' + Math.random().toString(36).slice(2, 9) } }
     });
     dbg('host: channel ' + PREFIX + code);
+    status(cbs, 'connecting');
 
     channel.on('presence', { event: 'sync' }, function () {
       var st = channel.presenceState();
@@ -160,14 +201,26 @@
     });
 
     var relayWatchdog = setTimeout(function () {
-      if (!opened) { dbg('host: relay watchdog fired'); cbs.onError && cbs.onError('relay-timeout'); }
+      if (!opened) { dbg('host: relay watchdog fired'); cbs.onError && cbs.onError('relay-timeout'); status(cbs, 'reconnecting', 'timeout'); }
     }, 20000);
-    channel.subscribe(function (status, err) {
-      dbg('host: subscribe status=' + status + (err ? ' err=' + (err.message || String(err)) : ''));
-      if (status === 'SUBSCRIBED') {
+    channel.subscribe(function (subscribeStatus, err) {
+      dbg('host: subscribe status=' + subscribeStatus + (err ? ' err=' + (err.message || String(err)) : ''));
+      if (subscribeStatus === 'SUBSCRIBED') {
         clearTimeout(relayWatchdog);
         channel.track({ role: 'host' });
-        if (!opened) { opened = true; dbg('host: open, code=' + code); cbs.onOpen && cbs.onOpen(code); }
+        if (!opened) {
+          opened = true;
+          dbg('host: open, code=' + code);
+          setRoomParam(code);
+          status(cbs, 'online');
+          cbs.onOpen && cbs.onOpen(code);
+        } else {
+          status(cbs, 'online');
+        }
+      } else if (subscribeStatus === 'CHANNEL_ERROR' || subscribeStatus === 'TIMED_OUT') {
+        if (opened) status(cbs, 'reconnecting', subscribeStatus);
+      } else if (subscribeStatus === 'CLOSED') {
+        status(cbs, 'closed');
       }
       /* CHANNEL_ERROR / TIMED_OUT: the client retries with backoff;
        * the watchdog above reports only a persistent failure. */
@@ -176,6 +229,8 @@
     var handle = wrap(client, channel, function () { return !!guestKey; });
     var rawSend = handle.send;
     handle.send = function (obj) { obj.__from = 'host'; rawSend(obj); };
+    var rawClose = handle.close;
+    handle.close = function () { opened = false; status(cbs, 'closed'); clearTimeout(relayWatchdog); rawClose(); };
     return handle;
   }
 
@@ -190,9 +245,10 @@
       config: { broadcast: { self: false }, presence: { key: myKey } }
     });
     dbg('join: channel ' + PREFIX + code + ' as ' + myKey);
+    status(cbs, 'connecting');
 
     var notFoundTimer = setTimeout(function () {
-      if (!opened) { dbg('join: room-not-found timer fired'); cbs.onError && cbs.onError('room-not-found'); }
+      if (!opened) { dbg('join: room-not-found timer fired'); cbs.onError && cbs.onError('room-not-found'); status(cbs, 'closed', 'not-found'); }
     }, 12000);
 
     function hostPresence() {
@@ -204,9 +260,14 @@
       if (has && !hostSeen) {
         hostSeen = true;
         clearTimeout(notFoundTimer);
-        if (!opened) { opened = true; dbg('join: open (host presence), code=' + code); cbs.onOpen && cbs.onOpen(code); }
+        if (!opened) {
+          opened = true;
+          dbg('join: open (host presence), code=' + code);
+          status(cbs, 'online');
+          cbs.onOpen && cbs.onOpen(code);
+        }
       }
-      if (!has && hostSeen) { hostSeen = false; dbg('join: host left'); cbs.onClose && cbs.onClose(); }
+      if (!has && hostSeen) { hostSeen = false; dbg('join: host left'); status(cbs, 'closed', 'host-left'); cbs.onClose && cbs.onClose(); }
     });
     channel.on('broadcast', { event: 'msg' }, function (m) {
       var d = m && m.payload;
@@ -216,6 +277,7 @@
         else {
           dbg('join: room full (seat held by another guest)');
           cbs.onError && cbs.onError('room-full');
+          status(cbs, 'closed', 'room-full');
           try { handle.close(); } catch (e) {}
         }
         return;   // lock notes are transport-level, not game data
@@ -223,21 +285,31 @@
       if (!hostSeen) {
         hostSeen = true;
         clearTimeout(notFoundTimer);
-        if (!opened) { opened = true; dbg('join: open (host data), code=' + code); cbs.onOpen && cbs.onOpen(code); }
+        if (!opened) {
+          opened = true;
+          dbg('join: open (host data), code=' + code);
+          status(cbs, 'online');
+          cbs.onOpen && cbs.onOpen(code);
+        }
       }
       cbs.onData && cbs.onData(d);
     });
 
     var subscribed = false;
     var relayWatchdog = setTimeout(function () {
-      if (!subscribed) { dbg('join: relay watchdog fired'); cbs.onError && cbs.onError('relay-timeout'); }
+      if (!subscribed) { dbg('join: relay watchdog fired'); cbs.onError && cbs.onError('relay-timeout'); status(cbs, 'reconnecting', 'timeout'); }
     }, 20000);
-    channel.subscribe(function (status, err) {
-      dbg('join: subscribe status=' + status + (err ? ' err=' + (err.message || String(err)) : ''));
-      if (status === 'SUBSCRIBED') {
+    channel.subscribe(function (subscribeStatus, err) {
+      dbg('join: subscribe status=' + subscribeStatus + (err ? ' err=' + (err.message || String(err)) : ''));
+      if (subscribeStatus === 'SUBSCRIBED') {
         subscribed = true;
         clearTimeout(relayWatchdog);
         channel.track({ role: 'guest' });
+        if (opened) status(cbs, 'online', 'resubscribed');
+      } else if (subscribeStatus === 'CHANNEL_ERROR' || subscribeStatus === 'TIMED_OUT') {
+        if (opened) status(cbs, 'reconnecting', subscribeStatus);
+      } else if (subscribeStatus === 'CLOSED') {
+        status(cbs, 'closed');
       }
       /* CHANNEL_ERROR / TIMED_OUT: the client retries with backoff;
        * the watchdog above reports only a persistent failure. */
@@ -246,9 +318,15 @@
     var handle = wrap(client, channel, function () { return opened; });
     var rawSend = handle.send;
     handle.send = function (obj) { obj.__from = 'guest'; obj.__gid = gid; rawSend(obj); };
+    var rawClose = handle.close;
+    handle.close = function () { status(cbs, 'closed'); clearTimeout(notFoundTimer); clearTimeout(relayWatchdog); rawClose(); };
     return handle;
   }
 
-  global.Net = { makeCode: makeCode, host: host, join: join, libReady: libReady };
-  dbg('net.js v4 loaded (Leap adaptation); libReady=' + libReady());
+  global.Net = {
+    makeCode: makeCode, host: host, join: join, libReady: libReady,
+    roomFromUrl: roomFromUrl, inviteUrl: inviteUrl,
+    setRoomParam: setRoomParam, clearRoomParam: clearRoomParam,
+  };
+  dbg('net.js v6 loaded (Leap adaptation + invite links); libReady=' + libReady());
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -5,7 +5,10 @@
 // fresh upstream checkout); if ../upstream exists it is used by default.
 // Produces ../dist, ready to publish under /voxelrage/:
 //
-//   - content.js and vendor/ are copied unchanged
+//   - content.js is copied with one asserted patch that adds a volume
+//     control to the music engine (the sound slider needs it), vendor/
+//     is copied unchanged, and web/assets/ (menu theme) is copied to
+//     dist/assets/
 //   - dist/index.html gets two classic <script> tags inserted before
 //     the game's module script — first the supabase-js UMD build from
 //     the same jsDelivr URL Leap Buddies uses, then ./net.js (Leap
@@ -20,8 +23,14 @@
 //     If upstream wording changes, the build fails loudly instead of
 //     publishing a stale patch.
 //   - dist/net.js is a straight copy of web/net.js, dist/i18n.js of
-//     web/i18n.js (the DE/EN language toggle); dist/debug.html
-//     renders the transport's ?debug=1 log from localStorage.
+//     web/i18n.js (the DE/EN language toggle), dist/gamepad.js of
+//     web/gamepad.js (controller input) and dist/ui.js of web/ui.js
+//     (voxel pause menu, 3D controller/keyboard config, online lobby
+//     extras); dist/debug.html renders the transport's ?debug=1 log
+//     from localStorage.
+//   - dist/game.js additionally gets the bridge block appended at the
+//     end: window.VoxelGame exposes the few internals ui.js and
+//     gamepad.js read (bindings, net state, pause helpers).
 //
 // The upstream game itself is never modified; server.js stays the way
 // to play online from a local checkout.
@@ -46,34 +55,74 @@ for (const required of ['index.html', 'content.js', 'game.js', 'vendor/three.mod
 
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
-for (const file of ['content.js', 'vendor']) {
-  await cp(path.join(src, file), path.join(out, file), { recursive: true });
+await cp(path.join(src, 'vendor'), path.join(out, 'vendor'), { recursive: true });
+await cp(path.join(webDir, 'assets'), path.join(out, 'assets'), { recursive: true });
+
+/* Normalize line endings before any patch: the anchors below are written
+ * with \n, and a Windows checkout (autocrlf) would otherwise turn this
+ * build into a false "upstream changed" failure. Output uses LF. */
+const lf = (text) => text.replace(/\r\n/g, '\n');
+
+/* ------------------------------ content.js ------------------------------ */
+/* Volume control for the synthesised soundtrack. The game only knows
+ * muted/unmuted; the sound slider in the menus needs a real level, so the
+ * music engine learns setVolume() here. Anchored, like the game patches. */
+let content = lf(await readFile(path.join(src, 'content.js'), 'utf8'));
+const VOLUME_DECL_ANCHOR = '  let step = 0;\n  let nextTime = 0;';
+if (!content.includes(VOLUME_DECL_ANCHOR)) {
+  throw new Error('createMusic state changed upstream: re-check the volume patch');
 }
+content = content.replace(VOLUME_DECL_ANCHOR, VOLUME_DECL_ANCHOR + '\n  let volume = 1;\n  let isMuted = false;');
+
+const GAIN_ANCHOR = '    master.gain.value = 0.16;';
+if (!content.includes(GAIN_ANCHOR)) {
+  throw new Error('music master gain changed upstream: re-check the volume patch');
+}
+content = content.replace(GAIN_ANCHOR, '    master.gain.value = isMuted ? 0 : 0.16 * volume;');
+
+const MUTE_METHOD_ANCHOR = '    setMuted(muted) {\n      if (master) master.gain.value = muted ? 0 : 0.16;\n    },';
+if (!content.includes(MUTE_METHOD_ANCHOR)) {
+  throw new Error('music setMuted changed upstream: re-check the volume patch');
+}
+content = content.replace(MUTE_METHOD_ANCHOR, `    setMuted(muted) {
+      isMuted = !!muted;
+      if (master) master.gain.value = isMuted ? 0 : 0.16 * volume;
+    },
+    /* Added by web/build.mjs: 0..1 level for the menus' sound slider. */
+    setVolume(v) {
+      volume = Math.max(0, Math.min(1, Number(v) || 0));
+      if (master && !isMuted) master.gain.value = 0.16 * volume;
+    },`);
+await writeFile(path.join(out, 'content.js'), content);
 await cp(path.join(webDir, 'net.js'), path.join(out, 'net.js'));
 await cp(path.join(webDir, 'i18n.js'), path.join(out, 'i18n.js'));
+await cp(path.join(webDir, 'gamepad.js'), path.join(out, 'gamepad.js'));
+await cp(path.join(webDir, 'ui.js'), path.join(out, 'ui.js'));
 await cp(path.join(webDir, 'debug.html'), path.join(out, 'debug.html'));
 
 /* ------------------------------ index.html ------------------------------ */
-let index = await readFile(path.join(src, 'index.html'), 'utf8');
+let index = lf(await readFile(path.join(src, 'index.html'), 'utf8'));
 const MODULE_TAG = '<script type="module" src="./game.js"></script>';
 if (!index.includes(MODULE_TAG)) {
   throw new Error('index.html module tag changed upstream: re-check the script injection before publishing');
 }
 index = index.replace(MODULE_TAG, [
   '<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>',
-  '<script src="./net.js?v=5"></script>',
-  '<script src="./i18n.js?v=1"></script>',
+  '<script src="./net.js?v=6"></script>',
+  '<script src="./i18n.js?v=2"></script>',
+  '<script src="./gamepad.js?v=1"></script>',
+  '<script src="./ui.js?v=1"></script>',
   /* The game module is versioned too: unlike net.js it is patched on
    * every build, and an unversioned URL let a test browser pair a
    * fresh index/net.js with a stale game.js from an earlier deploy
    * (the mix presented exactly like a transport failure). Leap
    * Buddies versions every script for the same reason. */
-  '<script type="module" src="./game.js?v=4"></script>',
+  '<script type="module" src="./game.js?v=5"></script>',
 ].join('\n'));
 await writeFile(path.join(out, 'index.html'), index);
 
 /* ------------------------------- game.js -------------------------------- */
-let game = await readFile(path.join(src, 'game.js'), 'utf8');
+let game = lf(await readFile(path.join(src, 'game.js'), 'utf8'));
 if (!game.includes('WebSocket') || !game.includes('/ws')) {
   throw new Error('Networking changed upstream: inspect game.js before publishing');
 }
@@ -189,6 +238,44 @@ game = game.replace(READYSTATE_GUARD, 'net.live');
 if (game.includes('new WebSocket')) {
   throw new Error('game.js still constructs a WebSocket after patching: transport replacement incomplete');
 }
+
+/* Bridge: the web layer (ui.js, gamepad.js) reads the game's bindings and
+ * pause state through this one object instead of reaching into the module.
+ * Appended at the end so every declaration it names already exists. */
+const BRIDGE = `
+/* ---- web layer bridge (added by web/build.mjs) ---- */
+window.VoxelGame = {
+  get controls() { return CONTROLS; },
+  get defaultControls() { return DEFAULT_CONTROLS; },
+  get net() { return net; },
+  get started() { return started; },
+  get paused() { return paused; },
+  get muted() { return muted; },
+  get mode() { return mode; },
+  get music() { return music; },
+  /* Sound menu: the game's own mute flag plus the track restart rules,
+   * so the UI toggle behaves exactly like the M key. */
+  setAudioMuted(v) {
+    muted = !!v;
+    music.setMuted(muted);
+    if (muted) music.stop();
+    else { currentTrackKey = null; playTrackForWave(); }
+  },
+  keyLabel,
+  isReservedBind,
+  saveBindings,
+  refreshBindingUI,
+  applyControls,
+  setPaused,
+  togglePause,
+  setDifficulty,
+  startGame,
+};
+`;
+if (!game.includes('const CONTROLS = DEFAULT_CONTROLS.map')) {
+  throw new Error('CONTROLS declaration changed upstream: re-check the web bridge');
+}
+game += BRIDGE;
 
 await writeFile(path.join(out, 'game.js'), game);
 await writeFile(path.join(out, '.nojekyll'), '');
