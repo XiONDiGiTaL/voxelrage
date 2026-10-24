@@ -22,27 +22,29 @@ Das Spiel selbst stammt von [player529](https://github.com/player529/Jannitschar
 - **Live-Verbindungsstatus.** Lobby und Pause-Menü zeigen, ob der Raum offen ist, wer beigetreten ist und ob der Relay gerade neu verbindet.
 - **Saubere Ausstiege.** Verlässt der Host mitten im Lauf den Raum, bekommt der Gast eine klare Meldung und mit einem Klick den Weg zurück ins Menü statt einer eingefrorenen Straße.
 - **Plug-and-play-Controller.** Gamepads mit Standardbelegung funktionieren sofort nach dem Anschließen, mit einer für Beat-'em-ups passenden Tastenbelegung.
-- **Steuerungsdiagramme.** Ein leuchtendes Controller-Outline und eine vollständige 75-%-Tastatur, beide an die aktuelle Belegung gebunden: Jede belegte Taste trägt ihre Aktion, Spieler 1 in Gold und Spieler 2 in Türkis. Im Steuerungsfenster lassen sich Tasten und Buttons direkt anklicken und neu belegen.
+- **Steuerungsdiagramme.** Ein leuchtendes Controller-Outline und eine vollständige 75-%-Tastatur, beide an die aktuelle Belegung gebunden: Jede belegte Taste trägt ihre Aktion, und der Pfeilblock leuchtet als zweite Bewegungsachse. Im Steuerungsfenster lassen sich Tasten und Buttons direkt anklicken und neu belegen.
 - **Eine Anleitung mit Reitern.** Tastatur, Controller und Spielprinzip in einem scrollbaren Fenster, mit Voxel-Keycaps, Controller-Diagramm und Döner und Waffen als Voxel-Sprites.
 - **Sprachumschaltung in den Menüs.** DE | EN sitzt im Hauptmenü und im Pause-Menü, und die gesamte Oberfläche folgt — derselbe einfache Wechsel wie in Leap Buddies.
 - **Ein echtes Pause-Menü.** Weiter, Neustart, Steuerung, Anleitung, Bildschirmfilter, Sound, Sprache und Verlassen, im selben Glas-und-Gel-Stil wie der Rest der Oberfläche.
 - **Bildschirmfilter.** Ein Vignette-Regler plus Schalter für CRT, Aquarell und Kinofilm, lokal gespeichert und aus Haupt- und Pause-Menü erreichbar.
 - **Ein 1638-Skin.** Cinzel-Überschriften, Gel-Buttons mit Glasglanz, abgerundete Karten, osmanische Eck-Ornamente und goldene Haarlinien — dieselben Farben, nur modernisiert.
 - **Eine Straße für 1638.** Planwagen mit gestreiftem Segeltuch statt Autos, Marktstände, Tonamphoren, Sandsteinbrunnen, Feigenkörbe und Holzpfosten mit Laternen, auf Kopfsteinpflaster statt bemaltern Asphalt.
-- **Ein Voxel-HUD.** Ein Porträt, gerendert aus dem Kopfmodell der Figur selbst, dazu Pixelherz und EKG-Puls im Lebensbalken, der mit sinkender Gesundheit Farbe und Tempo wechselt und Richtung Flatline abflacht — plus ein Spezialbalken, der bei voller Ladung leuchtet.
+- **Ein Voxel-HUD.** Ein Porträt, gerendert aus dem Kopfmodell der Figur selbst, dazu Pixelherz und EKG-Puls im Lebensbalken, der mit sinkender Gesundheit Farbe und Tempo wechselt und Richtung Flatline abflacht — plus ein Spezialbalken mit Flammensymbol, gebaut auf derselben 15-px-/186-px-Rasterung, der bei voller Ladung leuchtet.
+- **Eine bequeme Belegung für beide Spieler.** Jeder Spieler — Host, Gast oder lokale zweite Tastatur — nutzt dieselben Tasten: WASD *und* die Pfeiltasten zum Bewegen, `Z` Schlag, `X` Kick, `F` Werfen, `G` Greifen, `L` Osmanische Schelle, `E` Esel, `Space` Sprung, `Shift` Rennen, `Esc` Pause. `Z` und `X` bestätigen und abbrechen außerdem in jedem Menü.
 - **Soundregler und ein Menüthema.** Ein Toggle mit Lautstärkeregler in Menü und Pause-Menü steuert den Menü-Track und den Soundtrack im Spiel.
 
 ## Letzte Revision
 
-Diese Runde hat die Oberfläche um die Zeit des Spiels herum neu gebaut, statt um generische Dark-Mode-Flächen:
+Diese Runde hat Wortzeichen, Steuerung und Balken neu gebaut:
 
-- **Die Anleitung ist ein echtes Popup.** Ein scrollbares Fenster mit drei Reitern — Tastatur, Controller und Spielprinzip — statt der Textwand in der Steuerungskarte des Menüs. Sie öffnet aus Hauptmenü, Pause-Menü und Steuerungsfenster.
-- **Die Tastatur ist gezeichnet, nicht aufgelistet.** Ein vollständiges Brett mit Funktionsreihe, beiden Shift-Tasten, Pfeilen und Spieler-2-Block; belegte Tasten leuchten gold oder türkis und tragen den Aktionsnamen. Der Controller ist ein passendes Outline-Pad mit leuchtender Kante, beschrifteten Gesichtstasten, Sticks, Schultern und Start/Back in der Mitte.
-- **Die Oberfläche hat ein 1638-Skin.** Ein eigenes Voxel-Wortzeichen — blockige Bungee-Buchstaben mit hart extrudierter Seite, VOXEL in Gold und RAGE in Glutrot über einem Rautenornament — dazu Gel-Buttons mit Glashighlight, abgerundete Glaskarten, osmanische Eck-Ornamente, Cinzel für Abschnittstitel über Manrope und goldene Haarlinien. Farben, Aufbau und Texte bleiben; nur die Ausführung ist neu.
-- **Bildschirmfilter sind neu.** Vignette, CRT, Aquarell und Kinofilm, mit Live-Regler und drei Schaltern, in `localStorage` gespeichert und vor wie während eines Laufs erreichbar.
-- **Die Straße gehört zu 1638.** Autos wurden zu Planwagen (weiterhin zerstörbar, weiterhin mit Wachalarm und Verstärkungswelle), Mülleimer zu Amphoren, der Container zum Marktstand, der Hydrant zum Sandsteinbrunnen, der Verkehrskegel zum Feigenkorb, die Straßenlaternen zu Holzpfosten mit Eisenlaternen. Fahrbahnmarkierungen, Zebrastreifen und Kanaldeckel wichen Kopfsteinpflaster.
-- **Die HUD-Balken passen jetzt zusammen.** Leben behält das Pixelherz; der Spezialbalken bekam einen Voxel-Stern im selben 15-px-Slot, dieselbe Länge von 186 px, dieselbe abgerundete Hülle und eine live mitlaufende Zahl rechts, sodass beide Zeilen als ein System lesen.
-- **HUD-Porträts, Pause-Menü und Soundregler** verhalten sich unverändert und sind unten neu aufgenommen.
+- **Das Wortzeichen ist wieder lila und gold — und RAGE brennt.** Ein blockiger Voxel-Riegel mit hart gestufter Extrusion: VOXEL in einem beleuchteten Goldverlauf mit weitem Glut-Halo, RAGE mit einem lebendigen Feuerverlauf in den eigenen Buchstaben. Die Flamme steigt in einer langsamen Schleife, ein Glutband flackert über die Glyphen, und einziges Ornament ist die osmanische Rauten-Haarlinie darunter.
+- **Die Balken sind ein System.** Leben und Spezial teilen sich jetzt ein festes Drei-Spalten-Raster — Symbol, Balken, Zahl —, sodass Herz und neues Voxel-Flammensymbol, beide 15 px, an derselben Kante sitzen und beide Balken dieselben 186 px in derselben Höhe laufen. Die Flamme ersetzt den alten Stern und bleibt auch bei 52 px lesbar.
+- **Das Gamepad ist eine echte Silhouette.** Ein breites Gehäuse, dessen Schultern zwei schmale Trigger und zwei abgerundete Bumper (LT/LB, RT/RB) tragen, eine erhöhte Brücke mit Rundtaste, ein asymmetrisches Stick-Paar, ein plusförmiges Steuerkreuz und ein Vier-Tasten-Rombus mit Aktionsbeschriftung — eine durchgehende goldene Haarlinie über einem lila Glaskörper, symmetrisch zur Mitte. Jedes gezeichnete Element lässt sich weiterhin anklicken und belegen.
+- **Beide Spieler teilen eine Belegung.** WASD *und* die Pfeiltasten bewegen, `Z` Schlag, `X` Kick, `F` Werfen, `G` Greifen, `L` Osmanische Schelle, `E` Esel, `Space` Sprung, `Shift` Rennen, `Esc` Pause. Die Belegung gilt gleich für Host, Gast und Spieler 2, und das Tastatur-Diagramm lässt den Pfeilblock als zweite Bewegungsachse leuchten.
+- **Menüs hören auf Z und X.** `Z` bestätigt (Schlacht starten, Pause fortsetzen), `X` bricht jedes Fenster ab — parallel zu `Esc`.
+- **Die Pause ist geteilt und nennt den Verursacher.** Im Online-Koop steht die Runde für beide, und das Pause-Panel schreibt in kleinen Versalien, welche Seite pausiert hat — auch den Fall, dass du pausiert hast und dein Partner wartet.
+- **Das HUD-Porträt ist gerahmt, nicht beschnitten.** Die Offscreen-Kamera lässt jetzt Rand um das Kopfmodell der Figur, sodass Turban und Kinn im 52-px-Rahmen liegen.
+- **Kleine Korrekturen.** Die Tastenleiste am unteren Rand ist weg (die Anleitung übernimmt das), der Waffen-Chip ist kleiner, und der Spezial-Hinweis kollidiert nicht mehr mit dem Mittelfeld.
 
 ## Screenshots
 
@@ -57,7 +59,7 @@ Aufgenommen aus dem laufenden Spiel, keine Mock-ups.
 | ![Spielanleitung](screenshots/how-to-play.png) | ![Pause-Menü](screenshots/pause-menu.png) |
 | Spielanleitung: Spielprinzip, Keycaps und Item-Sprites | Pause-Menü mit Sound, Anleitung, Bildschirm und Sprache |
 | ![Tastatur-Anleitung](screenshots/controls-keyboard.png) | ![Controller-Anleitung](screenshots/controls-controller.png) |
-| Tastatur-Diagramm mit beiden Spielern | Controller-Diagramm im Beat-'em-up-Layout |
+| Tastatur-Diagramm, Pfeile als zweite Bewegungsachse | Controller-Diagramm im Beat-'em-up-Layout |
 | ![Bildschirmfilter](screenshots/display-filters.png) | ![Straße 1638](screenshots/street-1638.png) |
 | Bildschirmfilter: Vignette, CRT, Aquarell, Kinofilm | Planwagen, Marktstände und Laternen auf Kopfsteinpflaster |
 
@@ -125,18 +127,21 @@ Albtraum markiert jeden dritten Gegner als Elite (goldene Aura, Schulterplatten,
 
 ### Tastatur (Standard)
 
-| Aktion | Spieler 1 | Spieler 2 |
-|---|---|---|
-| Bewegen | `W` `A` `S` `D` | `↑` `←` `↓` `→` |
-| Schlag / Waffe / Aufnehmen | `J` | `,` |
-| Kick | `K` | `.` |
-| Spezial (Osmanische Schelle / Superkick) | `L` | `/` |
-| Sprung / Esel-Hüpfer | `Space` | `Enter` |
-| Rennen (halten) | `Shift` | `R-Shift` |
-| Greifen / Kette / Werfen | `G` | `;` |
-| Auf-/Absteigen (Esel) | `E` | `'` |
+Beide Spieler nutzen dieselbe bequeme Belegung — jeder an seiner eigenen Tastatur. Im lokalen Koop an einer Tastatur belegt man Spieler 2 im Steuerungsfenster neu.
 
-`M` schaltet die Musik, `R` startet neu, `Esc` oder `P` pausiert. Die Belegung wird lokal gespeichert und im Online-Koop an den Host übertragen.
+| Aktion | Taste |
+|---|---|
+| Bewegen | `W` `A` `S` `D` — die Pfeiltasten gehen immer zusätzlich |
+| Schlag / Waffe / Aufnehmen | `Z` |
+| Kick | `X` |
+| Werfen (im Griff) | `F` |
+| Spezial (Osmanische Schelle / Superkick) | `L` |
+| Sprung / Esel-Hüpfer | `Space` |
+| Rennen (halten) | `Shift` |
+| Greifen / Kette | `G` |
+| Auf-/Absteigen (Esel) | `E` |
+
+`Z` bestätigt und `X` bricht in den Menüs ab; `Esc` oder `P` pausiert, `M` schaltet die Musik, `R` startet neu. Die Belegung wird lokal gespeichert und im Online-Koop an den Host übertragen.
 
 ### Controller (Standard)
 
@@ -149,20 +154,21 @@ Gamepads mit Standardbelegung: Xbox-Style, DualShock/DualSense sowie die meisten
 | Sprung / Esel-Hüpfer | B (rechts) |
 | Kick | X (links) |
 | Spezial | Y (oben) |
+| Werfen (im Griff) | LT |
 | Greifen / Kette | LB |
 | Aufsteigen | RB |
 | Rennen (halten) | RT |
 | Pause | Start |
 | Neustart | Back / View |
 
-Das Pad übersetzt in die Tastenbelegung des Spiels: Eine geänderte Taste ändert auch das Pad, und Spieler 2 im lokalen Koop spielt weiterhin über die Tastatur.
+Das Pad übersetzt in die Tastenbelegung des Spiels: Eine geänderte Taste ändert auch das Pad. Jedes Pad mit Standardbelegung wird sofort übernommen — ohne Einrichtungsschritt.
 
 ### Spielanleitung
 
 Im Startmenü sitzt eine **Spielanleitung** — dieselbe Idee wie der Feldführer in Leap Buddies. Sie öffnet ein scrollbares Popup mit drei Reitern:
 
-- **Tastatur** — das komplette Brett, jede belegte Taste gold (P1) oder türkis (P2) mit ihrem Aktionsnamen, dazu eine Legende für Bewegung und Kampf.
-- **Controller** — dasselbe Layout als Outline-Pad: Gesichtstasten, Steuerkreuz, Sticks, Schultern und Start/Back, jeweils mit Aktion beschriftet.
+- **Tastatur** — das komplette Brett, jede belegte Taste gold mit ihrem Aktionsnamen, der Pfeilblock als zweite Bewegungsachse, dazu eine Legende für Bewegung und Kampf.
+- **Controller** — dasselbe Layout als Outline-Pad: Gesichtstasten, Steuerkreuz, Sticks, Bumper, Trigger und Rundtaste, jeweils mit Aktion beschriftet.
 - **Spielprinzip** — Bewegung, Kombos, Greifen und Werfen, der Esel, Essen und Waffen, mit Voxel-Sprites neben jedem Pickup.
 
 Jede Belegung im Popup ist live: Sie folgt Umbelegungen und der gewählten Sprache. Die Anleitung ist aus Hauptmenü, Pause-Menü und Steuerungsfenster erreichbar.
@@ -171,10 +177,10 @@ Jede Belegung im Popup ist live: Sie folgt Umbelegungen und der gewählten Sprac
 
 Öffne **Steuerung einrichten** im Startmenü oder **Steuerung** im Pause-Menü. Das Fenster hat zwei Reiter:
 
-- **Controller** — ein kompaktes Outline-Gamepad mit Steuerkreuz, zwei Sticks, vier Gesichtstasten (A / B / X / Y) und beiden Schultern. Wähle rechts eine Aktion und drücke dann eine Taste am Pad — oder klicke direkt auf den gezeichneten Button.
-- **Tastatur** — eine vollständige Tastatur, deren Tasten gold (P1) oder türkis (P2) leuchten, wenn sie belegt sind. Wähle Spieler und Aktion und drücke dann die Taste oder klicke auf das Keycap.
+- **Controller** — ein kompaktes Outline-Gamepad mit Steuerkreuz, zwei Sticks, vier Gesichtstasten (A / B / X / Y), beiden Bumpern und beiden Triggern. Wähle rechts eine Aktion und drücke dann eine Taste am Pad — oder klicke direkt auf den gezeichneten Button.
+- **Tastatur** — eine vollständige Tastatur, deren Tasten gold leuchten, wenn sie belegt sind. Wähle Spieler und Aktion und drücke dann die Taste oder klicke auf das Keycap.
 
-Belegungen werden getauscht statt doppelt vergeben, damit keine Taste zweimal existiert. Die Pad-Belegung liegt unter `voxelrage-pad-v1`, die Tastaturbelegung unter `voxel-rage-bindings-v1`. Beides gilt nur im jeweiligen Browser.
+Belegungen werden getauscht statt doppelt vergeben, damit keine Taste zweimal existiert. Die Pad-Belegung liegt unter `voxelrage-pad-v1`, die Tastaturbelegung unter `voxel-rage-bindings-v2`. Beides gilt nur im jeweiligen Browser.
 
 ### Bildschirmfilter
 
@@ -193,15 +199,17 @@ Belegungen werden getauscht statt doppelt vergeben, damit keine Taste zweimal ex
 - **Sound** — Lautsprecher-Toggle und Lautstärkeregler unter den Buttons.
 - **Sprache** — derselbe DE | EN-Wechsel wie im Hauptmenü.
 
+Die Pause ist geteilt. Im Online-Koop reicht der Host das Anhalten weiter, sodass beide warten, und die Zeile unter **Pause** nennt die Seite, die die Runde gestoppt hat („Spieler 2 hat pausiert — die Runde steht für beide“ oder „Du hast pausiert — der andere Spieler wartet“). `Z` oder `X` verlässt das Menü ebenfalls, neben `Esc`.
+
 Die Sprachwahl wird unter `voxelrage-lang` gespeichert und gilt für die gesamte Oberfläche, inklusive HUD-Aktualisierungen und Statusmeldungen, nicht nur für die Menüs.
 
 ## HUD
 
-Jede Spielerkarte ist ein Voxel-Panel mit einem kleinen Porträtfenster der gewählten Figur, gebaut aus deren eigener Palette, neben Name und Leben.
+Jede Spielerkarte ist ein Voxel-Panel mit einem kleinen Porträt der gewählten Figur — offscreen aus dem Kopfmodell der Figur gerendert, keine Zeichnung — neben Name und Leben. Darunter liegen beide Balken auf einem Raster: ein Pixelherz neben dem Lebensbalken, dessen EKG-Spur mit sinkender Gesundheit Farbe und Tempo wechselt und abflacht, und eine Voxel-Flamme neben dem Spezialbalken, der bei voller Ladung leuchtet und einen Lichtschein laufen lässt.
 
-Im Lebensbalken laufen ein Pixelherz und ein EKG-Puls. Farbe und Tempo folgen der Gesundheit: Grün über 60 %, Gelb dazwischen, Rot unter 30 %. Sinkt die Gesundheit, wird der Puls langsamer, verliert Amplitude und flacht zur Flatline ab, während das Herz langsamer schlägt. Die HP-Zahl steht neben dem Balken.
+Der Puls im Lebensbalken ist eine scrollende EKG-Maske in der Füllung. Farbe und Tempo folgen der Gesundheit: Grün über 60 %, Gelb dazwischen, Rot unter 30 %. Sinkt sie, wird die Spur langsamer, verliert Amplitude und flacht zur Flatline ab, während das Herz langsamer schlägt; die HP-Zahl steht neben dem Balken.
 
-Der Spezialbalken leuchtet türkis und lässt bei voller Ladung einen Lichtstreifen durchlaufen, damit die Osmanische Schelle / der Superkick sofort ablesbar ist. Waffen erscheinen als hervorgehobener Chip unter den Balken.
+Der Spezialbalken folgt demselben Raster — Flammensymbol, 186-px-Hülle, live mitlaufende Zahl — und pulsiert mit einem Lichtschein, sobald er voll ist, damit die Osmanische Schelle / der Superkick sofort ablesbar ist. Waffen erscheinen als kleiner Chip unter den Balken.
 
 ## Sound
 

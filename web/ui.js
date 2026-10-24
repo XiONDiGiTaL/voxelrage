@@ -57,8 +57,8 @@
       guideTitle: 'SO WIRD GESPIELT',
       guideLede: 'Alles, was du auf der Straße brauchst — Tasten, Kombos, Beute und Waffen.',
       gtabPlay: 'SPIELPRINZIP',
-      guideKeys: 'Die Tastatur mit der aktuellen Belegung. Gold ist Spieler 1, Türkis Spieler 2 — auf jeder belegten Taste steht, was sie tut.',
-      guideKeysNote: 'Bewegung, Kampf und Interaktion liegen auf getrennten Tasten; beide Spieler teilen sich dieselbe Tastatur.',
+      guideKeys: 'Die Tastatur mit der aktuellen Belegung. Gold ist belegt — auf jeder Taste steht, was sie tut. WASD und die Pfeiltasten bewegen immer beide.',
+      guideKeysNote: 'Beide Spieler nutzen dieselbe Belegung — jeder an seiner eigenen Tastatur. Lässt sich im Steuerungsfenster frei umlegen.',
       guidePad: 'Ein Standard-Gamepad (Xbox-, DualShock- oder 8BitDo-Layout). Anschließen, Stick bewegen, fertig.',
       guidePadNote: 'Das Pad folgt deinen Tastaturbelegungen: änderst du im Steuerungsfenster eine Taste, ändert sich das Pad mit.',
       clickBind: 'Taste oder Button anklicken zum Belegen',
@@ -88,10 +88,14 @@
       iDoner: 'DÖNER', iDonerD: '+40 Leben', iAyran: 'AYRAN', iAyranD: '+15 Leben',
       iGold: 'GOLD', iGoldD: '+50 Punkte', hpShort: 'LEBEN',
       act: {
-        punch: 'SCHLAG', kick: 'KICK', special: 'SPEZIAL', jump: 'SPRUNG', sprint: 'RENNEN',
-        grapple: 'GREIFEN', mount: 'ESEL', pause: 'PAUSE', restart: 'NEUSTART',
+        punch: 'SCHLAG', kick: 'KICK', special: 'SCHELLE', jump: 'SPRUNG', sprint: 'RENNEN',
+        grapple: 'GREIFEN', mount: 'ESEL', throw: 'WERFEN', pause: 'PAUSE', restart: 'NEUSTART',
         left: 'LINKS', right: 'RECHTS', up: 'HOCH', down: 'RUNTER',
       },
+      pauseByYou: 'DU HAST PAUSIERT — DER ANDERE SPIELER WARTET',
+      pauseByP1: 'SPIELER 1 HAT PAUSIERT — DIE RUNDE STEHT FÜR BEIDE',
+      pauseByP2: 'SPIELER 2 HAT PAUSIERT — DIE RUNDE STEHT FÜR BEIDE',
+      pauseSolo: 'DIE RUNDE STEHT',
       keysPitch: 'Tasten gelten für den gewählten Spieler und werden wie im Spiel lokal gespeichert.',
       padPitch: 'Der Controller steuert den lokalen Spieler und folgt automatisch deiner Tastenbelegung.',
       display: 'BILDSCHIRM', displayTitle: 'BILDSCHIRM-FILTER',
@@ -124,8 +128,8 @@
       guideTitle: 'HOW TO PLAY',
       guideLede: 'Everything you need on the street — keys, combos, loot and weapons.',
       gtabPlay: 'THE GAME',
-      guideKeys: 'The keyboard with your current bindings. Gold is player 1, cyan player 2 — every bound key names what it does.',
-      guideKeysNote: 'Movement, combat and interaction sit on separate keys; both players share the same keyboard.',
+      guideKeys: 'The keyboard with your current bindings. Gold is bound — every key names what it does. WASD and the arrow keys always move.',
+      guideKeysNote: 'Both players use the same layout — each on their own keyboard. Remap anything in the controls window.',
       guidePad: 'A standard gamepad (Xbox, DualShock or 8BitDo layout). Plug it in, move a stick and it works.',
       guidePadNote: 'The pad follows your key bindings: change a key in the controls window and the pad changes with it.',
       clickBind: 'Click a key or button to bind',
@@ -155,10 +159,14 @@
       iDoner: 'DONER', iDonerD: '+40 health', iAyran: 'AYRAN', iAyranD: '+15 health',
       iGold: 'GOLD', iGoldD: '+50 points', hpShort: 'HEALTH',
       act: {
-        punch: 'PUNCH', kick: 'KICK', special: 'SPECIAL', jump: 'JUMP', sprint: 'RUN',
-        grapple: 'GRAB', mount: 'DONKEY', pause: 'PAUSE', restart: 'RESTART',
+        punch: 'PUNCH', kick: 'KICK', special: 'SLAP', jump: 'JUMP', sprint: 'RUN',
+        grapple: 'GRAB', mount: 'DONKEY', throw: 'THROW', pause: 'PAUSE', restart: 'RESTART',
         left: 'LEFT', right: 'RIGHT', up: 'UP', down: 'DOWN',
       },
+      pauseByYou: 'YOU PAUSED — THE OTHER PLAYER IS WAITING',
+      pauseByP1: 'PLAYER 1 PAUSED — THE ROUND IS HELD FOR BOTH',
+      pauseByP2: 'PLAYER 2 PAUSED — THE ROUND IS HELD FOR BOTH',
+      pauseSolo: 'THE ROUND IS HELD',
       keysPitch: 'Keys apply to the chosen player and are stored locally, exactly like in-game.',
       padPitch: 'The controller drives the local player and follows your key bindings automatically.',
       display: 'DISPLAY', displayTitle: 'DISPLAY FILTER',
@@ -293,11 +301,13 @@
     '.vr-hero-meta{min-width:0;flex:1}',
     '.vr-hero-meta .label{margin-bottom:2px;font-size:8.5px;letter-spacing:.26em}',
     '.vr-hero-meta #pName,.vr-hero-meta #p2Name{margin-bottom:2px;font-size:13px}',
-    '.vr-hprow{display:flex;align-items:center;gap:6px;margin:1px 0 2px}',
+    /* Both meters share one grid: icon, bar, number — so heart and flame,
+       bar length and height line up exactly. */
+    '.vr-hprow{display:grid;grid-template-columns:15px minmax(0,1fr) 24px;gap:6px;align-items:center;margin:1px 0 2px}',
     '.vr-heart{width:15px;height:15px;flex:0 0 auto;color:var(--ecg,#9dff6b);' +
       'filter:drop-shadow(0 0 6px var(--ecg,#9dff6b));animation:vrBeat var(--beat,1s) ease-in-out infinite}',
     '.vr-heart svg{display:block;width:100%;height:100%}',
-    '.vr-hp{position:relative;width:186px;max-width:46vw;height:14px;padding:2px;border-radius:999px;overflow:hidden;' +
+    '.vr-hp{position:relative;width:100%;height:14px;padding:2px;border-radius:999px;overflow:hidden;' +
       'border:1px solid rgba(255,255,255,.26);background:rgba(0,0,0,.6);' +
       'box-shadow:inset 0 2px 6px rgba(0,0,0,.65)}',
     '.vr-hp>i{display:block;height:100%;border-radius:2px;' +
@@ -323,7 +333,7 @@
     '.vr-energyicon svg{display:block;width:100%;height:100%}',
     '.vr-energynum{font-size:9px;letter-spacing:.1em;color:#6be0ff;min-width:22px;text-align:right;' +
       'font-variant-numeric:tabular-nums}',
-    '.vr-meter{position:relative;width:186px;max-width:46vw;height:14px!important;padding:2px;border-radius:999px;overflow:hidden;' +
+    '.vr-meter{position:relative;width:100%;height:14px!important;padding:2px;border-radius:999px;overflow:hidden;' +
       'border:1px solid rgba(107,224,255,.4)!important;background:rgba(0,0,0,.6)!important;' +
       'box-shadow:inset 0 2px 6px rgba(0,0,0,.65)!important}',
     '.vr-meter>i{border-radius:999px!important}',
@@ -337,8 +347,9 @@
     '.vr-meter.ready .vr-sheen{opacity:.7;animation:vrSheen 1.8s linear infinite}',
     '@keyframes vrSheen{from{background-position:180% 0}to{background-position:-80% 0}}',
     '@keyframes vrMeterPulse{50%{box-shadow:0 0 18px rgba(107,224,255,.65),inset 0 0 10px rgba(107,224,255,.35)}}',
-    '.vr-weapon{font-size:9px!important;letter-spacing:.14em;padding:3px 6px;border-radius:3px;' +
-      'background:rgba(107,224,255,.07);border:1px solid rgba(107,224,255,.18);display:inline-block}',
+    '.vr-weapon{font-size:8px!important;letter-spacing:.12em;padding:2px 5px;border-radius:3px;' +
+      'background:rgba(107,224,255,.07);border:1px solid rgba(107,224,255,.18);display:inline-block;align-self:flex-start}',
+    '#specialHint,#hint{display:none!important}',
     '#p1Lives,#p2Lives{font-size:10.5px;letter-spacing:.14em}',
     '.panel#stats{border-radius:6px;background:linear-gradient(180deg,rgba(18,12,28,.94),rgba(9,6,16,.88));' +
       'border:1px solid rgba(255,255,255,.13);box-shadow:0 8px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05)}',
@@ -407,20 +418,46 @@
     '.vr-soundrow .vr-range{flex:1;width:auto}',
     '.vr-menubar .vr-sound{margin-left:auto}',
     /* ========================= 1638 interface skin ========================= */
-    '@import url("https://fonts.googleapis.com/css2?family=Bungee&family=Cinzel:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap");',
+    '@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Manrope:wght@400;500;600;700;800&family=Rubik+Mono+One&display=swap");',
     ':root{--orn:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 60 60%27%3E%3Cg fill=%27none%27 stroke=%27%23d9b45a%27 stroke-width=%271.1%27%3E%3Cpath d=%27M30 5 L55 30 L30 55 L5 30 Z%27 opacity=%27.45%27/%3E%3Cpath d=%27M30 14 L46 30 L30 46 L14 30 Z%27 opacity=%27.22%27/%3E%3Cpath d=%27M30 23 L37 30 L30 37 L23 30 Z%27 opacity=%27.6%27/%3E%3C/g%3E%3C/svg%3E")}',
     'body,#menu,.vr-modal,.vr-pause-wrap,.vr-sheet,.vr-pause-panel,input[type=text],.seg button,.btn{font-family:"Manrope",ui-sans-serif,system-ui,-apple-system,sans-serif}',
     '#menu h1,.vr-sheet h2,.vr-pause-title,#menu .card .h{font-family:"Cinzel",Georgia,serif}',
-    /* Voxel wordmark: blocky Bungee face, gold slab lit from above, a stack of
-       hard shadows for the extruded side, and an ember RAGE. Ottoman-flavoured
-       hairlines and diamonds frame it instead of a generic display serif. */
-    '#menu h1{font-family:"Bungee","Arial Black",ui-sans-serif,sans-serif;font-weight:400;' +
-      'letter-spacing:.02em;line-height:1.06;padding-bottom:.08em;' +
-      'background:linear-gradient(180deg,#fff8df 0%,#ffe28f 38%,#ffd76e 58%,#d99a3f 82%,#a86a24 100%);' +
+    /* Voxel wordmark: a blocky, slab-square face cut like stacked voxels —
+       gold VOXEL with a hard extruded side and a wide ember halo, then RAGE
+       carrying a living fire gradient inside its own letters. Ottoman
+       hairlines and the diamond sit underneath as the only ornament. */
+    '#menu h1{font-family:"Rubik Mono One","Arial Black",ui-sans-serif,sans-serif;font-weight:400;' +
+      'letter-spacing:.015em;line-height:1.16;padding:0 2px .1em;' +
+      'background:linear-gradient(180deg,#fffdf2 0%,#ffedb4 26%,#ffd76e 52%,#e0aa4c 74%,#a4701f 100%);' +
       '-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;' +
-      '-webkit-text-stroke:.6px rgba(52,26,8,.55);text-shadow:0 2px 0 #8a5a1e,0 4px 0 #744a18,0 6px 0 #5a3712,0 9px 0 #3f260c,0 16px 30px rgba(0,0,0,.55)}',
-    '#menu h1 span{display:inline-block;-webkit-text-fill-color:#ff6a3d;color:#ff6a3d;' +
-      'text-shadow:0 2px 0 #8a2a12,0 4px 0 #6d1f0c,0 6px 0 #501506,0 9px 0 #360d03,0 16px 30px rgba(0,0,0,.55)}',
+      'text-shadow:2px 2px 0 #b07a2a,4px 4px 0 #9a6722,6px 6px 0 #82541c,8px 8px 0 #6a4316,' +
+        '10px 10px 0 #523210,12px 12px 0 #3a220a,18px 20px 28px rgba(0,0,0,.6);' +
+      'filter:drop-shadow(0 0 16px rgba(255,205,110,.34)) drop-shadow(0 0 44px rgba(255,170,60,.2))}',
+    /* RAGE carries fire inside the glyphs: a vertical flame gradient clipped to
+       the letters, slowly rising, with an ember band flickering over it. */
+    '#menu h1 span{position:relative;display:inline-block;isolation:isolate;' +
+      '-webkit-text-fill-color:transparent;color:transparent;' +
+      'background-image:' +
+        'radial-gradient(60% 38% at 50% 104%,rgba(255,255,235,.92),rgba(255,220,140,.35) 55%,rgba(255,190,90,0) 78%),' +
+        'linear-gradient(0deg,#8f1405 0%,#e32d08 16%,#ff6b0c 38%,#ffa41b 58%,#ffcf5e 76%,#fff4cf 100%);' +
+      'background-size:100% 100%,100% 240%;background-position:50% 100%,50% 92%;background-repeat:no-repeat,no-repeat;' +
+      '-webkit-background-clip:text;background-clip:text;' +
+      'animation:vrFlame 3.8s ease-in-out infinite;' +
+      'text-shadow:2px 2px 0 #8a2c0c,4px 4px 0 #742407,6px 6px 0 #5c1b05,8px 8px 0 #441203,' +
+        '10px 10px 0 #2e0c02,12px 12px 0 #1c0601,18px 20px 28px rgba(0,0,0,.6);' +
+      'filter:drop-shadow(0 0 12px rgba(255,120,30,.55)) drop-shadow(0 0 34px rgba(255,70,10,.32))}',
+    '#menu h1 span:before{content:"RAGE";position:absolute;left:0;top:0;z-index:-1;' +
+      '-webkit-text-fill-color:#4a1505;color:#4a1505;-webkit-text-stroke:0;animation:none;' +
+      'text-shadow:2px 2px 0 #6a220a,4px 4px 0 #571a06,6px 6px 0 #3f1204,8px 8px 0 #2a0b02,' +
+        '10px 10px 0 #1a0601,18px 20px 28px rgba(0,0,0,.55)}',
+    '#menu h1 span:after{content:"RAGE";position:absolute;left:0;top:0;z-index:1;pointer-events:none;' +
+      'color:transparent;-webkit-text-fill-color:transparent;' +
+      'background-image:repeating-linear-gradient(0deg,rgba(255,230,150,.75) 0 4px,rgba(255,120,20,.35) 4px 11px,rgba(255,60,0,0) 11px 20px);' +
+      'background-size:100% 220%;background-position:50% 100%;' +
+      '-webkit-background-clip:text;background-clip:text;mix-blend-mode:screen;' +
+      'animation:vrEmbers 2.2s steps(9) infinite}',
+    '@keyframes vrFlame{0%,100%{background-position:50% 100%,50% 96%}40%{background-position:50% 100%,50% 38%}70%{background-position:50% 100%,50% 68%}}',
+    '@keyframes vrEmbers{0%{background-position:50% 100%;opacity:.55}50%{background-position:50% 30%;opacity:.8}100%{background-position:50% -40%;opacity:.5}}',
     '#menu h1:after{content:"";display:block;width:min(360px,62%);height:11px;margin-top:12px;' +
       'background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 60 14%27%3E%3Cg fill=%27none%27 stroke=%27%23ffd76e%27 stroke-width=%271.1%27%3E%3Cpath d=%27M18 7 L30 -5 L42 7 L30 19 Z%27 opacity=%27.85%27/%3E%3Cpath d=%27M24 7 L30 1 L36 7 L30 13 Z%27/%3E%3C/g%3E%3C/svg%3E"),' +
       'linear-gradient(90deg,rgba(255,215,110,0),rgba(255,215,110,.55) 18%,rgba(255,215,110,.55) 42%,rgba(255,215,110,0) 44%),' +
@@ -549,10 +586,11 @@
     '.vs-ring{fill:rgba(255,255,255,.02);stroke:rgba(107,224,255,.5);stroke-width:1.4}',
     '.vs-dot{fill:rgba(107,224,255,.22)}',
     '.vpbumper{cursor:pointer}',
-    '.vpbumper rect{fill:rgba(255,255,255,.05);stroke:rgba(255,215,110,.45);stroke-width:1.3;transition:fill .15s}',
-    '.vpbumper text{fill:#d8cdf2;text-anchor:middle;font-family:ui-monospace,Menlo,monospace;font-size:9px;font-weight:700}',
-    '.vpbumper:hover rect{fill:rgba(255,215,110,.14)}',
-    '.vpstart rect{fill:rgba(255,255,255,.2)}',
+    '.vpbumper rect{fill:transparent;stroke:transparent;stroke-width:0;transition:fill .15s}',
+    '.vpbumper:hover rect{fill:rgba(255,215,110,.16)}',
+    '.vpbumper.is-listen rect{fill:rgba(255,215,110,.3)}',
+    '.vpguide,.vpstart{cursor:pointer}',
+    '.vpguide:hover circle:first-child,.vpstart:hover rect{fill:rgba(255,215,110,.2)}',
 
     /* guide */
     '.vr-guide-sheet{width:min(1020px,100%);max-height:min(93vh,940px);display:flex;flex-direction:column}',
@@ -570,7 +608,7 @@
     '.vr-guide-lede{font-size:11px;letter-spacing:.04em;line-height:1.9;color:#b9b0d8;margin:0 0 14px;max-width:860px}',
     '.vr-gdiagram{max-width:860px;margin:0 auto 18px}',
     '.vr-gdiagram svg{width:100%;height:auto;display:block}',
-    '.vr-gdiagram-pad{max-width:470px}',
+    '.vr-gdiagram-pad{max-width:600px;margin:0 auto 10px}',
     '.vr-glegend{display:grid;grid-template-columns:1fr 1fr;gap:16px 26px;max-width:860px;margin:0 auto}',
     '@media(max-width:760px){.vr-glegend{grid-template-columns:1fr}}',
     '.vr-legcol h4{font-family:"Cinzel",serif;font-size:10.5px;letter-spacing:.22em;color:#d9b45a;' +
@@ -644,7 +682,7 @@
     /* menu rhythm: wide, top-aligned, scroll-safe */
     '#menu{align-items:flex-start;padding:26px 24px}',
     '#menu .box{width:min(1060px,100%);margin-block:auto}',
-    '#menu h1{font-size:clamp(40px,5.4vw,66px);line-height:1.04;margin-bottom:2px}',
+    '#menu h1{font-size:clamp(46px,6.9vw,82px);line-height:1.12;margin-bottom:6px}',
     '#menu .lede{margin-top:14px;max-width:850px;font-size:12px;line-height:1.95}',
     '#menu .grid{margin-top:20px;gap:20px}',
     '.vr-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}',
@@ -754,16 +792,15 @@
       '<rect x="3" y="8" width="6" height="1"/><rect x="5" y="9" width="2" height="1"/></svg>';
   }
 
-  /* Voxel star for the special meter — the same diamond-and-rays motif
-   * that runs through the interface ornaments. */
+  /* Voxel flame for the special meter: same 12-cell weight and crisp edges as
+   * the heart, so both meters read as one pair. */
   function energySVG() {
-    return '<svg viewBox="0 0 16 16" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true">' +
-      '<rect x="6" y="0" width="4" height="2"/><rect x="6" y="14" width="4" height="2"/>' +
-      '<rect x="0" y="6" width="2" height="4"/><rect x="14" y="6" width="2" height="4"/>' +
-      '<rect x="4" y="4" width="8" height="8"/><rect x="2" y="6" width="12" height="4"/>' +
-      '<rect x="6" y="2" width="4" height="12"/><rect x="2" y="2" width="2" height="2"/>' +
-      '<rect x="12" y="2" width="2" height="2"/><rect x="2" y="12" width="2" height="2"/>' +
-      '<rect x="12" y="12" width="2" height="2"/></svg>';
+    return '<svg viewBox="0 0 12 12" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true">' +
+      '<rect x="4" y="0" width="4" height="2"/>' +
+      '<rect x="3" y="2" width="2" height="2"/><rect x="6" y="2" width="3" height="2"/>' +
+      '<rect x="2" y="4" width="6" height="3"/>' +
+      '<rect x="3" y="7" width="6" height="3"/>' +
+      '<rect x="4" y="10" width="4" height="2"/></svg>';
   }
 
   function portraitSVG(pal) {
@@ -844,9 +881,11 @@
       var radius = Math.max(0.001, box.getSize(new T.Vector3()).length() / 2);
       head.position.set(-centre.x, -centre.y, -centre.z);
 
+      /* A little margin around the head so the turban and the chin are not
+       * cropped by the square frame. */
       var cam = new T.PerspectiveCamera(30, 1, radius * 0.1, radius * 30);
-      cam.position.set(0, radius * 0.04, radius * 3.7);
-      cam.lookAt(0, 0, 0);
+      cam.position.set(0, radius * 0.1, radius * 4.3);
+      cam.lookAt(0, radius * 0.02, 0);
       renderer.render(scene, cam);
 
       var url = canvas.toDataURL('image/png');
@@ -1129,8 +1168,8 @@
     return code.replace(/Left$|Right$/, '').toUpperCase().slice(0, 5);
   }
 
-  var KEY_ACTIONS = ['left', 'right', 'up', 'down', 'sprint', 'jump', 'punch', 'kick', 'special', 'grapple', 'mount'];
-  var PAD_ACTIONS = ['punch', 'kick', 'special', 'jump', 'sprint', 'grapple', 'mount', 'pause', 'restart'];
+  var KEY_ACTIONS = ['left', 'right', 'up', 'down', 'sprint', 'jump', 'punch', 'kick', 'throw', 'special', 'grapple', 'mount'];
+  var PAD_ACTIONS = ['punch', 'kick', 'special', 'jump', 'throw', 'sprint', 'grapple', 'mount', 'pause', 'restart'];
 
   /* Full 75 %-style board. Each row lists [code, width-in-units]; a GAP
    * entry is a spacer so the F-key clusters breathe. */
@@ -1180,12 +1219,16 @@
     var player = opts.player || 0;
     var both = !!opts.both;
     var actFor = function (code) {
+      if (ARROW_ACTS[code]) return { a: ARROW_ACTS[code], p: player };
       var a1 = actionForCode(code, 0);
       var a2 = actionForCode(code, 1);
       if (both) return a1 ? { a: a1, p: 0 } : a2 ? { a: a2, p: 1 } : null;
       var a = actionForCode(code, player);
       return a ? { a: a, p: player } : null;
     };
+    /* Arrow keys are a permanent second movement axis, so they light up with
+     * the direction they drive even though WASD is what is bound. */
+    var ARROW_ACTS = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down' };
     var body = '';
     var x0 = 36;
     var maxX = x0;
@@ -1240,88 +1283,139 @@
     return '<g class="vpadbtn' + (p2 ? ' p2' : '') + '" data-pad="' + index + '" data-act="' + action + '">' +
       '<circle class="pb-base" cx="' + cx + '" cy="' + (cy + 2) + '" r="' + (r + 3) + '"/>' +
       '<circle class="pb-top" cx="' + cx + '" cy="' + cy + '" r="' + r + '"/>' +
-      '<circle cx="' + cx + '" cy="' + (cy - r * 0.35) + '" r="' + (r * 0.62) + '" fill="rgba(255,255,255,.05)"/>' +
-      '<text class="pb-letter" x="' + cx + '" y="' + (cy + 1) + '">' + letter + '</text>' +
+      '<circle cx="' + cx + '" cy="' + (cy - r * 0.3) + '" r="' + (r * 0.6) + '" fill="rgba(255,255,255,.05)"/>' +
+      '<text class="pb-letter" x="' + cx + '" y="' + (cy - 1) + '">' + letter + '</text>' +
       '<text class="pb-act" x="' + cx + '" y="' + (cy + 11) + '">' + T('act.' + action).slice(0, 7) + '</text>' +
       '</g>';
   }
 
+  /* The gamepad: one continuous outline in the style of a modern pad — wide
+   * shoulders that cradle two slim bumpers, a small raised bridge with the
+   * round home button, a plus-shaped D-pad, four face buttons and two sticks —
+   * drawn as a single gold hairline over a purple glass body. Mirror-symmetric
+   * about x = 460. Clicking any element binds it. */
+  var PAD_OUTLINE =
+    'M392 206C384 208 376 216 374 232C360 228 352 224 344 220C330 214 314 206 300 200' +
+    'C282 192 266 189 252 190C230 190 212 192 200 196C184 202 170 210 166 222' +
+    'C160 236 156 250 156 266C156 288 158 304 162 320C166 340 172 356 178 372' +
+    'C182 392 184 414 186 436C190 470 194 520 200 546C206 572 220 590 244 592' +
+    'C268 594 286 580 292 554C296 528 298 500 304 478C308 468 312 464 320 458' +
+    'C336 446 350 444 362 442C394 434 426 432 460 432C494 432 526 434 558 442' +
+    'C570 444 584 446 600 458C608 464 612 468 616 478C622 500 624 528 628 554' +
+    'C634 580 652 594 676 592C700 590 714 572 720 546C726 520 730 470 734 436' +
+    'C736 414 738 392 742 372C748 356 754 340 758 320C762 304 764 288 764 266' +
+    'C764 250 760 236 754 222C750 210 736 202 720 196C708 192 690 190 668 190' +
+    'C654 189 638 192 620 200C606 206 590 214 576 220C568 224 560 228 546 232' +
+    'C544 216 536 208 528 206Z';
+
   function svgPad(opts) {
-    /* Silhouette as a union of a rounded body and two tilted grips, clipped
-     * so the glow and sheen follow one continuous outline instead of a
-     * hand-drawn path. Mirror-symmetric about x = 460. */
-    var shapes =
-      '<rect x="304" y="92" width="312" height="148" rx="52"/>' +
-      '<rect x="302" y="186" width="96" height="168" rx="46" transform="rotate(-13 350 196)"/>' +
-      '<rect x="522" y="186" width="96" height="168" rx="46" transform="rotate(13 570 196)"/>';
+    opts = opts || {};
 
     var face = [
-      padButtonSvg(568, 118, 17, 'Y', 'special', 3, false),
-      padButtonSvg(534, 156, 17, 'X', 'kick', 2, false),
-      padButtonSvg(602, 156, 17, 'B', 'jump', 1, false),
-      padButtonSvg(568, 194, 17, 'A', 'punch', 0, false),
+      padButtonSvg(634, 250, 22, 'Y', 'special', 3, false),
+      padButtonSvg(586, 300, 22, 'X', 'kick', 2, false),
+      padButtonSvg(682, 300, 22, 'B', 'jump', 1, false),
+      padButtonSvg(634, 350, 22, 'A', 'punch', 0, false),
     ].join('');
 
     var dpad =
       '<g class="vpd">' +
-        '<path d="M 344 128 H 360 V 148 H 380 V 164 H 360 V 184 H 344 V 164 H 324 V 148 H 344 Z"/>' +
-        '<circle cx="352" cy="156" r="4"/>' +
+        '<path d="M306 396 H334 V416 H360 V444 H334 V464 H306 V444 H280 V416 H306 Z"/>' +
+        '<circle cx="320" cy="430" r="3.6"/>' +
       '</g>';
 
     var stick = function (cx, cy, label) {
       return '<g class="vpstick">' +
-        '<circle class="vs-base" cx="' + cx + '" cy="' + (cy + 2) + '" r="30"/>' +
-        '<circle class="vs-ring" cx="' + cx + '" cy="' + cy + '" r="22"/>' +
-        '<circle class="vs-ring" cx="' + cx + '" cy="' + cy + '" r="13" stroke-opacity=".3"/>' +
-        '<circle class="vs-dot" cx="' + cx + '" cy="' + cy + '" r="6"/>' +
-        (label ? '<text class="vp-label" x="' + cx + '" y="' + (cy + 38) + '">' + label + '</text>' : '') +
+        '<circle class="vs-base" cx="' + cx + '" cy="' + (cy + 2) + '" r="42"/>' +
+        '<circle class="vs-ring" cx="' + cx + '" cy="' + cy + '" r="32"/>' +
+        '<circle class="vs-ring" cx="' + cx + '" cy="' + cy + '" r="21" stroke-opacity=".32"/>' +
+        '<circle class="vs-dot" cx="' + cx + '" cy="' + cy + '" r="8"/>' +
+        (label ? '<text class="vp-label" x="' + cx + '" y="' + (cy + 60) + '">' + label + '</text>' : '') +
       '</g>';
     };
 
-    var shoulders =
+    /* Slim triggers behind, rounded bumpers in front — both hugging the
+     * shoulder ridge so the pad reads as one piece. */
+    /* Shoulders follow the shell: a slim trigger peeking out behind a rounded
+     * bumper, both angled with the top-left / top-right edge. */
+    var bumpers =
+      '<g transform="rotate(-8 251 191)">' +
+        '<rect x="192" y="162" width="124" height="13" rx="6.5" fill="rgba(255,255,255,.06)" stroke="rgba(255,215,110,.3)" stroke-width="1.1"/>' +
+        '<text x="254" y="171.5" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-size="7.5" font-weight="700" fill="#8f86b8" letter-spacing="1">LT</text>' +
+        '<rect x="182" y="178" width="148" height="26" rx="13" fill="rgba(255,255,255,.06)" stroke="rgba(255,215,110,.55)" stroke-width="1.5"/>' +
+        '<text x="256" y="196" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-size="10.5" font-weight="700" fill="#d8cdf2" letter-spacing="1">LB</text>' +
+      '</g>' +
+      '<g transform="rotate(8 669 191)">' +
+        '<rect x="604" y="162" width="124" height="13" rx="6.5" fill="rgba(255,255,255,.06)" stroke="rgba(255,215,110,.3)" stroke-width="1.1"/>' +
+        '<text x="666" y="171.5" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-size="7.5" font-weight="700" fill="#8f86b8" letter-spacing="1">RT</text>' +
+        '<rect x="590" y="178" width="148" height="26" rx="13" fill="rgba(255,255,255,.06)" stroke="rgba(255,215,110,.55)" stroke-width="1.5"/>' +
+        '<text x="664" y="196" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-size="10.5" font-weight="700" fill="#d8cdf2" letter-spacing="1">RB</text>' +
+      '</g>';
+
+    /* Bumpers and triggers are their own click targets, so they sit above the
+     * body stroke rather than inside it. */
+    var bumperHits =
       '<g class="vpbumper" data-pad="4" data-act="grapple">' +
-        '<rect x="330" y="82" width="76" height="16" rx="8"/>' +
-        '<text x="368" y="94">LB</text>' +
+        '<rect x="182" y="178" width="148" height="26" rx="13" transform="rotate(-8 251 191)"/>' +
       '</g>' +
       '<g class="vpbumper" data-pad="5" data-act="mount">' +
-        '<rect x="514" y="82" width="76" height="16" rx="8"/>' +
-        '<text x="552" y="94">RB</text>' +
+        '<rect x="590" y="178" width="148" height="26" rx="13" transform="rotate(8 669 191)"/>' +
+      '</g>' +
+      '<g class="vpbumper" data-pad="6" data-act="throw">' +
+        '<rect x="192" y="162" width="124" height="13" rx="6.5" transform="rotate(-8 251 191)"/>' +
+      '</g>' +
+      '<g class="vpbumper" data-pad="7" data-act="sprint">' +
+        '<rect x="604" y="162" width="124" height="13" rx="6.5" transform="rotate(8 669 191)"/>' +
       '</g>';
 
     var centre =
-      '<g class="vpstart">' +
-        '<path d="M 452 112 l 8 -5 l 8 5 l -8 5 z" fill="none" stroke="rgba(255,215,110,.55)" stroke-width="1.1"/>' +
-        '<rect x="436" y="124" width="22" height="6" rx="3"/>' +
-        '<rect x="462" y="124" width="22" height="6" rx="3"/>' +
+      '<g class="vpguide" data-pad="9" data-act="pause">' +
+        '<circle cx="460" cy="248" r="15.5" fill="rgba(255,255,255,.05)" stroke="#ffd76e" stroke-width="1.6"/>' +
+        '<circle cx="460" cy="248" r="9" fill="none" stroke="rgba(255,215,110,.5)" stroke-width="1.2"/>' +
+        '<path d="M460 241 l2.6 4.4 4.8 1 -3.4 3.6 0.8 4.9 -4.8 -2.3 -4.8 2.3 0.8 -4.9 -3.4 -3.6 4.8 -1 z" ' +
+          'fill="rgba(255,215,110,.85)"/>' +
+      '</g>' +
+      '<g class="vpstart" data-pad="8" data-act="restart">' +
+        '<rect x="420" y="304" width="28" height="10" rx="5" fill="rgba(255,255,255,.16)" stroke="rgba(255,255,255,.3)" stroke-width="1"/>' +
+        '<rect x="472" y="304" width="28" height="10" rx="5" fill="rgba(255,255,255,.16)" stroke="rgba(255,255,255,.3)" stroke-width="1"/>' +
       '</g>';
 
-    return '<svg class="vr-pad" viewBox="282 58 356 314" role="img" aria-label="' + T('tabPad') + '">' +
+    return '<svg class="vr-pad" viewBox="134 136 652 480" role="img" aria-label="' + T('tabPad') + '">' +
       '<defs>' +
-        '<clipPath id="padClip">' + shapes + '</clipPath>' +
         '<linearGradient id="padFill" x1="0" y1="0" x2="0" y2="1">' +
-          '<stop offset="0" stop-color="#3a2d59" stop-opacity="0.97"/>' +
-          '<stop offset="0.5" stop-color="#241b3a" stop-opacity="0.97"/>' +
-          '<stop offset="1" stop-color="#120d20" stop-opacity="0.98"/>' +
+          '<stop offset="0" stop-color="#403059" stop-opacity=".97"/>' +
+          '<stop offset=".46" stop-color="#271d3d" stop-opacity=".98"/>' +
+          '<stop offset="1" stop-color="#120d20" stop-opacity=".99"/>' +
         '</linearGradient>' +
         '<linearGradient id="padSheen" x1="0" y1="0" x2="0" y2="1">' +
-          '<stop offset="0" stop-color="#ffffff" stop-opacity="0.16"/>' +
-          '<stop offset="0.55" stop-color="#ffffff" stop-opacity="0.02"/>' +
+          '<stop offset="0" stop-color="#ffffff" stop-opacity=".2"/>' +
+          '<stop offset=".5" stop-color="#ffffff" stop-opacity=".03"/>' +
           '<stop offset="1" stop-color="#ffffff" stop-opacity="0"/>' +
         '</linearGradient>' +
+        '<linearGradient id="padEdge" x1="0" y1="0" x2="0" y2="1">' +
+          '<stop offset="0" stop-color="#ffe9b0"/>' +
+          '<stop offset=".55" stop-color="#ffd76e"/>' +
+          '<stop offset="1" stop-color="#a8722a"/>' +
+        '</linearGradient>' +
         '<filter id="padGlow" x="-25%" y="-25%" width="150%" height="150%">' +
-          '<feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#000" flood-opacity="0.55"/>' +
-          '<feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#ffd76e" flood-opacity="0.4"/>' +
+          '<feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#000" flood-opacity=".55"/>' +
+          '<feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#ffc861" flood-opacity=".3"/>' +
         '</filter>' +
       '</defs>' +
       '<g filter="url(#padGlow)">' +
-        '<rect x="270" y="70" width="380" height="320" fill="url(#padFill)" clip-path="url(#padClip)"/>' +
-        '<rect x="270" y="70" width="380" height="180" fill="url(#padSheen)" clip-path="url(#padClip)"/>' +
-        '<path d="M 340 104 q 120 -12 240 0" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="1.4" stroke-linecap="round" clip-path="url(#padClip)"/>' +
+        '<path d="' + PAD_OUTLINE + '" fill="url(#padFill)"/>' +
+        '<path d="' + PAD_OUTLINE + '" fill="url(#padSheen)"/>' +
+        '<path d="' + PAD_OUTLINE + '" fill="none" stroke="url(#padEdge)" stroke-width="3.2" stroke-linejoin="round"/>' +
+        '<path d="' + PAD_OUTLINE + '" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="1" stroke-linejoin="round" transform="translate(0,2)"/>' +
       '</g>' +
-      shoulders + face + dpad + stick(398, 236, '') + stick(522, 236, '') + centre +
+      '<path d="M404 240C420 226 440 218 460 218C480 218 500 226 516 240" fill="none" ' +
+        'stroke="rgba(255,215,110,.22)" stroke-width="1.6" stroke-linecap="round"/>' +
+      bumpers + bumperHits +
+      stick(296, 300, 'MOVE') + dpad +
+      stick(550, 396, '') +
+      face + centre +
       '</svg>';
   }
-
   /* One row in a diagram legend: action name, P1 key, P2 key. */
   function legendRows(actions, usePad) {
     var b = bridge();
@@ -1333,7 +1427,10 @@
       } else {
         var c1 = b && b.controls ? b.keyLabel(b.controls[0][a]) : '';
         var c2 = b && b.controls ? b.keyLabel(b.controls[1][a]) : '';
-        right = '<span class="vr-cap">' + c1 + '</span><span class="vr-cap p2">' + c2 + '</span>';
+        /* Both players share one layout, so show the key once. */
+        right = c1 === c2
+          ? '<span class="vr-cap">' + c1 + '</span>'
+          : '<span class="vr-cap">' + c1 + '</span><span class="vr-cap p2">' + c2 + '</span>';
       }
       return '<div class="vr-legrow"><span class="vr-legname">' + T('act.' + a) + '</span>' + right + '</div>';
     }).join('');
@@ -1396,7 +1493,7 @@
           '<div class="vr-legcol"><h4>' + T('gMove') + '</h4>' +
             legendRows(['left', 'right', 'up', 'down', 'sprint', 'jump']) + '</div>' +
           '<div class="vr-legcol"><h4>' + T('gCombat') + '</h4>' +
-            legendRows(['punch', 'kick', 'special', 'grapple', 'mount']) + '</div>' +
+            legendRows(['punch', 'kick', 'throw', 'special', 'grapple', 'mount']) + '</div>' +
         '</div>' +
         '<p class="vr-gnote">' + T('guideKeysNote') + '</p>';
     } else if (tab === 'pad') {
@@ -1405,7 +1502,7 @@
         '<div class="vr-gdiagram vr-gdiagram-pad">' + svgPad({}) + '</div>' +
         '<div class="vr-glegend">' +
           '<div class="vr-legcol"><h4>' + T('gCombat') + '</h4>' +
-            legendRows(['punch', 'kick', 'special', 'jump'], true) + '</div>' +
+            legendRows(['punch', 'kick', 'special', 'jump', 'throw'], true) + '</div>' +
           '<div class="vr-legcol"><h4>' + T('gMove') + '</h4>' +
             legendRows(['sprint', 'grapple', 'mount', 'pause', 'restart'], true) + '</div>' +
         '</div>' +
@@ -1972,11 +2069,29 @@
     renderSoundUI();
   }
 
+  /* The pause notice names whoever stopped the round. It has to appear the
+   * moment the menu opens, so a light poll keeps it in sync without
+   * re-rendering the whole panel. */
+  function syncPauseStatus() {
+    if (!pauseWrap) return;
+    var node = pauseWrap.querySelector('[data-role="status"]');
+    if (!node) return;
+    var line = pauseStatusLine();
+    if (node.textContent !== line) node.textContent = line;
+  }
+
   function pauseStatusLine() {
     var b = bridge();
-    if (!b || !b.net || !b.net.role) return '';
-    var st = netBadge();
-    return st.label;
+    if (!b) return '';
+    var by = b.pausedBy;
+    var role = b.net && b.net.role;
+    if (by === 'host' || by === 'guest') {
+      var mine = (role === 'host' && by === 'host') || (role === 'guest' && by === 'guest');
+      if (mine) return T('pauseByYou');
+      return by === 'host' ? T('pauseByP1') : T('pauseByP2');
+    }
+    if (by === 'local') return T('pauseSolo');
+    return '';
   }
 
   /* ---------------------------- online extras ----------------------------- */
@@ -2238,13 +2353,38 @@
   function installKeyCapture() {
     reservedHandler = function (ev) {
       if (ev.__voxelPad) return;
+      /* Z bestätigt, X bricht ab — auch in den Fenstern. */
+      var isConfirm = ev.code === 'KeyZ';
+      var isCancel = ev.code === 'KeyX' || ev.code === 'Escape';
       if (guideOpen()) {
         ev.preventDefault();
         ev.stopImmediatePropagation();
-        if (ev.code === 'Escape') closeGuide();
+        if (isCancel || isConfirm) closeGuide();
         return;
       }
-      if (!ui.modal || ui.modal.hidden) return;
+      if (!ui.modal || ui.modal.hidden) {
+        var pauseEl = global.document.getElementById('pause');
+        if (!ev.repeat && pauseEl && pauseEl.classList.contains('on') && (isConfirm || isCancel)) {
+          var pb = bridge();
+          ev.preventDefault();
+          ev.stopImmediatePropagation();
+          if (pb) pb.setPaused(false);
+          return;
+        }
+        var menuEl = global.document.getElementById('menu');
+        var b = bridge();
+        if (!ev.repeat && isConfirm && menuEl && !menuEl.classList.contains('hide') && b && !b.started) {
+          var tag = global.document.activeElement && global.document.activeElement.tagName;
+          if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+          var start = global.document.getElementById('startBtn');
+          if (start) {
+            ev.preventDefault();
+            ev.stopImmediatePropagation();
+            start.click();
+          }
+        }
+        return;
+      }
       if (ev.code === 'Tab') return;   // keep focus traversal usable
       /* The controls window owns the keyboard while it is open: no
        * punch, no pause, no music toggle leaking into the game. */
@@ -2256,7 +2396,7 @@
         assignKey(ev.code);
         return;
       }
-      if (ev.code === 'Escape') closeControls();
+      if (isCancel) closeControls();
     };
     global.addEventListener('keydown', reservedHandler, true);
   }
@@ -2294,7 +2434,7 @@
     installKeyCapture();
     handleInviteLink();
     applySound();
-    setInterval(function () { updateHud(); syncMenuMusic(); }, 120);
+    setInterval(function () { updateHud(); syncMenuMusic(); syncPauseStatus(); }, 120);
     setInterval(function () { pollOnline(); watchSession(); syncGameMute(); }, 600);
   }
   function waitForBridge() {

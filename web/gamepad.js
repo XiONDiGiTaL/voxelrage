@@ -10,7 +10,7 @@
  * Defaults follow the classic beat-'em-up layout:
  *   left stick / D-pad  move          A  punch / pick up / fire
  *   X  kick            Y  special     B  jump / donkey hop
- *   LB grab / chain    RB mount       RT sprint (hold)
+ *   LT throw           LB grab / chain  RB mount   RT sprint (hold)
  *   Start pause        Back restart
  *
  * Public interface: VoxelPad.getMap(), VoxelPad.setBinding(action, btn),
@@ -32,12 +32,13 @@
     special: 3,  // Y / triangle (top)
     grapple: 4,  // LB
     mount: 5,    // RB
+    throw: 6,    // LT
     sprint: 7,   // RT
     pause: 9,    // Start
     restart: 8,  // Back / View
   };
   /* Actions the pad feeds into the game's own binding table. */
-  var GAME_ACTIONS = ['punch', 'jump', 'kick', 'special', 'grapple', 'mount', 'sprint'];
+  var GAME_ACTIONS = ['punch', 'jump', 'kick', 'special', 'grapple', 'mount', 'throw', 'sprint'];
 
   var PAD_NAMES = [
     'A', 'B', 'X', 'Y', 'LB', 'RB', 'LT', 'RT', 'Back', 'Start',

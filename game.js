@@ -1217,13 +1217,13 @@ function makeFigure(p, bulk = 1) {
 
 /* --------------------------- Esel (Reittier) ----------------------------- */
 // Ein Esel pro Map. Er steht am Anfang der Straße und kann bestiegen werden:
-// J = Fronttritt, K = Drehtritt, L = Superkick bei vollem Balken. Wird der Reiter
+// Z = Fronttritt, X = Drehtritt, L = Superkick bei vollem Balken. Wird der Reiter
 // getroffen, stürzt er ab und der Esel galoppiert davon – pro Map kein zweiter Versuch.
 const DONKEY_RIDE_Y = 0.72;
 // Superkick (L, nur bei vollem Balken)
 const DONKEY_KICK_DUR = 0.95;
 const DONKEY_KICK_HIT = 0.44;
-// Normale Tritte im Sattel: J = Fronttritt, K = Drehtritt.
+// Normale Tritte im Sattel: Z = Fronttritt, X = Drehtritt.
 const DONKEY_FRONT_DUR = 0.42;
 const DONKEY_FRONT_HIT = 0.14;
 const DONKEY_SPIN_DUR = 0.64;
@@ -1819,10 +1819,10 @@ function updateRiding(p, dt) {
   const canMove = p.state === 'ride' || p.state === 'ridehop';
   let mx = 0, mz = 0;
   if (canMove) {
-    if (kb[c.left]) mx -= 1;
-    if (kb[c.right]) mx += 1;
-    if (kb[c.up]) mz -= 1;
-    if (kb[c.down]) mz += 1;
+    if (moveHeld(kb, 'left', c.left)) mx -= 1;
+    if (moveHeld(kb, 'right', c.right)) mx += 1;
+    if (moveHeld(kb, 'up', c.up)) mz -= 1;
+    if (moveHeld(kb, 'down', c.down)) mz += 1;
   }
   p.moving = canMove && (mx !== 0 || mz !== 0);
   if (p.moving) {
@@ -2071,27 +2071,38 @@ function setRoster(count) {
   updateScores();
 }
 
-// Tastenbelegung: Standard ist WASD für P1, Pfeiltasten + , . / für P2.
-// Im Startmenü frei belegbar; die Auswahl liegt lokal im Browser.
+// Tastenbelegung: beide Spieler nutzen dieselbe, bequeme Belegung — jeder
+// spielt an seiner eigenen Tastatur (online) bzw. kann sie im Menü umlegen.
+// WASD und die Pfeiltasten bewegen immer zusammen, egal was belegt ist.
 const DEFAULT_CONTROLS = [
   {
-    left: 'KeyA', right: 'KeyD', up: 'KeyW', down: 'KeyS', punch: 'KeyJ', kick: 'KeyK',
+    left: 'KeyA', right: 'KeyD', up: 'KeyW', down: 'KeyS', punch: 'KeyZ', kick: 'KeyX',
     special: 'KeyL', jump: 'Space', sprint: 'ShiftLeft', grapple: 'KeyG', mount: 'KeyE',
+    throw: 'KeyF',
   },
   {
-    left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp', down: 'ArrowDown', punch: 'Comma',
-    kick: 'Period', special: 'Slash', jump: 'Enter', sprint: 'ShiftRight', grapple: 'Semicolon',
-    mount: 'Quote',
+    left: 'KeyA', right: 'KeyD', up: 'KeyW', down: 'KeyS', punch: 'KeyZ', kick: 'KeyX',
+    special: 'KeyL', jump: 'Space', sprint: 'ShiftLeft', grapple: 'KeyG', mount: 'KeyE',
+    throw: 'KeyF',
   },
 ];
+// Zweite Bewegungsachse: die Pfeiltasten laufen immer mit.
+const MOVE_ALIASES = { left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp', down: 'ArrowDown' };
+function moveHeld(kb, action, code) {
+  if (!kb) return false;
+  if (code && kb[code]) return true;
+  const alt = MOVE_ALIASES[action];
+  return !!(alt && kb[alt]);
+}
 const BIND_ACTIONS = [
   ['left', 'Links'], ['right', 'Rechts'], ['up', 'Hoch'], ['down', 'Runter'],
-  ['punch', 'Schlag / Item'], ['kick', 'Kick'], ['special', 'Spezial'],
-  ['jump', 'Sprung'], ['sprint', 'Rennen'], ['grapple', 'Greifen'], ['mount', 'Esel'],
+  ['punch', 'Schlag / Item'], ['kick', 'Kick'], ['special', 'O. Schelle'],
+  ['throw', 'Werfen'], ['jump', 'Sprung'], ['sprint', 'Rennen'],
+  ['grapple', 'Greifen'], ['mount', 'Esel'],
 ];
 // Diese Tasten steuern global und bleiben deshalb frei belegbar nicht verfügbar.
 const RESERVED_BINDINGS = new Set(['Escape', 'KeyP', 'KeyM', 'KeyR', 'Tab']);
-const BIND_STORAGE_KEY = 'voxel-rage-bindings-v1';
+const BIND_STORAGE_KEY = 'voxel-rage-bindings-v2';
 const CONTROLS = DEFAULT_CONTROLS.map((set) => ({ ...set }));
 
 const KEY_LABELS = {
@@ -2117,23 +2128,20 @@ function loadBindings() {
   let raw = null;
   try { raw = JSON.parse(localStorage.getItem(BIND_STORAGE_KEY) || 'null'); } catch (e) { return; }
   if (!Array.isArray(raw)) return;
-  const used = new Set();
   for (let i = 0; i < 2; i++) {
     const set = raw[i];
     if (!set || typeof set !== 'object') continue;
     for (const [a] of BIND_ACTIONS) {
       const code = set[a];
-      if (typeof code === 'string' && code && !isReservedBind(code) && !used.has(code)) {
-        CONTROLS[i][a] = code;
-        used.add(code);
-      }
+      if (typeof code === 'string' && code && !isReservedBind(code)) CONTROLS[i][a] = code;
     }
   }
-  // Doppelte oder reservierte Tasten aus alten Ständen notfalls umbiegen.
-  const seen = new Set();
+  // Doppelte oder reservierte Tasten gelten nur pro Spieler: P1 und P2 teilen
+  // sich absichtlich dieselbe Belegung (jeder an seiner eigenen Tastatur).
   const pool = ['KeyF', 'KeyH', 'KeyI', 'KeyO', 'KeyT', 'KeyU', 'KeyV', 'KeyB', 'KeyN', 'KeyX', 'KeyZ',
     'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0'];
   for (let i = 0; i < 2; i++) {
+    const seen = new Set();
     for (const [a] of BIND_ACTIONS) {
       let code = CONTROLS[i][a];
       if (isReservedBind(code) || seen.has(code)) {
@@ -2569,6 +2577,7 @@ function actionFor(p, code) {
   if (code === c.jump) return 'jump';
   if (code === c.grapple) return 'grapple';
   if (code === c.mount) return 'mount';
+  if (code === c.throw) return 'throw';
   return null;
 }
 
@@ -2581,6 +2590,7 @@ function doAction(p, action) {
   else if (action === 'jump') { if (p.mount) donkeyHop(p); else jumpPlayer(p); }
   else if (action === 'grapple') tryGrapple(p);
   else if (action === 'mount') tryMount(p);
+  else if (action === 'throw') { if (p.grab) throwGrab(p); }
 }
 
 addEventListener('keydown', (ev) => {
@@ -2666,7 +2676,7 @@ function jumpPlayer(p) {
 
 function tryAttack(p, kind = 'punch') {
   if (p.dead || p.down || p.state === 'ko' || p.state === 'hurt') return;
-  // Im Sattel: J = Fronttritt, K = Drehtritt. Der Superkick liegt auf L.
+  // Im Sattel: Z = Fronttritt, X = Drehtritt. Der Superkick liegt auf L.
   if (p.mount) {
     if (kind === 'kick') donkeySpinKick(p);
     else donkeyFrontKick(p);
@@ -2692,7 +2702,7 @@ function tryAttack(p, kind = 'punch') {
     if (p.weapon) useWeaponCharge(p);
     return;
   }
-  // Schlag-Taste (J bzw. P2-Komma) nimmt Beute in Reichweite auf.
+  // Schlag-Taste (Z) nimmt Beute in Reichweite auf.
   if (kind === 'punch' && tryPickup(p)) return;
   if (p.weapon && p.weapon.kind === 'gun' && kind === 'punch') { shootWeapon(p); return; }
 
@@ -5173,10 +5183,10 @@ function updatePlayer(p, dt) {
   const canMove = (p.state === 'idle' || p.state === 'walk') && !p.dead;
   let mx = 0, mz = 0;
   if (canMove) {
-    if (kb[c.left]) mx -= 1;
-    if (kb[c.right]) mx += 1;
-    if (kb[c.up]) mz -= 1;
-    if (kb[c.down]) mz += 1;
+    if (moveHeld(kb, 'left', c.left)) mx -= 1;
+    if (moveHeld(kb, 'right', c.right)) mx += 1;
+    if (moveHeld(kb, 'up', c.up)) mz -= 1;
+    if (moveHeld(kb, 'down', c.down)) mz += 1;
   }
   p.moving = (mx !== 0 || mz !== 0);
   if (p.moving && canMove) {
@@ -5799,19 +5809,24 @@ function updateControlsHelp() {
     .map(([a, label]) => `<b>${keyLabel(CONTROLS[i][a])}</b> ${label}`).join(' · ');
   const block = (i) => `${row(i, [['left', 'links'], ['right', 'rechts'], ['up', 'hoch'], ['down', 'tief']])}<br>`
     + `${row(i, [['punch', 'Schlag/Item'], ['kick', 'Kick'], ['special', 'Schelle'], ['jump', 'Sprung']])}<br>`
-    + `${row(i, [['sprint', 'Rennen'], ['grapple', 'Greifen'], ['mount', 'Esel']])}`;
-  controlsHelpEl.innerHTML = `<b>P1</b> ${block(0)}<span class="sep"></span><b>P2</b> ${block(1)}`;
+    + `${row(i, [['throw', 'Werfen'], ['sprint', 'Rennen'], ['grapple', 'Greifen'], ['mount', 'Esel']])}`;
+  // Beide Spieler teilen sich die Belegung – dann nur einmal zeigen.
+  const same = BIND_ACTIONS.every(([a]) => CONTROLS[0][a] === CONTROLS[1][a]);
+  controlsHelpEl.innerHTML = same
+    ? `<b>P1 + P2</b> ${block(0)}`
+    : `<b>P1</b> ${block(0)}<span class="sep"></span><b>P2</b> ${block(1)}`;
 }
 
 function updateHint() {
   if (!hintEl) return;
   const block = (i) => {
     const c = CONTROLS[i];
-    return `<b>P${i + 1}</b> ${keyLabel(c.left)}/${keyLabel(c.right)} · ${keyLabel(c.up)}/${keyLabel(c.down)}`
-      + ` · ${keyLabel(c.punch)}/${keyLabel(c.kick)} · ${keyLabel(c.special)} · ${keyLabel(c.jump)}`
-      + ` · ${keyLabel(c.sprint)} · ${keyLabel(c.grapple)} · ${keyLabel(c.mount)}`;
+    return `${keyLabel(c.left)}/${keyLabel(c.right)} · ${keyLabel(c.up)}/${keyLabel(c.down)}`
+      + ` · ${keyLabel(c.punch)} Schlag · ${keyLabel(c.kick)} Kick · ${keyLabel(c.throw)} Werfen`
+      + ` · ${keyLabel(c.special)} Schelle · ${keyLabel(c.jump)} Sprung · ${keyLabel(c.sprint)} Rennen`
+      + ` · ${keyLabel(c.grapple)} Greifen · ${keyLabel(c.mount)} Esel`;
   };
-  hintEl.innerHTML = `${block(0)} &nbsp;|&nbsp; ${block(1)} &nbsp;|&nbsp; <b>M</b> Musik · <b>R</b> neu · <b>ESC/P</b> Pause`;
+  hintEl.innerHTML = `${block(0)} &nbsp;|&nbsp; <b>ESC</b> Pause`;
 }
 
 function updateGrappleHintText() {
@@ -6109,9 +6124,12 @@ function canPause() {
   return started && menuEl.classList.contains('hide') && !msgEl.classList.contains('on') && !victory;
 }
 
-function setPaused(on, relay = true) {
+let pausedBy = '';
+function setPaused(on, relay = true, by = '') {
   if (paused === on) return;
   paused = on;
+  // Wer pausiert hat – im Online-Koop steht das klein im Pausenmenü.
+  pausedBy = on ? (by || (net.role || 'local')) : '';
   pauseEl.classList.toggle('on', on);
   // Losgelassene Tasten lösen, sonst läuft man nach dem Weiterlaufen weiter.
   for (const k in keys) keys[k] = false;
@@ -6121,12 +6139,12 @@ function setPaused(on, relay = true) {
     // Wurde in der Pause stummgeschaltet, startet der Track erst jetzt wieder.
     if (!muted && !music.playing) { currentTrackKey = null; playTrackForWave(); }
   }
-  if (relay && net.role) net.send({ t: 'pause', on: paused });
+  if (relay && net.role) net.send({ t: 'pause', on: paused, by: pausedBy });
 }
 
 function togglePause() {
   if (!paused && !canPause()) return;
-  setPaused(!paused);
+  setPaused(!paused, true, net.role || 'local');
 }
 
 pauseEl.addEventListener('click', () => setPaused(false));
@@ -6428,7 +6446,7 @@ function handleNet(m) {
     // Der Gast teilt seine Belegung mit; der Host tippt sie für P2.
     if (net.role === 'host') { applyControls([CONTROLS[0], m.c]); refreshBindingUI(); }
   } else if (m.t === 'pause') {
-    if (started) setPaused(!!m.on, false);
+    if (started) setPaused(!!m.on, false, m.by || (net.role === 'host' ? 'guest' : 'host'));
   } else if (m.t === 's' && net.role === 'guest') {
     applySnapshot(m);
   } else if (m.t === 'k' && net.role === 'host') {
@@ -6837,6 +6855,7 @@ window.__voxel = {
   get alarmCd() { return alarmSquadCd; },
   get alarmSquads() { return alarmSquadsLeft; },
   get paused() { return paused; },
+  get pausedBy() { return pausedBy; },
   get muted() { return muted; },
   controls: CONTROLS, keyLabel, handleNet, applyControls,
   togglePause, setPaused,

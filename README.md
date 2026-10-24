@@ -22,27 +22,29 @@ The game itself is [player529](https://github.com/player529/Jannitschar)'s work 
 - **Live connection state.** The lobby and pause menu show whether the room is open, who has joined, and whether the relay is reconnecting.
 - **Graceful exits.** If the host leaves mid-run, the guest gets a clear message and a one-click return to the menu instead of a frozen street.
 - **Plug-and-play controllers.** Standard-mapping gamepads work as soon as they are connected, with a beat-'em-up button layout.
-- **Control layout diagrams.** A glowing outline gamepad and a full 75 % keyboard, both bound to the live key map: every bound key names its action, player one in gold and player two in cyan. Click a key or button in the controls window to remap it.
+- **Control layout diagrams.** A glowing outline gamepad and a full 75 % keyboard, both bound to the live key map: every bound key names its action, and the arrow cluster lights as the second movement axis. Click a key or button in the controls window to remap it.
 - **A tabbed How to Play popup.** Keyboard, controller and game-rule tabs in one scrollable window, with voxel keycaps, a controller diagram and the food and weapon pickups as voxel sprites.
 - **Language switch in the menus.** DE | EN sits in the main menu and in the pause menu, and the whole interface follows — the same easy switch Leap Buddies uses.
 - **A real pause menu.** Resume, restart, controls, guide, display filter, sound, language and leave, in the same gel-and-glass skin as the rest of the interface.
 - **Display filters.** A vignette slider plus CRT, watercolour and cinematic toggles, saved locally and reachable from the main menu and the pause menu.
 - **A 1638 skin.** Cinzel headings, gel buttons with a glass sheen, rounded panels, Ottoman corner ornaments and a thin gold hairline — same colours as before, modernised.
 - **A period street.** Covered ox carts with striped canvas in place of cars, market stalls, clay amphorae, sandstone fountain posts, fig baskets and lantern-lit wooden posts, on cobblestone instead of painted asphalt.
-- **A voxel HUD.** A portrait rendered from the character's own head mesh, a pixel heart and an ECG health trace that colours, slows and flattens as health drops — plus a special meter that glows at full charge.
+- **A voxel HUD.** A portrait rendered from the character's own head mesh, a pixel heart and an ECG health trace that colours, slows and flattens as health drops — plus a flame-marked special meter built to the same 15 px / 186 px grid that glows at full charge.
+- **One comfortable layout for both players.** Each player — host, guest or a local second pad — uses the same bindings: WASD *and* the arrow keys to move, `Z` punch, `X` kick, `F` throw, `G` grab, `L` Ottoman Slap, `E` mount, `Space` jump, `Shift` run, `Esc` pause. `Z` and `X` also confirm and cancel inside every menu.
 - **Sound controls and a menu theme.** A muted/volume pair in the menu and pause menu drives the looped menu track and the in-game soundtrack.
 
 ## Latest revision
 
-This pass rebuilt the interface around the game's own setting instead of generic dark-mode panels:
+This pass rebuilt the wordmark, the controls and the meters:
 
-- **The guide is a real popup.** A scrollable window with three tabs — keyboard, controller and game rules — replacing the wall of prose that used to sit in the menu's controls card. It opens from the main menu, the pause menu and the controls window.
-- **The keyboard is drawn, not listed.** A complete board with function row, both Shifts, arrows and a player-two cluster; bound keys light gold or cyan and carry the action name on the cap. The controller is a matching outline pad with glowing edges, labelled face buttons, sticks, shoulders and a centre Start/Back pair.
-- **The interface has a 1638 skin.** A custom voxel wordmark — blocky Bungee letters with a hard extruded side, gold VOXEL and ember RAGE over a diamond ornament — plus gel buttons with a glass highlight, rounded glass cards, Ottoman corner ornaments, Cinzel section headings over Manrope, and hairline gold rules. Colours, layout and wording stay the same; only the finish changed.
-- **Display filters are new.** Vignette, CRT, watercolour and cinematic, with a live slider and three toggles, persisted in `localStorage` and available before and during a run.
-- **The street belongs to 1638.** Cars became covered ox carts (still destructible, still triggering the watch alarm and its reinforcement wave), rubbish bins became amphorae, the dumpster became a market stall, the hydrant a sandstone water post, the traffic cone a fig basket, and the street lamps wooden posts with iron lanterns. Lane paint, the zebra crossing and the manhole cover gave way to cobblestone.
-- **The HUD bars now match.** Health keeps its pixel heart; the special meter gained a voxel star in the same 15 px slot, the same 186 px length, the same rounded shell and a live number on the right, so both rows read as one system.
-- **HUD portraits, the pause menu and sound controls** are unchanged in behaviour and captured again below.
+- **The wordmark is purple and gold again, and RAGE burns.** A blocky voxel slab with a hard stepped extrusion: VOXEL in a lit gold gradient with a wide ember halo, RAGE carrying a living fire gradient inside its own letters. The flame rises on a slow loop, an ember band flickers across the glyphs, and the only ornament is the Ottoman diamond-and-hairline rule underneath.
+- **The meters are one system.** Health and special now share a fixed three-column grid — icon, bar, number — so the heart and the new voxel flame, both 15 px, sit at the same x and both bars run the same 186 px at the same height. The flame replaces the old star and reads at 52 px.
+- **The gamepad is a real silhouette.** A wide shell with shoulders that cradle two slim triggers and two rounded bumpers (LT/LB, RT/RB), a raised bridge with the round home button, an asymmetric stick pair, a plus-shaped D-pad and a four-button diamond labelled with its action — one continuous gold hairline over a purple glass body, symmetric about its centre. Clicking any drawn element still binds it.
+- **Both players share one layout.** WASD *and* the arrow keys move, `Z` punch, `X` kick, `F` throw, `G` grab, `L` Ottoman Slap, `E` mount, `Space` jump, `Shift` run, `Esc` pause. The layout is the same for host, guest and player two, and the keyboard diagram lights the arrow cluster as the second movement axis.
+- **Menus answer to Z and X.** `Z` confirms (start the battle, resume the pause) and `X` cancels out of any window, alongside `Esc`.
+- **Pause is shared, and says who did it.** In online co-op the round stops for both players and the pause panel names the side that paused it in small caps — including the case where you paused and your partner is waiting.
+- **The HUD portrait is framed, not cropped.** The offscreen camera now leaves margin around the character's own head mesh, so the turban and the chin are both inside the 52 px frame.
+- **Small fixes.** The on-screen key strip is gone (the guide covers it), the weapon chip is smaller, and the special hint no longer collides with the centre banner.
 
 ## Screenshots
 
@@ -57,7 +59,7 @@ Captured from the running game, not mock-ups.
 | ![How to Play](screenshots/how-to-play.png) | ![Pause menu](screenshots/pause-menu.png) |
 | How to Play: game rules, keycaps and item sprites | Pause menu with sound, guide, display and language |
 | ![Keyboard guide](screenshots/controls-keyboard.png) | ![Controller guide](screenshots/controls-controller.png) |
-| Keyboard diagram with both players' keys | Controller diagram with the beat-'em-up layout |
+| Keyboard diagram, arrows lit as the second movement axis | Controller diagram with the beat-'em-up layout |
 | ![Display filters](screenshots/display-filters.png) | ![1638 street](screenshots/street-1638.png) |
 | Display filters: vignette, CRT, watercolour, cinematic | Covered carts, market stalls and lanterns on cobblestone |
 
@@ -125,18 +127,21 @@ Nightmare marks every third spawn as an elite (golden aura, shoulder plates, cro
 
 ### Keyboard (defaults)
 
-| Action | Player 1 | Player 2 |
-|---|---|---|
-| Move | `W` `A` `S` `D` | `↑` `←` `↓` `→` |
-| Punch / use weapon / pick up | `J` | `,` |
-| Kick | `K` | `.` |
-| Special (Ottoman Slap / Superkick) | `L` | `/` |
-| Jump / donkey hop | `Space` | `Enter` |
-| Run (hold) | `Shift` | `Right Shift` |
-| Grab / chain / throw setup | `G` | `;` |
-| Mount / dismount donkey | `E` | `'` |
+Both players use the same, comfortable layout — each on their own keyboard. In local co-op on a single keyboard, remap player two in the controls window.
 
-`M` toggles music, `R` restarts, `Esc` or `P` pauses. Bindings are stored locally and shared with the host in online co-op.
+| Action | Key |
+|---|---|
+| Move | `W` `A` `S` `D` — the arrow keys always work too |
+| Punch / use weapon / pick up | `Z` |
+| Kick | `X` |
+| Throw (while grabbing) | `F` |
+| Special (Ottoman Slap / Superkick) | `L` |
+| Jump / donkey hop | `Space` |
+| Run (hold) | `Shift` |
+| Grab / chain | `G` |
+| Mount / dismount donkey | `E` |
+
+`Z` confirms and `X` cancels inside the menus; `Esc` or `P` pauses, `M` toggles music, `R` restarts. Bindings are stored locally and shared with the host in online co-op.
 
 ### Controller (defaults)
 
@@ -149,20 +154,21 @@ Standard-mapping pads: Xbox-style, DualShock/DualSense, and most 8BitDo and gene
 | Jump / donkey hop | B (right) |
 | Kick | X (left) |
 | Special | Y (top) |
+| Throw (while grabbing) | LT |
 | Grab / chain | LB |
 | Mount | RB |
 | Run (hold) | RT |
 | Pause | Start |
 | Restart | Back / View |
 
-The pad translates into the game's own key bindings, so remapping a key also remaps the pad, and Player 2 in local co-op still uses the keyboard.
+The pad translates into the game's own key bindings, so remapping a key also remaps the pad. Any standard-mapping pad is picked up the moment it is connected — no setup step.
 
 ### How to play
 
 The start menu has a **How to play** button — the same idea as Leap Buddies' field guide. It opens a scrollable popup with three tabs:
 
-- **Keyboard** — the full board, with every bound key lit gold (P1) or cyan (P2) and carrying its action name, plus a legend for movement and combat.
-- **Controller** — the same layout as an outline pad: face buttons, D-pad, sticks, shoulders and Start/Back, each labelled with its action.
+- **Keyboard** — the full board, with every bound key lit gold and carrying its action name, the arrow cluster lit as the second movement axis, and a legend for movement and combat.
+- **Controller** — the same layout as an outline pad: face buttons, D-pad, sticks, bumpers, triggers and the home button, each labelled with its action.
 - **The game** — movement, combos, grab and throw, the donkey, food and weapons, with voxel sprites next to every pickup.
 
 Every binding in the popup is live, so it follows a remap and the selected language. The guide is reachable from the main menu, the pause menu and the controls window.
@@ -171,10 +177,10 @@ Every binding in the popup is live, so it follows a remap and the selected langu
 
 Open **Set up controls** in the start menu, or **Controls** in the pause menu. The window has two tabs:
 
-- **Controller** — a compact outline gamepad with a D-pad, two sticks, four face buttons labelled A / B / X / Y and both shoulders. Pick an action on the right, then press a button on your pad, or click the drawn button directly.
-- **Keyboard** — a full keyboard whose keys light in gold (P1) or cyan (P2) when bound. Pick a player and an action, then press the key or click the keycap.
+- **Controller** — a compact outline gamepad with a D-pad, two sticks, four face buttons labelled A / B / X / Y, both bumpers and both triggers. Pick an action on the right, then press a button on your pad, or click the drawn button directly.
+- **Keyboard** — a full keyboard whose keys light gold when bound. Pick a player and an action, then press the key or click the keycap.
 
-Bindings swap instead of duplicating, so no key is ever assigned twice. Pad layout is stored under `voxelrage-pad-v1`; keyboard bindings under `voxel-rage-bindings-v1`. Both are local to the browser.
+Bindings swap instead of duplicating, so no key is ever assigned twice. Pad layout is stored under `voxelrage-pad-v1`; keyboard bindings under `voxel-rage-bindings-v2`. Both are local to the browser.
 
 ### Display filters
 
@@ -193,15 +199,17 @@ Bindings swap instead of duplicating, so no key is ever assigned twice. Pad layo
 - **Sound** — a speaker toggle and a volume slider under the buttons.
 - **Language** — the same DE | EN switch as the main menu.
 
+Pause is shared. In online co-op the host relays the stop, so both players wait, and the line under **Pause** names the side that stopped the round ("Player 2 paused — the round is held for both", or "You paused — the other player is waiting"). `Z` or `X` also leaves the menu, next to `Esc`.
+
 The language choice is stored under `voxelrage-lang` and applies to the whole interface, including HUD updates and status messages, not just the menus.
 
 ## HUD
 
-Each player card is a voxel panel with a small portrait window of the chosen character, built from that character's own palette, next to the name and lives.
+Each player card is a voxel panel with a small portrait of the chosen character — rendered offscreen from that character's own head mesh, not a drawing — next to the name and lives. Below it sit the two meters on one grid: a pixel heart beside the health bar, whose ECG trace colours, slows and flattens as health drops, and a voxel flame beside the special bar, which glows and runs a sheen when it is full.
 
-The health bar carries a pixel heart and an ECG trace — a scrolling SVG heartbeat mask inside the fill — running through it. The colour and pace follow the health: green above 60 %, yellow in the middle, red below 30 %. As health drops the trace slows down, loses amplitude and flattens toward a flatline, while the heart pulse slows with it. The numeric HP sits beside the bar.
+The heartbeat inside the health bar is a scrolling ECG mask in the fill. Colour and pace follow health: green above 60 %, yellow in the middle, red below 30 %. As it drops, the trace slows, loses amplitude and flattens toward a flatline while the heart pulse slows with it; the numeric HP sits beside the bar.
 
-The special meter glows cyan and runs a light sheen through the fill when it is full, so the Ottoman Slap / Superkick is readable at a glance. Weapons show as a highlighted chip under the bars.
+The special meter follows the same grid — flame icon, 186 px shell, live number — and pulses with a light sheen once it is full, so the Ottoman Slap / Superkick is readable at a glance. Weapons show as a small chip under the bars.
 
 ## Sound
 
